@@ -62,6 +62,8 @@ event loop 原理
 【进阶26期】路由原理
 【进阶27期】VueRouter源码解析
 【进阶28期】ReactRouter源码解析
+
+https://yangbo5207.github.io/wutongluo/ji-chu-jin-jie-xi-lie/liu-3001-zai-chrome-zhong-guan-cha-han-shu-diao-yong-zhan-3001-zuo-yong-yu-lian-3001-bi-bao.html
 ## vue
 ***
 
