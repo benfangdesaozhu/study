@@ -28,7 +28,7 @@ console.log(a,b) //{a: 2}, {a: 2}
 
 2. **浅复制的应用场景**
 
-Object.assign(target, ...sources)
+Object.assign(target, ...sources)[Object.assign的实现](https://github.com/benfangdesaozhu/study/blob/master/js%E5%9F%BA%E7%A1%80/6%E3%80%81Object.assign.js)
 
 **MDN**上对该方法的解释是：方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
 
