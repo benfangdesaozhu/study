@@ -38,6 +38,7 @@ if( typeof Object.assign !== 'function') {
       })
 }
 
+var myTestObj = {a:2}
 // Object.defineProperty()
 // MDN上的解释：方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
 
@@ -45,8 +46,13 @@ Object.defineProperty(obj, prop, descriptor)
 // obj 要定义属性的对象
 // prop 要定义或者修改属性的名称或Symbol
 // descriptor 要定义或修改的属性描述符(在es5之前没有提供检测属性特性的方法，从es5开始，所有属性都具备了属性描述符。)。
-var myTestObj = {a:2}
-Object.getOwnPropertyDescriptor(myTestObj, 'a') // {value: 2, writable: true, enumerable: true, configurable: true}
+// 注意：使用Object.defineProperty方法新增属性，在不添加descriptor的前提下，默认writable、configurable、enumerable都为false。(默认情况下，使用 Object.defineProperty() 添加的属性值是不可修改（immutable）的)
+Object.defineProperty(myTestObj, 'b', {value: 4})
+console.log(a, Object.getOwnPropertyDescriptor(myTestObj, 'b')) 
+// {a: 3, b: 3} {value: 4, writable: false, enumerable: false, configurable: false}
+
+Object.getOwnPropertyDescriptor(myTestObj, 'a') 
+// {value: 2, writable: true, enumerable: true, configurable: true}
 //对象的属性里目前存在的属性描述符有两种主要形式：数据描述符和存取描述符。
 //数据描述符是一个具有值的属性，该值可以是可写的，也可以是不可写的。
 //存取描述符是由 getter 函数和 setter 函数所描述的属性。
@@ -131,11 +137,39 @@ console.log(myTestPreventExtensions) // {a: 2}
 //结果显而易见。 禁止一个对象添加新属性并且保留现有属性（严格模式报错。typeError）
 
 
-
-//默认情况下，使用 Object.defineProperty() 添加的属性值是不可修改（immutable）的。
-
+// get和set的使用。还需要看
 
 
 
 // in操作符 和 hasOwnProperty的区别
+function TestIn () {}
+TestIn.prototype.c = 3
+var testIn = new TestIn();
+testIn.age = 12;
 
+console.log(testIn.hasOwnProperty('age')) // true
+console.log(testIn.hasOwnProperty('c')) // false
+
+console.log('age' in testIn) // true
+console.log('c' in testIn) // true
+
+
+//从上面的列子我们能很清晰的知道，
+// obj.hasOwnProperty(key)  方法会返回一个布尔值 是判断obj内是否有指定的属性（key键）
+// in 操作符 返回的也是一个布尔值  是判断指定的属性在指定的对象或其原型链中
+
+
+// for in 是遍历可枚举的值（mdn解释：语句以任意顺序遍历一个对象的除Symbol以外的可枚举属性。）
+var testInOrOther = {a: 1}
+
+Object.defineProperty(testInOrOther, 'b', {
+    value: 4,
+    enumerable: false, // false 不可枚举
+    writable: true,
+    configurable: true
+})
+
+
+for(var i in testInOrOther) {
+    console.log(i)// a
+}

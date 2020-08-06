@@ -34,6 +34,8 @@ Object.assign(target, ...sources)[Object.assign的实现](https://github.com/ben
 
 Array.prototype.slice()
 slice() 方法返回一个新的数组对象，这一对象是一个由 begin和 end（不包括end）决定的原数组的浅拷贝。原始数组不会被改变。
+Array.prototype.concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+slice、和concat都是浅拷贝
 
 Underscore的实现（create a (shallow-cloned) duplicate of an object）创建对象的（浅克隆）副本
 ```
