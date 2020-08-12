@@ -120,5 +120,5 @@ function debounce (func, wait, immediate) {
     return debounced
 }
 ```
-防抖示例：请参考[防抖](https://github.com/benfangdesaozhu/study/blob/master/js%E5%9F%BA%E7%A1%80/0%E3%80%81debounce.js)
+防抖示例：请参考[防抖](https://github.com/benfangdesaozhu/study/blob/master/js%E5%9F%BA%E7%A1%80/debounce.html)
 
