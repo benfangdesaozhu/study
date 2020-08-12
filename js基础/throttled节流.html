@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>debounce</title>
+    <style>
+        #container{
+            width: 100%; 
+            height: 200px; 
+            line-height: 200px; 
+            text-align: center; 
+            color: #fff; 
+            background-color: #444; 
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <button id="cancel">取消</button>
+</body>
+    <script>
+        var count = 1;
+        var container = document.getElementById('container');
+        var cancel = document.getElementById('cancel')
+        function getUserAction(e) {
+            console.log(this, e) 
+            //1、2执行的话 windwos undefined(为什么时间对象是undefined)
+            console.log(count++)
+            container.innerHTML = count
+        };
+        var setCount = throttle(getUserAction, 1000, true)
+        cancel.onclick=function(){
+            console.log(setCount)
+            setCount.cancel()
+        }
+        console.log(setCount)
+        container.onmousemove = setCount;
+        // 使用定时器
+        // 使用定时器的会在n秒后第一次执行，然后间隔n秒后继续执行（如果有持续触发）
+        // 使用定时器的在停止触发后依然会再执行一次事件
+        function throttle(func, wait) {
+            var timeout;
+            return function () {
+                if(timeout) return
+                var argu = arguments
+                timeout = setTimeout(function(){
+                    timeout = null
+                    func.apply(this, argu)
+                }, wait);
+            }
+        }
+
+        // 使用时间戳
+        // 使用时间戳的会立即执行，然后间隔n秒后继续执行（如果有持续触发）
+        // 使用时间戳的在停止触发后没有办法再执行事件
+        function throttle(func, wait) {
+            var prevTime = 0;
+            return function () {
+                var now = new Date().getTime()
+                var argu = arguments
+                if(now - prevTime > wait) {
+                    prevTime = now
+                    func.apply(this, argu)
+                }
+            }
+        }
+
+        // 结合时间戳和定时器
+        // 实现，刚开始触发就立即执行（时间戳），结束之后在执行一次事件（定时器）
+        function throttle(func, wait){
+            var timeout;
+            var prevTime = 0;
+            return function () {
+                var now = new Date().getTime()
+                var argu = arguments
+                var remaining = wait - (now - prevTime)
+                if (remaining <= 0 || remaining > wait) {
+                    if(timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    prevTime = now
+                    func.apply(this, argu)
+                } else if(!timeout) {
+                    timeout = setTimeout(function(){
+                        prevTime = new Date().getTime()
+                        timeout = null
+                        func.apply(this, argu)
+                    }, wait);
+                }
+            }
+        }
+
+        // 有时候。我们想开始立即执行，不想结束又执行一次。
+        // 有时候，想开始不立即执行，结束执行一次
+        // option
+        // leading：false 表示禁用第一次执行
+        // trailing: false 表示禁用停止触发的回调
+        function throttle (func, wait, option) {
+            var timeout;
+            var prevTime = 0;
+            if (!option) options = {};
+            var throttled =  function () {
+                var now = new Date().getTime()
+                var argu = arguments
+                if(!prevTime && !option.leading) prevTime = now
+                var remaining = wait - (now - prevTime)
+                if (remaining <= 0 || remaining > wait) {
+                    if(timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    prevTime = now
+                    func.apply(this, argu)
+                } else if(!timeout && !option.trailing) {
+                    timeout = setTimeout(function(){
+                        prevTime = new Date().getTime()
+                        timeout = null
+                        func.apply(this, argu)
+                    }, wait);
+                }
+            }
+            return throttled
+        }
+    </script>
+</html>
