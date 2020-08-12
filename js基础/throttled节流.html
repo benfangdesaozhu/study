@@ -32,7 +32,7 @@
             console.log(count++)
             container.innerHTML = count
         };
-        var setCount = throttle(getUserAction, 1000, true)
+        var setCount = throttle(getUserAction, 1000, {leading: false,trailing: true})
         cancel.onclick=function(){
             console.log(setCount)
             setCount.cancel()
@@ -107,7 +107,7 @@
             var throttled =  function () {
                 var now = new Date().getTime()
                 var argu = arguments
-                if(!prevTime && !option.leading) prevTime = now
+                if(!prevTime && option.leading === false) prevTime = now
                 var remaining = wait - (now - prevTime)
                 if (remaining <= 0 || remaining > wait) {
                     if(timeout) {
@@ -116,7 +116,7 @@
                     }
                     prevTime = now
                     func.apply(this, argu)
-                } else if(!timeout && !option.trailing) {
+                } else if(!timeout && option.trailing !== false) {
                     timeout = setTimeout(function(){
                         prevTime = new Date().getTime()
                         timeout = null
@@ -126,5 +126,54 @@
             }
             return throttled
         }
+
+        // 取消事件
+
+        function throttle (func, wait, option) {
+            var timeout;
+            var prevTime = 0;
+            if (!option) options = {};
+            var throttled =  function () {
+                var now = new Date().getTime()
+                var argu = arguments
+                if(!prevTime && !option.leading) prevTime = now
+                var remaining = wait - (now - prevTime)
+                if (remaining <= 0 || remaining > wait) {
+                    if(timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    prevTime = now
+                    func.apply(this, argu)
+                } else if(!timeout && option.trailing !== false) {
+                    timeout = setTimeout(function(){
+                        prevTime = new Date().getTime()
+                        timeout = null
+                        func.apply(this, argu)
+                    }, wait);
+                }
+            }
+            throttled.cancel = function () {
+                prevTime = 0;
+                timeout = null
+                clearTimeout(timeout)
+            }
+            return throttled
+        }
+
+// 注意
+// 我们要注意 underscore 的实现中有这样一个问题：
+
+// 那就是 leading：false 和 trailing: false 不能同时设置。
+
+// 如果同时设置的话，比如当你将鼠标移出的时候，因为 trailing 设置为 false，停止触发的时候不会设置定时器，所以只要再过了设置的时间，再移入的话，就会立刻执行，就违反了 leading: false，bug 就出来了，所以，这个 throttle 只有三种用法：
+
+// container.onmousemove = throttle(getUserAction, 1000);
+// container.onmousemove = throttle(getUserAction, 1000, {
+//     leading: false
+// });
+// container.onmousemove = throttle(getUserAction, 1000, {
+//     trailing: false
+// });
     </script>
 </html>
