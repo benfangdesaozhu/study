@@ -126,7 +126,7 @@
             debugger
             var _this = this
             console.log(a)
-            a = typeof a === 'function' ? a : (value) => value
+            a = typeof a === 'function' ? a : (value) => value // 相当于return value 这里卡了挺久的
             b = typeof b === 'function' ? b : (error) => { throw error}
             if(this.state === FULFILLED) {
                 return new myPromise(function(resolve, reject) {

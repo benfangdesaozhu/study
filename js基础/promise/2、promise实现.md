@@ -131,88 +131,95 @@ MyPromise.prototype.then = function (a, b) {
 ```
 
 ```
-写到这里，再看网上的实现方式，感觉瓶子君的实现比较容易理解。
-var PENDING = 0
-var FULFILLED = 1
-var REJECTED = 2
+        写到这里，再看网上的实现方式，感觉瓶子君的实现比较容易理解。
+        var PENDING = 0
+        var FULFILLED = 1
+        var REJECTED = 2
+        debugger
+        function myPromise(fn) {
+            var _this = this
+            // 默认状态是PENDING
+            _this.state = PENDING
+            // 存储状态的值 默认是null
+            _this.flufillValue = null
+            _this.rejectValue = null
 
-function myPromise(fn) {
-    var _this = this
-    // 默认状态是PENDING
-    _this.state = PENDING
-    // 存储状态的值 默认是null
-    _this.flufillValue = null
-    _this.rejectValue = null
+            _this.onFlufilledCallbacks = []  // Promise resolve回调函数
+            _this.onRejectedCallbacks = []  // Promise reject回调函数
 
-    _this.onFlufilledCallbacks = []  // Promise resolve回调函数
-    _this.onRejectedCallbacks = []  // Promise reject回调函数
-
-    _this.resolve = function (value) {
-        // 如果参数是个promise(也就是新的myPromise的实例)
-        if(value instanceof myPromise) {
-            return value.then(_this.resolve, _this.reject)
-        }
-        setTimeout(() => {
-            if(_this.state === PENDING) {
-                _this.state === FULFILLED
-                _this.flufillValue = value
-                _this.onFlufilledCallbacks.forEach((ele) => {
-                    ele()
-                })
-            }
-        })
-    }
-
-    _this.reject = function (value) {
-        setTimeout(() => {
-            if(_this.state === PENDING) {
-                _this.state === REJECTED
-                _this.rejectValue = value
-                _this.onRejectedCallbacks.forEach((ele) => {
-                    ele()
-                })
-            }
-        })
-    }
-    try {
-        fn(resolve, reject)
-    }catch(err) {
-        _this.reject(err)
-    }
-}
-myPromise.prototype.then = function (a, b) {
-    var _this = this
-    a = typeof a === 'function' ? a : () => {}
-    b = typeof b === 'function' ? b : (error) => { throw error}
-    if(this.state === FULFILLED) {
-        return new myPromise(function(resolve, reject) {
-            setTimeout(() => {
-                var x = a(_this.flufillValue)
+            _this.resolve = function (value) {
+                // 如果参数是个promise(也就是新的myPromise的实例)
                 if(value instanceof myPromise) {
                     return value.then(_this.resolve, _this.reject)
                 }
-                resolve(x)
-            })
-        })
-    }
-    if (this.status === REJECTED) {
-        return new myPromise(function(resolve, reject) {
-            setTimeout(() => {
-                reject(b(_this.rejectValue))
-            })
-        })
-    }
-    if(this.state === PENDING) {
-        return new myPromise(function(resolve, reject) {
-            _this.onFlufilledCallbacks.push(() => {
-                resolve(a(_this.flufillValue))
-            })
-            _this.onRejectedCallbacks.push((resolve, reject) => {
-                reject(b(_this.rejectValue))
-            })
-        })
-    }
-}
+                setTimeout(() => {
+                    if(_this.state === PENDING) {
+                        _this.state === FULFILLED
+                        _this.flufillValue = value
+                        _this.onFlufilledCallbacks.forEach((ele) => {
+                            ele()
+                        })
+                    }
+                })
+            }
+
+            _this.reject = function (value) {
+                setTimeout(() => {
+                    if(_this.state === PENDING) {
+                        _this.state === REJECTED
+                        _this.rejectValue = value
+                        _this.onRejectedCallbacks.forEach((ele) => {
+                            ele()
+                        })
+                    }
+                })
+            }
+            try {
+                fn(_this.resolve, _this.reject)
+            }catch(err) {
+                _this.reject(err)
+            }
+        }
+        myPromise.prototype.then = function (a, b) {
+            debugger
+            var _this = this
+            console.log(a)
+            a = typeof a === 'function' ? a : (value) => value // 相当于return value 这里卡了挺久的
+            b = typeof b === 'function' ? b : (error) => { throw error}
+            if(this.state === FULFILLED) {
+                return new myPromise(function(resolve, reject) {
+                    setTimeout(function(){
+                        var x = a(_this.flufillValue)
+                        console.log(a)
+                        if(x instanceof myPromise) {
+                            x.then(resolve, reject)
+                        }
+                        resolve(x)
+                    })
+                })
+            }
+            if (this.state === REJECTED) {
+                return new myPromise(function(resolve, reject) {
+                    setTimeout(() => {
+                        reject(b(_this.rejectValue))
+                    })
+                })
+            }
+            if(this.state === PENDING) {
+                return new myPromise(function(resolve, reject) {
+                    _this.onFlufilledCallbacks.push(() => {
+                       var x = a(_this.flufillValue)
+                        if(x instanceof myPromise) {
+                          x.then(resolve, reject)
+                        }
+                        resolve(x)
+                    })
+                    _this.onRejectedCallbacks.push((resolve, reject) => {
+                        reject(b(_this.rejectValue))
+                    })
+                })
+            }
+        }
 ```
 
 https://zhuanlan.zhihu.com/p/183801144
