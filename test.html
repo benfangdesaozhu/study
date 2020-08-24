@@ -77,7 +77,7 @@
         var PENDING = 0
         var FULFILLED = 1
         var REJECTED = 2
-
+        debugger
         function myPromise(fn) {
             var _this = this
             // 默认状态是PENDING
@@ -123,16 +123,18 @@
             }
         }
         myPromise.prototype.then = function (a, b) {
+            debugger
             var _this = this
-            a = typeof a === 'function' ? a : (value) => {value}
+            console.log(a)
+            a = typeof a === 'function' ? a : (value) => value
             b = typeof b === 'function' ? b : (error) => { throw error}
             if(this.state === FULFILLED) {
                 return new myPromise(function(resolve, reject) {
-                    setTimeout(() => {
+                    setTimeout(function(){
                         var x = a(_this.flufillValue)
                         console.log(a)
-                        if(_this.flufillValue instanceof myPromise) {
-                            return _this.flufillValue.then(_this.resolve, _this.reject)
+                        if(x instanceof myPromise) {
+                            x.then(resolve, reject)
                         }
                         resolve(x)
                     })
@@ -149,8 +151,7 @@
                 return new myPromise(function(resolve, reject) {
                     _this.onFlufilledCallbacks.push(() => {
                        var x = a(_this.flufillValue)
-                        console.log(x)
-                        if(_this.flufillValue instanceof myPromise) {
+                        if(x instanceof myPromise) {
                           x.then(resolve, reject)
                         }
                         resolve(x)
@@ -165,5 +166,134 @@
           resolve(1)
         }).then('2').then(3).then(res => console.log(res))
     </script>
+
+
+<!-- <script>
+    // 三种状态
+const PENDING = "pending"
+const FULFILLED = "fulfilled"
+const REJECTED = "rejected"
+    debugger
+function MyPromise(callback) {
+    var _this = this
+    _this.currentState = PENDING // Promise当前的状态
+    _this.value = void 0 // Promise的值
+    // 用于保存 then 的回调， 只有当 promise
+    // 状态为 pending 时才会缓存，并且每个实例至多缓存一个
+    _this.onResolvedCallbacks = [] // Promise resolve时的回调函数集
+    _this.onRejectedCallbacks = [] // Promise reject时的回调函数集
+    _this.resolve = function (value) {
+        if (value instanceof MyPromise) {
+            // 如果 value 是个 MyPromise， 递归执行
+            return value.then(_this.resolve, _this.reject)
+        }
+        setTimeout(() => { // 异步执行，保证顺序执行
+            if (_this.currentState === PENDING) {
+                _this.currentState = FULFILLED // 状态管理
+                _this.value = value
+                _this.onResolvedCallbacks.forEach(cb => cb())
+            }
+        })
+    } // resolve 处理函数
+    _this.reject = function (error) {
+        setTimeout(() => { // 异步执行，保证顺序执行
+            if (_this.currentState === PENDING) {
+            	_this.currentState = REJECTED // 状态管理
+            	_this.value = value
+            	_this.onRejectedCallbacks.forEach(cb => cb())
+        	}
+        })
+    } // reject 处理函数
+    
+    // 异常处理
+    // new Promise(() => throw Error('error'))
+    try {
+        callback(_this.resolve, _this.reject) // 执行callback并传入相应的参数
+    } catch(e) {
+        _this.reject(e)
+    }
+}
+// then 方法接受两个参数，onFulfilled，onRejected，分别为Promise成功或失败的回调
+MyPromise.prototype.then = function(onFulfilled, onRejected) {
+    var _this = this
+    // 规范 2.2.7，then 必须返回一个新的 promise
+    var promise2
+    // 根据规范 2.2.1 ，onFulfilled、onRejected 都是可选参数
+    // onFulfilled、onRejected不是函数需要忽略，同时也实现了值穿透
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value
+    onRejected = typeof onRejected === 'function' ? onRejected : error => {throw error}
+    
+    if (_this.currentState === FULFILLED) {
+        // 如果promise1（此处为self/this）的状态已经确定并且为fulfilled，我们调用onFulfilled
+        // 如果考虑到有可能throw，所以我们将其包在try/catch块中
+        return promise2 = new MyPromise(function(resolve, reject) {
+            // 规范 2.2.4，保证 onFulfilled，onRjected 异步执行
+      		// 所以用了 setTimeout 包裹下
+            setTimeout(function() {
+                try {
+                	var x = onFulfilled(_this.value)
+                	// 如果 onFulfilled 的返回值是一个 Promise 对象，直接取它的结果作为 promise2 的结果
+                	if (x instanceof MyPromise) {
+                    	x.then(resolve, reject)
+                	}
+                	resolve(x) // 否则，以它的返回值为 promise2 的结果
+            	} catch (err) {
+                	reject(err) // 如果出错，以捕获到的错误作为promise2的结果
+            	}
+            })
+        })
+    }
+    // 此处实现与FULFILLED相似，区别在使用的是onRejected而不是onFulfilled
+    if (_this.currentState === REJECTED) {
+        return promise2 = new MyPromise(function(resolve, reject) {
+            setTimeout(function() {
+                try {
+                	var x = onRejected(_this.value)
+                	if (x instanceof Promise){
+                    	x.then(resolve, reject)
+                	}
+            	} catch(err) {
+                	reject(err)
+            	}
+            })
+        })
+    }
+    if (_this.currentState === PENDING) {
+        // 如果当前的Promise还处于PENDING状态，我们并不能确定调用onFulfilled还是onRejected
+        // 只有等待Promise的状态确定后，再做处理
+        // 所以我们需要把我们的两种情况的处理逻辑做成callback放入promise1（此处即self/this）的回调数组内
+        // 处理逻辑和以上相似
+        return promise2 = new MyPromise(function(resolve, reject) {
+            _this.onResolvedCallbacks.push(function() {
+                try {
+                    var x = onFulfilled(_this.value)
+                    if (x instanceof MyPromise) {
+                        x.then(resolve, reject)
+                    }
+                    resolve(x)
+                } catch(err) {
+                    reject(err)
+                }
+            })
+            _this.onRejectedCallbacks.push(function() {
+                try {
+                    var x = onRejected(_this.value)
+                    if (x instanceof MyPromise) {
+                        x.then(resolve, reject)
+                    }
+                } catch (err) {
+                    reject(err)
+                }
+            })
+        })
+    }
+}
+new MyPromise(resolve => resolve('1'))
+    .then()
+    .then()
+    .then(function foo(value) {
+        console.log(value)
+    })
+</script> -->
 </body>
 </html>
