@@ -85,7 +85,6 @@
             // 存储状态的值 默认是null
             _this.flufillValue = null
             _this.rejectValue = null
-
             _this.onFlufilledCallbacks = []  // Promise resolve回调函数
             _this.onRejectedCallbacks = []  // Promise reject回调函数
 
@@ -98,6 +97,7 @@
                     if(_this.state === PENDING) {
                         _this.state === FULFILLED
                         _this.flufillValue = value
+                        console.log(value)
                         _this.onFlufilledCallbacks.forEach((ele) => {
                             ele()
                         })
@@ -123,16 +123,13 @@
             }
         }
         myPromise.prototype.then = function (a, b) {
-            debugger
             var _this = this
-            console.log(a)
             a = typeof a === 'function' ? a : (value) => value // 相当于return value 这里卡了挺久的
             b = typeof b === 'function' ? b : (error) => { throw error}
             if(this.state === FULFILLED) {
                 return new myPromise(function(resolve, reject) {
                     setTimeout(function(){
                         var x = a(_this.flufillValue)
-                        console.log(a)
                         if(x instanceof myPromise) {
                             x.then(resolve, reject)
                         }
@@ -149,6 +146,8 @@
             }
             if(this.state === PENDING) {
                 return new myPromise(function(resolve, reject) {
+                    // 当还处于pending 是。将当前的回调放入第一次new的promise中。这里也卡了很久呀
+                    console.log(_this)
                     _this.onFlufilledCallbacks.push(() => {
                        var x = a(_this.flufillValue)
                         if(x instanceof myPromise) {
@@ -164,7 +163,7 @@
         }
         new myPromise(function(resolve, reject) {
           resolve(1)
-        }).then('2').then(3).then(res => console.log(res))
+        }).then('2').then(3).then(res=>console.log(res, '结果'))
     </script>
 
 

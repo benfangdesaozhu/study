@@ -206,6 +206,8 @@ MyPromise.prototype.then = function (a, b) {
                 })
             }
             if(this.state === PENDING) {
+                // 当还处于pending 是。将当前的回调放入第一次new的promise中。
+                console.log(_this)
                 return new myPromise(function(resolve, reject) {
                     _this.onFlufilledCallbacks.push(() => {
                        var x = a(_this.flufillValue)
