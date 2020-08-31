@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img id="img" src="./../images/t.png" alt="">
+    <button id="btn">点击</button>
+
+    <script>
+        var test = {
+            img: document.getElementById('img'),
+            btn: document.getElementById('btn')
+        }
+
+        function doSome () {
+            test.img.src="./../原型/image/1.png"
+        }
+        function removeImg () {
+            document.body.removeChild(document.getElementById('img'))
+        }
+        var bool = false
+        test.btn.onclick= function(){
+            console.log(test.img)
+            removeImg()
+        }
+    </script>
+</body>
+</html>
