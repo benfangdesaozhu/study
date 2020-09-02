@@ -32,7 +32,7 @@ if(true) {
     console.log(temp) // ReferenceError
     let temp = 'scope'
 }
-// 在es5是：使用tyoeof对一个未声明的变量，typeof会返回undefined.但在使用了let的声明的变量之前进行类型检测，会报错
+// 在es5是：使用typeof对一个未声明的变量，typeof会返回undefined.但在使用了let的声明的变量之前进行类型检测，会报错
 ```
 
 4、不允许变量重复声明
