@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./vue2.3.js"></script>
+    <div id="app">{{test.a}}{{heh}}</div>
+    <script>
+        // vue是个自执行函数。
+
+        // defineReactive$$1
+
+        //initComputed  new watcher()  在实例化下。有computed属性的时候会执行
+
+        // Vue.prototype.$watch  new watcher() // 有watch属性的时候
+
+        // mountComponent  new watcher()
+        
+        var options = {
+            data () {
+                return {
+                    id: 1,
+                    heh: 2,
+                    test: {
+                        a: 1
+                    }
+                }
+            }
+        }
+        var vue = new Vue({
+            el: '#app',
+            ...options
+        })
+        vue.heh = 3
+        console.log(vue)
+        vue.$set(vue.test, 'a', 2)
+        // 
+    </script>
+</body>
+</html>
