@@ -20,18 +20,130 @@ function CreateIterator(item) {
             var value = done ? item[index++] : undefined
             return {
                 value,
-                done
+                done: !done
             }
         }
     }
 }
 var a = CreateIterator([1,2,3])
-console.log(a.next()) // {value: 1, done: true}
-console.log(a.next()) // {value: 2, done: true}
-console.log(a.next()) // {value: 3, done: true}
-console.log(a.next()) // {value: undefined, done: false}
+console.log(a.next()) // {value: 1, done: false}
+console.log(a.next()) // {value: 2, done: false}
+console.log(a.next()) // {value: 3, done: false}
+console.log(a.next()) // {value: undefined, done: true}
 ```
 
 ```
-for...of是
+for...of是  
+在ES6中，有些数据结构原生具备iterator接口（比如数组），即不用任何处理，就可以被for...of循环遍历，有些就不行（比如对象）。原因在于
+这些数据结构原生部署了Symbol.iterator属性。
+
+凡是部署了Symbol.iterator属性的数据结构，就称为部署了迭代器的接口。调用这个接口，就会返回一个迭代器对象
+
+iterator接口的目的，就是为所有数据结构，提供了一种统一的访问机制。即for...of循环。
+
+es6中规定。默认的iterator接口部署在数据结构的Symbol.iterator的属性。也就是说，只要一个数据结构拥有Symbol.iterator属性。就可以认为是“可迭代的”
+
+Symbol.iterator属性本身就是一个函数。就是当前数据结构默认的遍历器生成函数。执行这个函数，就会返回一个遍历器。
+
+var obj = {
+    [Symbol.iterator]: function() {
+        return {
+            next: function(){
+                return {
+                    value: 1,
+                    done: true
+                }
+            }
+        }
+    },
+    a: 1,
+    b: 2
+}
+var obj1 = {
+    a: 1,
+    b: 2
+}
+for(var i of obj){ // obj中有Symbol.iterator属性的函数。所有可迭代，不会报错
+    console.log(i)
+}
+for(var i of obj1){
+    console.log(i) // 报错：obj1 is not iterable
+}
+
+var cjm = 'cjm'
+var itera = cjm[Symbol.iterator]()
+itera.next() // {value: "c", done: false}
+itera.next() // {value: "j", done: false}
+itera.next() // {value: "m", done: false}
+itera.next() // {value: undefined, done: true}
+```
+
+```
+for...of可使用的范围
+
+1、数组
+2、Set和Map结构
+3、字符串
+4、计算生成的数据结构（Set和Map的values、keys、entries）
+5、类似数组的对象（argument、nodeList）
+6、Generator 对象
+7、以及部署了Symbol.iterator属性的数据结构
+
+```
+
+```
+遍历语法的比较
+
+经典的for循环
+
+var a = [1,2,3]
+
+for(var i = 0; i < a.length; i++) {
+    console.log(a[i])
+}
+
+a.forEach(function(value,index,arr){
+    console.log(value,index,arr) 
+})
+// forEach方法无法提前退出循环。break命令或return命令都不能奏效
+
+for...in 可以遍历数组的键名（对象的键名）
+for(var key in a) {
+    console.log(key)
+}
+var obj = {
+    a:1
+}
+obj.__proto__.b = 2
+// 或者Object.setPrototypeOf(obj, {b:2})
+for(var key in obj) {
+    console.log(key) 
+    // a
+    // b
+}
+// for...in有几个缺点。
+// 1、遍历数组，只会返回索引，因为es5的键名是字符串，所以，返回的数组索引也是以字符串形式返回
+// 2、不仅仅会遍历数据的原有属性，也会遍历原型链上的键
+
+总之：for...in主要是为了对象的遍历而设计的，不太适合用在数组上。
+```
+
+###### 模拟实现for...of
+```
+function forOf(obj, cb) {
+    var itera;
+    var result
+    if (typeof obj[Symbol.iterator] !== 'function') {
+        throw new Error(`${obj} is not a iterable` )
+    }
+    if(typeof cb !== 'function') {
+        throw new Error(`${cb} must be callable` )
+    }
+    itera = obj[Symbol.iterator]()
+    result = itera.next()
+    while(!result.done) {
+        cb(result.value)
+        result = itera.next()
+    }
+}
 ```
