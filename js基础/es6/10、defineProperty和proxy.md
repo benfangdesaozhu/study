@@ -198,3 +198,235 @@ set（拦截对象属性的设置）方法。能接受四个参数。第四个�
 
 相对应的还有has、construct、apply、deleteProperty、defineProperty、getOwnPropertyDescriptor、
 getPrototypeOf、isExtensible、ownKeys、preventExtensions、setPropertyOf等拦截方法
+```
+apply方法拦截函数的调用、call和apply操作
+方法接收三个参数：
+第一个参数：目标对象
+第二个参数：目标对象的上下文对象（this）
+第三个参数：目标对象的参数数组
+
+var target = function() {return 'i am target'}
+var handler = {
+    apply: function() {
+        return 'i am proxy'
+    }
+}
+var proxy = new Proxy(target, handler)
+proxy() // "i am proxy"
+
+直接调用Reflect.apply方法，也会被拦截。
+Reflect.apply(proxy,null,{})// "i am proxy"
+
+Reflect的apply和Proxy的用法相同。
+```
+
+```
+has()方法用来拦截hasProperty(是否拥有该属性)，即判断该方法是否有某个属性时，会调用这个方法。典型的就是in运算符
+该方法接收两个参数：分别是目标对象和需查询的属性
+var handler = {
+    has: function(target, key) {
+        console.log(target, key)
+        // {_prop: "foo", prop: "foo"} "a"
+        return key in target;
+    }
+}
+var target = { _prop: 'foo', prop: 'foo' };
+Object.setPrototypeOf(target, {'a': 1})
+var proxy = new Proxy(target, handler)
+'a' in proxy // true
+```
+```
+deleteProperty()
+该方法用于拦截delete操作，如果这个属性无法被delete删除，则该方法抛出错误或者是返回false
+
+var handler = {
+    deleteProperty: function(target, key) {
+        console.log(target, key)
+        if (key[0] === '_') {
+            throw new Error(`Invalid attempt to delete private property ${key}`)
+        }
+        return true
+    }
+}
+var a = {
+    b: 1,
+    '_b': 2
+}
+var proxy = new Proxy(a, handler)
+delete proxy.b // true
+delete proxy._b // Invalid attempt to delete private property _b
+```
+```
+defineProperty()
+defineProperty方法拦截了Object.defineProperty操作
+
+该方法会拦截目标对象的以下操作:
+
+1、Object.defineProperty()
+2、Reflect.defineProperty()
+3、proxy.property = value
+
+
+var p = {
+  a: '1'
+};
+
+var handler = {
+  defineProperty(target, key, attribute) {
+    console.log('defineProperty');
+    // Reflect.defineProperty(target, key, attribute);
+  }
+};
+var obj = new Proxy(p, handler);
+obj.p = 2 
+// 这能说明第三种：打印拦截器中的defineProperty方法 ‘defineProperty’
+```
+
+```
+var p = {
+  a: '1'
+};
+
+var handler = {
+  set(target, key, value, receiver) {
+    console.log('set');
+  },
+  defineProperty(target, key, attribute) {
+    console.log('defineProperty');
+    // Reflect.defineProperty(target, key, attribute);
+  }
+};
+var obj = new Proxy(p, handler);
+obj.p = 2 
+// 只能打印set中的‘set’.但是不会触发拦截器的defineProperty方法
+说明，在同时拥有set和defineProperty时。一般情况下只会触发set.不会触发defineProperty
+```
+
+
+```
+var p = {
+  a: '1'
+};
+
+var handler = {
+  set(target, key, value, receiver) {
+    console.log('set');
+    Reflect.set(target, key, value, receiver)
+    // Reflect.defineProperty(receiver,key, {})
+  },
+  defineProperty(target, key, attribute) {
+    console.log('defineProperty');
+    // Reflect.defineProperty(target, key, attribute);
+  }
+};
+var obj = new Proxy(p, handler);
+obj.p = 2 
+// 先打印 ‘set’、在打印defineProperty。
+
+注意，如果 Proxy 对象和 Reflect 对象联合使用，前者拦截赋值操作，后者完成赋值的默认行
+为，而且传入了receiver，那么Reflect.set会触发Proxy.defineProperty拦截。
+
+上面代码中。Proxy.set代码中使用Reflect.set,而且传入了receiver，导致触发Proxy.defineProperty拦截。因为Proxy.set的receiver指向当前Proxy实例。而Reflect一旦传入receiver，就会把属性赋值给receiver上面（即obj）。导致触发defineProperty.如果Reflect没有传入receiver。则就不会触发defineProperty的拦截
+
+同理。结合使用的使用的是欧，只要Reflect的方法指向当前Proxy实例的，都会触发defineProperty。例如set中注释的地方
+```
+
+```
+var p = new Proxy({}, {
+  defineProperty: function(target, prop, descriptor) {
+    console.log('called: ' + prop);
+    return true
+  }
+});
+
+var desc = { configurable: true, enumerable: true, value: 10 };
+Object.defineProperty(p, 'a', desc); // called: a
+
+能说明第一点
+
+Reflect.defineProperty(p, 'a', desc);
+
+能说明第三点
+```
+
+```
+getOwnPropertyDescriptor()方法拦截Object.getOwnPropertyDescriptor(),返回一个属性描述符对象或者undefined
+
+var handler = {
+    getOwnPropertyDescriptor: function(target, key){
+        console.log(target, key)
+        if(key[0] === '_') {
+            return
+        }
+        return Object.getOwnPropertyDescriptor(target,key)
+    }
+}
+var a = {b: 1, _b: 2}
+var proxy = new Proxy(a, handler)
+Object.getOwnPropertyDescriptor(proxy, 'b') // {value: 1, writable: true, enumerable: true, configurable: true}
+Object.getOwnPropertyDescriptor(proxy, 'c') // undefined
+Object.getOwnPropertyDescriptor(proxy, '_b') // undefined
+```
+
+```
+获取和设置对象的原型
+
+Proxy实例的拦截获取对象的原型和设置对象的原型getPrototypeOf、setPrototypeOf
+getPropertyOf(object)
+
+setPrototypeOf(object,prototype)
+prototype 一个对象或者是null
+
+var handler = {
+    setPrototypeOf:function(object,property) {
+        console.log(1, object,property)
+        return true
+    },
+    getPrototypeOf:function(object) {
+        return Object.getPrototypeOf(object)
+    }
+}
+var a = {}
+var proxy = new Proxy(a, handler)
+Object.setPrototypeOf(proxy, {b: 1})
+Object.setPrototypeOf(proxy)  // 返回proxy的原型
+
+其中getPrototypeOf拦截获取对象的原型。
+• Object.prototype.__proto__
+• Object.prototype.isPrototypeOf()
+• Object.getPrototypeOf()
+• Reflect.getPrototypeOf()
+• instanceof
+这些方法会触发。
+a instanceof proxy
+```
+```
+ownKeys()方法用来拦截对象自身属性的读取操作。
+• Object.getOwnPropertyNames()
+• Object.getOwnPropertySymbols()
+• Object.keys()
+• for...in循环
+
+var a = {
+    a:1,
+    b:2,
+    c:3
+}
+var handler = {
+    ownKeys: function(target) {
+        console.log(target)
+        return ['a']
+    }
+}
+var proxy = new Proxy(a, handler)
+Object.keys(proxy)
+
+```
+
+```
+isExtensible()方法拦截Object.isExtensible操作。
+
+preventExtensions()拦截Object.preventExtensions()。该方法必须返回一个布尔值，否则会被自动转为布尔值。
+这个方法有一个限制，只有目标对象不可扩展时（即Object.isExtensible(proxy)为false），proxy.preventExtensions才能返回true，否则会报错。
+```
+Reflect也有Proxy的13中方法。用法相同
