@@ -95,7 +95,11 @@ class PointC {
 }
 ```
 
-#### 私有方法（无需实例化(即无需用new操作符实化对象)就可以调用的方法就叫静态方法，实例不能调用）
+#### 私有方法
+
+特点：
+1、私有方法本身是可以访问类内部的所有属性(即私有属性和公有属性)
+2、私有方法是不可以在类的外部被调用
 
 私有方法是常见需求，但ES6不提供，只能通过变通方法模拟实现。
 
@@ -144,3 +148,161 @@ var {foo} = myclass
 
 foo() // 使用结构赋值之后，直接调用foo。this指向改变
 ```
+
+```
+Class的取值函数(get)和存值函数(set)
+和es5一样。在类的内部可以使用get和set。可以对属性的存取值进行拦截
+
+class myClass{
+  get property () {
+      console.log('getter: ')
+      return '获取属性'
+  }
+  set property(val) {
+      console.log('setter: '+val)
+      return val
+  }
+};
+var inst = new MyClass();
+inst.property = 123
+inst.property
+```
+#### class类的静态方法
+```
+类相当于实例的原型，所有定义在类上的方法，都能被实例继承。如果在方法前面加上static关键字，就表示该方法不会被继承。只能直接通过类来调用。这就是类的静态方法
+class myClass{
+  fun(){}
+  static test () {
+      console.log(this,111)
+  }
+};
+myClass.test() // class myClass, 111
+
+```
+![class类的静态方法](./../images/classStatic.png)
+
+注意，如果静态方法包含this关键字，这个this指的是类，而不是实例。
+
+子类可以继承父类的静态方法
+
+静态方法也是可以从super对象上调用的。
+
+
+#### 类的静态属性和实例属性
+
+在es6中。类的内部只有静态方法，没有静态属性
+
+```
+class myClass{
+ 
+};
+myClass.property = 1 // 静态属性定义
+上面的写法为myClass类定义了一个静态属性prop。
+
+但是对静态属性已经有新提案
+```
+
+#### new.target属性
+
+作用：一般用在构造函数当中，返回new命令作用的那个构造函数。如果构造函数不是通过new调用的，则这个属性返回undefined.如果是new调用的，则返回当前构造函数
+
+```
+function Person(name) {
+    if(new.target === undefined) {
+        throw new Error('必须使用 new 命令生成实例')
+    } else {
+        console.log('new 生成实例')
+    }
+}
+Person() // 报错
+new Person() // new 生成实例
+```
+
+Class内部调用new.target返回当前Class
+```
+class myClass{
+    constructor() {
+        console.log(new.target === myClass)
+    }
+};
+new myClass() // true
+```
+
+需要注意的是，子类继承父类时，new.target会返回子类。
+```
+class Person{
+    constructor() {
+        console.log(new.target, new.target===cjm)
+    }
+};
+class cjm extends Person {
+    constructor() {
+        super()
+    }
+    say(){
+
+    }
+}
+new cjm() // class cjm, true
+
+我们可以根据这个，生成一个只能继承的类
+
+class Person{
+    constructor() {
+        if(new.target === Person) {
+            throw new Error('本类不能实例化');
+        }
+    }
+};
+class cjm extends Person {
+    constructor() {
+        super()
+    }
+    say(){
+
+    }
+}
+new Person() // 报错：Uncaught Error: 本类不能实例化
+new cjm() 
+```
+
+注意，在函数外部，使用new.target会报错。
+
+
+
+#### 类的继承
+
+类通过extends关键字来实现继承。如上面的例子。
+```
+class Point{
+
+}
+
+class ColorPoint extends Point {
+  constructor(x, y, color) {
+    super(x, y); // 调用父类的constructor(x, y)
+    this.color = color; // 只有子类调用了super方法，才能使用this。否则报错
+  }
+
+  toString() {
+    return this.color + ' ' + super.toString(); // 调用父类的toString()
+  }
+}
+子类的constructor方法必须调用super()方法。否则新建实例时会报错
+
+这是因为子类自己的this对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用super方法，子类就得不到this对象。
+```
+Object.getPrototypeOf方法可以用来从子类上获取父类。
+Object.getPrototypeOf(ColorPoint) === Point
+
+因此，可以使用这个方法判断，一个类是否继承了另一个类。
+
+#### super关键字
+
+supe关键字既可以当作方法也可以当作对象。
+
+当作方法时：super只能使用在子类的constructor方法中，不能出现在其他地方。并且，必须在子类的constructor方法调用super().否则会报错。（如果不定义constructor,会默认创建一个constructor并调用super）
+
+当作对象时：在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
+
+ES6 规定，在子类普通方法中通过super调用父类的方法时，方法内部的this指向当前的子类实例。(super.fun)
