@@ -274,13 +274,18 @@ new cjm()
 
 类通过extends关键字来实现继承。如上面的例子。
 ```
-class Point{
 
+class Point{
+  constructor(){
+    console.log(new.target.name); 
+    // new ColorPoint() 打印ColorPoint
+    // new Point() 打印 Point
+  }
 }
 
 class ColorPoint extends Point {
   constructor(x, y, color) {
-    super(x, y); // 调用父类的constructor(x, y)
+    super(x, y); // 调用父类的constructor(x, y) 但是。返回的却是ColorPoint
     this.color = color; // 只有子类调用了super方法，才能使用this。否则报错
   }
 
