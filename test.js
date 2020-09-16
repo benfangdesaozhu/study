@@ -48,13 +48,3 @@ setTimeout(() => {
     })
    })
    // nextTick=>nextTick=>nextTick=>nextTick=>timer1=>promise1
-
-   var count = 3
-
-function add () {
-    count++
-}
-module.exports = {
-    count,
-    add
-}
