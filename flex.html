@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        h3 {
+            margin: 20px 0;
+        }
+        .flex {
+            display: flex;
+            /* display: inline-flex; */
+        }
+        .vertical-align {
+            vertical-align: middle;
+            float: left;
+        }
+        .float {
+            float: right;
+        }
+
+        /* display: flex */
+        .display-flex {
+            display: flex;
+            padding: 0 10px;
+            background: blue;
+        }
+        .display-flex > div,
+        .display-inline-flex > div {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border: 1px solid #fff;
+        }
+        .display-flex .h150,
+        .display-inline-flex .h150 {
+            height: 150px;
+        }
+
+        .display-inline-flex {
+            display: inline-flex;
+            margin-top: 10px;
+            padding: 0 10px;
+            background: blue;
+        }
+        .flex-wrap {
+            width: 600px;
+            flex-wrap: nowrap; /*不换行*/
+            
+            flex-wrap: wrap;/*换行*/
+            flex-wrap: wrap-reverse;/*换行第一行在下面*/
+            flex-flow: row nowrap
+        }
+        .justify-content {
+            justify-content: flex-start;
+            justify-content: flex-end;
+            justify-content: center;
+            justify-content: space-between;
+            justify-content: space-around;
+        }
+        .align-content {
+            width: 306px;
+            height: 500px;
+            flex-wrap: wrap;
+            align-content: flex-start;
+        }
+
+        .order1{
+            order: 3;
+        }
+        .order2{
+            order: 1;
+        }
+
+        .flex-grow {
+            /* width: 306px; */
+            flex-wrap: wrap;
+        }
+        .flex-grow > div {
+            flex-grow: 1;
+        }
+        .flex-grow > .flex-grow-item {
+            flex-grow: 2;
+        }
+        .flex-shrink {
+            width: 100px;
+        }
+        .flex-shrink > div {
+            flex-shrink: 1
+        }
+        .flex-shrink > .flex-shrink-item {
+            flex-shrink: 0
+        }
+
+        .flex-basis {
+
+        }
+        .flex-basis > div {
+            flex-basis: auto;
+        }
+        .flex-basis > .flex-basis-item {
+            flex-basis: 350px;
+        }
+
+
+        .flex-sx {
+
+        }
+        .flex-sx > div {
+            flex: 1 1 auto;
+            flex: 0 1 auto;
+        }
+        .flex-sx > .flex-sx-item {
+            flex: 0 1 350px;
+        }
+
+
+        .align-self {
+            height: 500px;
+            align-items: center;
+        }
+        .align-self-item {
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+
+        <!-- 验证弹性布局对属性的影响。弹性布局内flex的浮动元素不起作用 -->
+        <div class="vertical-align">dsafsdfasfas</div>
+        <div class="float">fdasfas</div>
+        
+    </div>
+    <!-- 类 display-flex 和display-inline-flex 是对比变成弹性盒子的属性的区别 -->
+    <!-- 相同点：都能让子元素成一个弹性盒子 -->
+    <!-- 不同点：一个是块级。默认宽度100%，一个是行内块级元素，宽高默认和子元素的宽高一致 -->
+    <div class="display-flex">
+        <div>1</div>
+        <div class="h150">2</div>
+        <div>3</div>
+        <div>4</div>
+    </div>
+    
+    <div class="display-inline-flex">
+        <div>1</div>
+        <div class="h150">2</div>
+        <div>3</div>
+        <div>4</div>
+        
+        <div>5</div>
+        <div class="h150">6</div>
+        <div>7</div>
+        <div>8</div>
+    </div>
+    <h3>测试flex-wrap</h3>
+
+    <div class="display-inline-flex flex-wrap">
+        <div>1</div>
+        <div class="h150">2</div>
+        <div>3</div>
+        <div>4</div>
+        
+        <div>5</div>
+        <div class="h150">6</div>
+        <div>7</div>
+        <div>8</div>
+    </div>
+
+    <h3>测试justify-content</h3>
+
+    <div class="display-flex justify-content">
+        <div>1</div>
+        <div class="h150">2</div>
+        <div>3</div>
+    </div>
+    <h3>测试align-content</h3>
+
+    <div class="display-inline-flex align-content">
+        <div>1</div>
+        <div >2</div>
+        <div>3</div>
+        <div>4</div>
+        
+        <div>5</div>
+        <div >6</div>
+        <div>7</div>
+        <div>8</div>
+    </div>
+
+    <h3>测试子容器的order</h3>
+
+    <div class="display-flex">
+        <div class="order1">1</div>
+        <div class="order2">2</div>
+        <div class="order3">3</div>
+        <div class="order4">4</div>
+        
+        <div class="order5">5</div>
+        <div class="order6">6</div>
+        <div class="order7">7</div>
+        <div class="order8">8</div>
+    </div>
+
+    <h3>测试子容器的flex-grow</h3>
+
+    <div class="display-flex flex-grow">
+        <div >1</div>
+        <div class="flex-grow-item">2</div>
+        <div class="flex-grow-item">3</div>
+    </div>
+
+    <h3>测试子容器的flex-shrink</h3>
+
+    <div class="display-flex flex-shrink">
+        <div >1</div>
+        <div class="flex-shrink-item">2</div>
+        <div class="flex-shrink-item">3</div>
+    </div>
+
+    <h3>测试子容器的flex-basis</h3>
+
+    <div class="display-flex flex-basis">
+        <div >1</div>
+        <div class="flex-basis-item">2</div>
+        <div class="flex-basis-item">3</div>
+    </div>
+
+
+    <h3>测试子容器的flex</h3>
+
+    <div class="display-flex flex-sx">
+        <div >1</div>
+        <div class="flex-sx-item">2</div>
+        <div class="flex-sx-item">3</div>
+    </div>
+
+
+    <h3>测试子容器的align-self</h3>
+
+    <div class="display-flex align-self">
+        <div >1</div>
+        <div class="align-self-item">2</div>
+        <div class="align-self-item">3</div>
+    </div>
+</body>
+</html>
