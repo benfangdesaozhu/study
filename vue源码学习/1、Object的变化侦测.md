@@ -1,4 +1,4 @@
-本次源码阅读，参考vue2.3.0版本。[详情可参考](https://github.com/vuejs/vue/tree/v2.3.0)
+本次源码阅读，参考vue2.3.0版本。[详情可参考](https://github.com/vuejs/vue/tree/v2.6.0)
 
 ### Object的变化侦测
 
