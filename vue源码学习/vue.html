@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <script src="./vue2.3.js"></script>
+    <script src="./vue2.6.js"></script>
     <div id="app">{{test.a}}{{heh}}</div>
     <script>
         // vue是个自执行函数。
@@ -38,6 +38,44 @@
         console.log(vue)
         vue.$set(vue.test, 'a', 2)
         // 
+    </script>
+
+    <script>
+        var arrayProto = Array.prototype
+        // 创建一个对象作为拦截器
+        var arrayMethods = Object.create(arrayProto)
+
+        // 改变数组自身内容的7个方法
+        var methodsToPatch = [
+            'push',
+            'pop',
+            'shift',
+            'unshift',
+            'splice',
+            'sort',
+            'reverse'
+        ]
+
+        /**
+         * Intercept mutating methods and emit events
+         */
+        methodsToPatch.forEach(function (method) {
+            var original = arrayProto[method]      // 缓存原生方法
+            Object.defineProperty(arrayMethods, method, {
+                enumerable: false,
+                configurable: true,
+                writable: true,
+                value:function mutator(...args){
+                    console.log('进来了',...args, this)
+                var result = original.apply(this, args)
+                return result
+                }
+            })
+        })
+        arrayMethods.push(1,2,3)
+        var a = []
+        a.__proto__ = arrayMethods
+        a.push(1)
     </script>
 </body>
 </html>
