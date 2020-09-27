@@ -212,6 +212,7 @@ function parsePath (path) {
 ##### 2.5、递归侦测所有的key
 
 ```
+// 这个类的作用是将所有数据中的所有属性都侦测到。（将所有的数据都变成响应式的）
 class Observer {
     constructor(val) {
         this.value = val

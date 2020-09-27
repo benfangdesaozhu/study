@@ -35,8 +35,62 @@ export arrayMethods = Object.create(arrayProto) // 创建一个继承Array.proto
 
 ![arrya监测](./images/arrya监测.png)
 
+再介绍Object的侦测的时候，我们知道，通过Observer类能侦测所有的数据，
 
+```
+class Observer {
+    constructor(value) {
+        this.value = value
+        if(Array.isArray(value)) {
+            value.__proto__ = arrayMethods // 新增
+        } else {
+            this.walk(value)
+        }
+    }
+}
+在之前的基础上，我们增加value.__proto__ = arrayMethods这段代码
 
+它的作用是将拦截器赋值给value.__proto__,通过__proto__属性，可以巧妙的实现覆盖value原型的功能。 这个时候被侦测的数组[].push，调用的是arrayMethods的push方法。
+
+__proto__是Object.getPrototypeOf和setPrototypeOf的早期实现。所有使用es6的Object.setPrototypeOf来代替__proto__是完全可以的
+```
+![__proto__](./images/__proto__覆盖.png)
+
+### 把拦截器方法挂载到数组的属性上。
+```
+__proto__并不是所有浏览器都支持。因此我们需要处理__proto__不支持的情况。
+
+vue中的做法很粗暴，如果不能使用__proto__属性，就直接将arrayMethods的方法设置到被侦测的数组上。
+
+const hasProto = '__proto__' in {}
+const arraykeys = Object.getOwnPropertyNames(arrayMethods)
+class Observer {
+    constructor(value) {
+        this.value = value
+        if(Array.isArray(value)) {
+            if(hasProto) {
+                value.__proto__ = arrayMethods
+            } else {
+                copyAugment(value, arrayMethods, arraykeys)
+            }
+        } else {
+            this.walk(value)
+        }
+    }
+}
+/*
+** obj:数组
+** src: arrayMethods
+** keys: 拦截数组的七个方法['pop', 'push', 'shift', 'unShift', 'splice', 'sort', 'reserve']
+**/
+function copyAugment (obj, src, keys) {
+    for(let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        def(obj, key, src[key])
+    }
+}
+```
+![不支持__proto__](./images/不支持__proto__.png)
 ```
 
 Observer类。
