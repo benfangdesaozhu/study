@@ -338,3 +338,33 @@ arr.length = 0    // 通过修改数组长度清空数组
 通过上述的例子，arr中0是无法侦测到的。vue也存在这样的问题。
 为了解决这一个问题。vue中提供了Vue.set和Vue.delete两个api实现
 
+### 数组的响应式原理总结：
+
+#### 1、依赖收集（依赖是谁？在哪里收集依赖？把依赖收集到哪里？怎么收集依赖？）
+
+
+    依赖是：数组类型的数据
+
+    在哪里收集依赖： 在getter中收集。（defineReactive中的get方法中，调用Observer实例的dep属性的depend方法）
+
+![数组收集依赖](./images/数组收集依赖.png)
+
+    把依赖收集到哪里？：收集到Observer实例中的dep属性中（dep是Dep的实例。用来收集数组依赖）
+
+        在Observer内中，为数组的原型添加数组的原始方法（arr.__proto__ = Object.create(Array.prototype)）
+
+![依赖收集到哪里](./images/依赖收集到哪里.png)
+
+    怎么收集依赖？：依赖是在getter中收集的。但是依赖管理器是定义在Observer实例上的。要收集依赖的话，就需要在getter中访问到对应的实例。
+
+        所以在defineReactive中需要调用observe方法（这个方法返回的是一个Observer实例）。
+
+![怎么收集依赖](./images/怎么收集依赖.png)
+
+2、将数组变成可监测
+
+    对数组类型的数据进行方法拦截（push、pop等七个）。
+![拦截方法](./images/拦截方法.png)
+3、通知依赖
+
+    因为可监测的数组实质上是在方法上进行拦截。所以，通知依赖，只要在这个方法来进行通知就行。(上图中的dep.notify())
