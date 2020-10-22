@@ -1,0 +1,1 @@
+虚拟DOM的核心部分是patch,它可以将vnode渲染成真实的dom
