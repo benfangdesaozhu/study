@@ -796,6 +796,7 @@
     this.asyncFactory = asyncFactory;
     this.asyncMeta = undefined;
     this.isAsyncPlaceholder = false;
+    console.warn(this)
   };
 
   var prototypeAccessors = { child: { configurable: true } };
