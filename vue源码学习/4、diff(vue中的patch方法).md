@@ -1,6 +1,6 @@
 虚拟DOM的核心部分是patch,它可以将vnode渲染成真实的dom
 
-patch（补丁）的过程实质上是指：以新的VNode为基准，改造旧的oldVNode使之与新的VNode相同，这就是patch的过程。
+patch（补丁）也叫patch算法，通过它渲染真实DOM时，并不是暴力覆盖原来的DOM，而是通过对比两个新旧VNode之间的差异，根据差异找出需要更新的节点进行更新。patch的目的是新的VNode为基准，来修改DOM节点（渲染试图）。这就是patch的过程。（网上有文章显示，会是oldVnode和新的VNode一致，看了源码发现，并不是。patch只是根据新的VNode来更新试图，不会去修改oldVNode）
 
 实际上，patch的过程主要是做三件事：
 
@@ -147,7 +147,7 @@ function patchVnode (
       // vnode没有text属性。
       // oldVnode上存在children属性 && Vnode上也存在children属性
       if (isDef(oldCh) && isDef(ch)) {
-        // 如果   oldVnode上的children属性 和 Vnode上的children属性 不相等，则更新子节点updateChildren
+        // 如果   oldVnode上的children属性 和 Vnode上的children属性 不相等(新旧子节点的VNode是否相同)，则更新子节点updateChildren
         if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
       } else if (isDef(ch)) { // 如果只有vnode上有children属性
         // oldVnode上存在text属性（有文本）。清空文本
@@ -165,7 +165,7 @@ function patchVnode (
       nodeOps.setTextContent(elm, vnode.text) //不相同：则用vnode的text替换真实DOM的文本
     }
   }
-  // nodeOps是节点操作，定义各种原生dom基础操作方法。
+  // nodeOps是节点操作，定义各种原生dom基础操作方法。(涉及到跨平台。weex)
   // modules 是属性操作，定义属性更新实现。
 ```
 ![更新节点](./images/更新节点.png)
