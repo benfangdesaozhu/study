@@ -10,12 +10,15 @@
     <div id="app">
         <!-- 注释呢222 -->
         <p>
-            <span>hello 
+            <span @click="test1">hello 
             <!-- 注释呢 -->
             </span>
             <span>vue</span>
           </p>
           <!-- 注释呢12313131 -->
+          <div v-for="item in list">
+            {{item}}
+          </div>
     </div>
     <script>
         // vue是个自执行函数。
@@ -35,8 +38,15 @@
                     heh: 2,
                     test: {
                         a: 1
-                    }
+                    },
+                    list: [1,2,3]
                 }
+            },
+            methods: {
+              test1(){
+                console.log(111, this.list)
+                this.list[0] = 4
+              }
             }
         }
         var vue = new Vue({
@@ -50,42 +60,42 @@
     </script>
 
     <script>
-        var arrayProto = Array.prototype
-        // 创建一个对象作为拦截器
-        var arrayMethods = Object.create(arrayProto)
+        // var arrayProto = Array.prototype
+        // // 创建一个对象作为拦截器
+        // var arrayMethods = Object.create(arrayProto)
 
-        // 改变数组自身内容的7个方法
-        var methodsToPatch = [
-            'push',
-            'pop',
-            'shift',
-            'unshift',
-            'splice',
-            'sort',
-            'reverse'
-        ]
+        // // 改变数组自身内容的7个方法
+        // var methodsToPatch = [
+        //     'push',
+        //     'pop',
+        //     'shift',
+        //     'unshift',
+        //     'splice',
+        //     'sort',
+        //     'reverse'
+        // ]
 
         /**
          * Intercept mutating methods and emit events
          */
-        methodsToPatch.forEach(function (method) {
-            var original = arrayProto[method]      // 缓存原生方法
-            Object.defineProperty(arrayMethods, method, {
-                enumerable: false,
-                configurable: true,
-                writable: true,
-                value:function mutator(...args){
-                    console.log('进来了',...args, this)
-                var result = original.apply(this, args)
-                return result
-                }
-            })
-        })
-        arrayMethods.push(1,2,3)
-        console.log(arrayMethods.push(1,2,3))
-        var a = []
-        a.__proto__ = arrayMethods
-        a.push(1)
+        // methodsToPatch.forEach(function (method) {
+        //     var original = arrayProto[method]      // 缓存原生方法
+        //     Object.defineProperty(arrayMethods, method, {
+        //         enumerable: false,
+        //         configurable: true,
+        //         writable: true,
+        //         value:function mutator(...args){
+        //             console.log('进来了',...args, this)
+        //         var result = original.apply(this, args)
+        //         return result
+        //         }
+        //     })
+        // })
+        // arrayMethods.push(1,2,3)
+        // console.log(arrayMethods.push(1,2,3))
+        // var a = []
+        // a.__proto__ = arrayMethods
+        // a.push(1)
 
 
     </script>
