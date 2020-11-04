@@ -5788,7 +5788,7 @@
       ownerArray,
       index
     ) {
-      debugger
+      // debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -9151,6 +9151,7 @@
     var last, lastTag;
     while (html) {
       last = html;
+      debugger
       // Make sure we're not in a plaintext content element like script/style
       if (!lastTag || !isPlainTextElement(lastTag)) {
         var textEnd = html.indexOf('<');
@@ -9451,6 +9452,7 @@
     template,
     options
   ) {
+    console.log(template)
     warn$2 = options.warn || baseWarn;
 
     platformIsPreTag = options.isPreTag || no;
