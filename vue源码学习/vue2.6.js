@@ -4843,7 +4843,6 @@
       var vm = this;
       // a uid
       vm._uid = uid$3++;
-      console.log('===============================',vm, vm.constructor)
       var startTag, endTag;
       /* istanbul ignore if */
       if (config.performance && mark) {
