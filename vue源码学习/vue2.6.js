@@ -4968,6 +4968,7 @@
 
   function initUse (Vue) {
     Vue.use = function (plugin) {
+      console.log(plugin, arguments, '=====')
       var installedPlugins = (this._installedPlugins || (this._installedPlugins = []));
       if (installedPlugins.indexOf(plugin) > -1) {
         return this

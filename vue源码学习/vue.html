@@ -7,6 +7,7 @@
 </head>
 <body>
     <script src="./vue2.6.js"></script>
+    <script src="./vueRouter.js"></script>
     <div id="app">
         <!--[if IE]> html语句 <![endif]-->
         <!-- 注释呢222 -->
@@ -31,6 +32,7 @@
         // Vue.prototype.$watch  new watcher() // 有watch属性的时候
 
         // mountComponent  new watcher()
+        console.log(VueRouter)
         
         var options = {
             data () {
@@ -58,6 +60,7 @@
         // console.log(vue)
         // vue.$set(vue.test, 'a', 2)
         // 
+        vue.use(VueRouter)
     </script>
 
     <script>
