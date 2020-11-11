@@ -461,9 +461,10 @@
     Object.defineProperty(Vue.prototype, '$route', {
       get: function get$1 () { return this.$root._route }
     })
-  
+    // debugger
     Vue.mixin({
       beforeCreate: function beforeCreate () {
+        console.log(this.$options, '哈哈')
         if (this.$options.router) {
           this._router = this.$options.router
           this._router.init(this)
@@ -471,7 +472,7 @@
         }
       }
     })
-  
+    
     Vue.component('router-view', View)
     Vue.component('router-link', Link)
   }
@@ -921,7 +922,10 @@
     routes.forEach(function (route) {
       addRouteRecord(pathMap, nameMap, route)
     })
-  
+    console.log({
+      pathMap: pathMap,
+      nameMap: nameMap
+    },'=====路由对象')
     return {
       pathMap: pathMap,
       nameMap: nameMap
@@ -1827,7 +1831,7 @@
   Object.defineProperties( VueRouter.prototype, prototypeAccessors );
   
   VueRouter.install = install
-  debugger
+  // debugger
   if (inBrowser && window.Vue) {
     window.Vue.use(VueRouter)
   }

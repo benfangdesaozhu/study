@@ -21,6 +21,13 @@
           <div v-for="item in list">
             {{item}}
           </div>
+
+          
+      <router-link to="/">Go to 1</router-link>
+      <router-link to="/blog">Go to blog</router-link>
+      <router-link to="/write">Go to write</router-link>
+      
+      <router-view></router-view>
     </div>
     <script>
         // vue是个自执行函数。
@@ -32,7 +39,8 @@
         // Vue.prototype.$watch  new watcher() // 有watch属性的时候
 
         // mountComponent  new watcher()
-        console.log(VueRouter)
+        console.dir(VueRouter)
+        // console.dir(new VueRouter({}))
         
         var options = {
             data () {
@@ -52,15 +60,43 @@
               }
             }
         }
+        // Vue.use(VueRouter)
+        var router = new VueRouter({
+              mode: 'history',
+              routes: [
+                  {
+                      path: '/',
+                      name: '1231',
+                      component: {
+                        template: '<div>blog</div>'
+                      }
+                  },
+                  {
+                      path: '/blog',
+                      name: '1231blog',
+                      component: {
+                        template: '<div class="login">blog</div>'
+                      }
+                  },
+                  {
+                      path: '/write',
+                      name: '1231write',
+                      component: {
+                        template: '<div class="write">write</div>'
+                      }
+                  }
+              ]
+          })
         var vue = new Vue({
             el: '#app',
-            ...options
+            ...options,
+            router: router
         })
         // vue.heh = 3
         // console.log(vue)
         // vue.$set(vue.test, 'a', 2)
         // 
-        vue.use(VueRouter)
+        // Vue.use(VueRouter)
     </script>
 
     <script>

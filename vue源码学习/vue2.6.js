@@ -1526,11 +1526,11 @@
     {
       checkComponents(child);
     }
-
     if (typeof child === 'function') {
       child = child.options;
     }
-
+    console.log(child,key in child,child._base, child.extends,child.mixins, '111')
+    
     normalizeProps(child, vm);
     normalizeInject(child, vm);
     normalizeDirectives(child);
@@ -9151,7 +9151,7 @@
     var last, lastTag;
     while (html) {
       last = html;
-      debugger
+      // debugger
       // Make sure we're not in a plaintext content element like script/style
       if (!lastTag || !isPlainTextElement(lastTag)) {
         var textEnd = html.indexOf('<');
