@@ -464,7 +464,7 @@
     // debugger
     Vue.mixin({
       beforeCreate: function beforeCreate () {
-        console.log(this.$options, '哈哈')
+        console.log(this,this.$options, '哈哈')
         if (this.$options.router) {
           this._router = this.$options.router
           this._router.init(this)
@@ -918,7 +918,7 @@
   function createRouteMap (routes) {
     var pathMap = Object.create(null)
     var nameMap = Object.create(null)
-  
+    debugger
     routes.forEach(function (route) {
       addRouteRecord(pathMap, nameMap, route)
     })
@@ -974,9 +974,9 @@
         addRouteRecord(pathMap, nameMap, { path: route.alias }, parent, record.path)
       }
     }
-  
     pathMap[record.path] = record
     if (name) { nameMap[name] = record }
+    console.log(pathMap, nameMap, '测试啊啊 ')
   }
   
   function normalizePath (path, parent) {
@@ -1688,7 +1688,7 @@
     if ( History ) AbstractHistory.__proto__ = History;
     AbstractHistory.prototype = Object.create( History && History.prototype );
     AbstractHistory.prototype.constructor = AbstractHistory;
-  
+    console.dir(AbstractHistory, '=================AbstractHistory')
     AbstractHistory.prototype.push = function push (location) {
       var this$1 = this;
   
@@ -1765,7 +1765,6 @@
     )
   
     this.app = app
-  
     var ref = this;
       var mode = ref.mode;
       var options = ref.options;

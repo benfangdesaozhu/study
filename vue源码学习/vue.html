@@ -69,7 +69,23 @@
                       name: '1231',
                       component: {
                         template: '<div>blog</div>'
-                      }
+                      },
+                      children: [
+                        {
+                          path: '/1',
+                          name: 'children1231',
+                          component: {
+                            template: '<div>children1231</div>'
+                          },
+                        },
+                        {
+                          path: '/2',
+                          name: 'children21231',
+                          component: {
+                            template: '<div>children21231</div>'
+                          },
+                        }
+                      ]
                   },
                   {
                       path: '/blog',

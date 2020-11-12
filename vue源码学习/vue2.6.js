@@ -1529,7 +1529,7 @@
     if (typeof child === 'function') {
       child = child.options;
     }
-    console.log(child,key in child,child._base, child.extends,child.mixins, '111')
+    console.log(child,key in child,child._base, child.extends,child.mixins, parent, '111')
     
     normalizeProps(child, vm);
     normalizeInject(child, vm);
@@ -1564,6 +1564,7 @@
       var strat = strats[key] || defaultStrat;
       options[key] = strat(parent[key], child[key], vm, key);
     }
+    console.log(options)
     return options
   }
 
@@ -4850,7 +4851,7 @@
         endTag = "vue-perf-end:" + (vm._uid);
         mark(startTag);
       }
-
+      console.log(options, 'options===================')
       // a flag to avoid this being observed
       vm._isVue = true;
       // merge options

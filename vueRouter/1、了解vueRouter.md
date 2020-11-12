@@ -148,6 +148,12 @@ function createMatcher (routes) {
     return match
 }
 // createRouteMap方法主要是生成pathMap和nameMap
+// 参数routes 是定义路由：
+/**
+* [
+*   {name:'', path: ''}, {name:'', path: ''},{name:'', path: ''}, {name:'', path: ''}
+* ]
+**/
 function createRouteMap (routes) {
     var pathMap = Object.create(null)
     var nameMap = Object.create(null)
@@ -163,16 +169,17 @@ function createRouteMap (routes) {
 
 // addRouteRecord方法
   function addRouteRecord (
-    pathMap,
-    nameMap,
-    route,
-    parent,
+    pathMap,// 存储path的数组
+    nameMap, // 存储name的数组
+    route, // 定义路由数组中的每一个路由
+    parent, // 父路由
     matchAs
   ) {
+    // 获取对应路由的path和name
     var path = route.path;
     var name = route.name;
     assert(path != null, "\"path\" is required in a route configuration.")
-  
+    // 记录路由的对象
     var record = {
       path: normalizePath(path, parent),
       components: route.components || { default: route.component },
@@ -184,15 +191,19 @@ function createRouteMap (routes) {
       beforeEnter: route.beforeEnter,
       meta: route.meta || {}
     }
-  
+
+    // 如果当前路由存在children属性
     if (route.children) {
       if ("production" !== 'production') {}
+      // 则递归增加记录
       route.children.forEach(function (child) {
         addRouteRecord(pathMap, nameMap, child, record)
       })
     }
-  
+
+    // 如果当前路由存在alias属性
     if (route.alias) {
+      // 并且属性值是数组
       if (Array.isArray(route.alias)) {
         route.alias.forEach(function (alias) {
           addRouteRecord(pathMap, nameMap, { path: alias }, parent, record.path)
@@ -201,10 +212,68 @@ function createRouteMap (routes) {
         addRouteRecord(pathMap, nameMap, { path: route.alias }, parent, record.path)
       }
     }
-  
+
+    // pathMap和nameMap的数组再相同的情况，后面的会覆盖前面的
+    // 向pathMap数组添加path
     pathMap[record.path] = record
+    // 向nameMap数组添加name
     if (name) { nameMap[name] = record }
 }
 ```
+
+最后我们介绍一些History类。在构建VueRouter实例的时候，会执行这个类。会创建三个路由模式类（根据mode设置的值来，默认hash）HTML5History、HashHistory、AbstractHistory
+```
+var History = function History (router, base) {
+    this.router = router
+    // 应用的基路径（相当于如果设置了这个属性，会在项目启动后，在链接后自动增加对应增加的base值。）
+    // 比如我设置了base: '/app', 那么在启动项目会在根路径（/bolg）的前面加上/app/根路径(bolg)
+    // 访问的时候去掉base对应的路径也能直接访问：比如上述例子:/bolg也能正常访问对应的页面路径
+    this.base = normalizeBase(base)
+    this.current = START
+    this.pending = null
+};
+// 并在History的原型上绑定了listen、transitionTo、confirmTransition、updateRoute等方法
+
+var HTML5History = (function(History){
+  var HTML5History = function(router, base) {
+    History.call(this, router, base)
+  }
+  
+  if ( History ) HTML5History.__proto__ = History;
+  HTML5History.prototype = Object.create( History && History.prototype );
+  HTML5History.prototype.constructor = HTML5History;
+
+  HTML5History.prototype.go = function(){}
+  HTML5History.prototype.push = function(){}
+  HTML5History.prototype.replace = function(){}
+  HTML5History.prototype.ensureURL = function(){}
+  HTML5History.prototype.handleScroll = function(){}
+  return HTML5History;
+})(History)
+
+var HashHistory = (function(History){
+  var HashHistory = function() {
+
+  }
+  return HashHistory
+})(History)
+
+var AbstractHistory = (function(History){
+  var AbstractHistory = function() {
+
+  }
+  return AbstractHistory
+})(History)
+```
+
+以上就是VueRouter的实例化所要执行的。
+
+1、主要是初始化
+
+  * VueRouter.install 作为插件，提供vue.use安装插件VueRouter的方法。
+  * 初始化match函数(生成match函数过程，会先将定义的路由生成pathMap和namePath)
+  * 初始化History函数，并且会创建三个HTML5History、HashHistory、AbstractHistory构造函数。具体选用那个构造函数创建实例，是根据router中的mode的值来决定
+
+
 
 参考链接：[github](https://github.com/DDFE/DDFE-blog/issues/9)以及[知乎](https://zhuanlan.zhihu.com/p/113020046)
