@@ -100,4 +100,77 @@ init主要是做以下几件事
     1. 给VueRouter的实例的app属性赋值，值为Vue的实例
     2. 根据定义的mode值，选用不同的路由模式。[history和hash的实现](./router-model.html)
 
-我们发现在构建这些路由模式hash或者history的时候，都会调用this.transitionTo(getLocation(this.base)).下面一张我们单独分析三种模式的实现。
+我们发现在构建这些路由模式hash或者history的时候，都会调用this.transitionTo(getLocation(this.base)).下面一章我们单独分析三种模式的实现。
+
+现在我们再来看下注册组件
+```
+Vue.component('router-view', View)
+Vue.component('router-link', Link)
+
+Vue['component'] = function (
+    id,
+    definition
+) {
+    definition.name = definition.name || id;
+    definition = this.options._base.extend(definition);
+    this.options[type + 's'][id] = definition;
+    return definition
+};
+```
+
+```
+var View = {
+    name: 'router-view',
+    functional: true,
+    props: {
+      name: {
+        type: String,
+        default: 'default'
+      }
+    },
+    // h: 4294行 function (a, b, c, d) { return createElement(contextVm, a, b, c, d, needNormalization); };
+    // ref: FunctionalRenderContext构造函数的实例
+    // createFunctionalComponent中 new FunctionalRenderContext()
+    render: function render (h, ref = {children, parent, data, props, slots, scopedSlots, injections, listeners}) {
+      var props = ref.props;
+      var children = ref.children;
+      var parent = ref.parent;
+      var data = ref.data;
+  
+      data.routerView = true
+  
+      var route = parent.$route
+      var cache = parent._routerViewCache || (parent._routerViewCache = {})
+      var depth = 0
+      var inactive = false
+  
+      while (parent) {
+        if (parent.$vnode && parent.$vnode.data.routerView) {
+          depth++
+        }
+        if (parent._inactive) {
+          inactive = true
+        }
+        parent = parent.$parent
+      }
+  
+      data.routerViewDepth = depth
+      var matched = route.matched[depth]
+      if (!matched) {
+        return h()
+      }
+  
+      var component = inactive
+        ? cache[props.name]
+        : (cache[props.name] = matched.components[props.name])
+  
+      if (!inactive) {
+        (data.hook || (data.hook = {})).init = function (vnode) {
+          matched.instances[props.name] = vnode.child
+        }
+      }
+  
+      return h(component, data, children)
+    }
+}
+```

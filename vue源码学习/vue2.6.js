@@ -5028,6 +5028,7 @@
       var Sub = function VueComponent (options) {
         this._init(options);
       };
+      console.dir(Sub,'=======================sup')
       Sub.prototype = Object.create(Super.prototype);
       Sub.prototype.constructor = Sub;
       Sub.cid = cid++;

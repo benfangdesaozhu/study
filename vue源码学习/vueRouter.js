@@ -19,6 +19,9 @@
       }
     },
     render: function render (h, ref) {
+      debugger
+      console.dir(h)
+      console.log(h(component, data, children))
       var props = ref.props;
       var children = ref.children;
       var parent = ref.parent;
