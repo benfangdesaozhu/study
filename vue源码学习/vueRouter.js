@@ -1211,7 +1211,6 @@
   
   /*  */
   
-  
   var History = function History (router, base) {
     this.router = router
     this.base = normalizeBase(base)
