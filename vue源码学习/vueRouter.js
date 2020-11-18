@@ -258,6 +258,7 @@
     if (redirectedFrom) {
       route.redirectedFrom = getFullPath(redirectedFrom)
     }
+    console.log(route, '测试routerouterouterouteroute')
     return Object.freeze(route)
   }
   
@@ -267,6 +268,7 @@
   })
   
   function formatMatch (record) {
+    debugger
     var res = []
     while (record) {
       res.unshift(record)
@@ -1397,11 +1399,13 @@
     fn
   ) {
     return Array.prototype.concat.apply([], matched.map(function (m) {
-      return Object.keys(m.components).map(function (key) { return fn(
-        m.components[key],
-        m.instances[key],
-        m, key
-      ); })
+      return Object.keys(m.components).map(function (key) { 
+        return fn(
+          m.components[key],
+          m.instances[key],
+          m, key
+        ); 
+      })
     }))
   }
   
