@@ -75,3 +75,6 @@ let objE: object = {}
 
 // Object类型包括了原始值
 let objE1: Object = 1
+
+// 这个网站入门。言简意赅，很容易明白。
+// https://ts.xcatliu.com/ 
