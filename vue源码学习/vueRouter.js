@@ -1224,7 +1224,7 @@
   History.prototype.listen = function listen (cb) {
     this.cb = cb
   };
-  
+  // 过渡方法（过渡路由的变化）
   History.prototype.transitionTo = function transitionTo (location, cb) {
       var this$1 = this;
   
@@ -1244,7 +1244,7 @@
       this.ensureURL()
       return
     }
-  
+    debugger
     var ref = resolveQueue(this.current.matched, route.matched);
       var deactivated = ref.deactivated;
       var activated = ref.activated;
@@ -1652,7 +1652,8 @@
   
     return HashHistory;
   }(History));
-  
+  // ensureSlash方法：返回一个boolean值
+  //（如果hase的值是以'/'开头，返回true,如果不是，则replaceHash('/'+path)处理，再返回false）
   function ensureSlash () {
     var path = getHash()
     if (path.charAt(0) === '/') {
@@ -1661,7 +1662,7 @@
     replaceHash('/' + path)
     return false
   }
-  
+  // getHash() 方法：返回hash（#）后面的值
   function getHash () {
     // We can't use window.location.hash here because it's not
     // consistent across browsers - Firefox will pre-decode it!
@@ -1670,10 +1671,11 @@
     return index === -1 ? '' : href.slice(index + 1)
   }
   
+  // 修改hash的值
   function pushHash (path) {
     window.location.hash = path
   }
-  
+  // 替换当前的路由。
   function replaceHash (path) {
     var i = window.location.href.indexOf('#')
     window.location.replace(
