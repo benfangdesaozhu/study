@@ -6,8 +6,37 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="app">
+        <!--[if IE]> html语句 <![endif]-->
+        <!-- 注释呢222 -->
+        <p> </p>
+    </div>
+    <script src="./../vue源码学习/vue2.6.js"></script>
+    <script src="./vuex.js"></script>
     <script>
         // https://github.com/DDFE/DDFE-blog/issues/8
+        Vue.use(Vuex)
+        var options = {
+            data () {
+                return {
+                    id: 1
+                }
+            }
+        }
+        
+        const store = new Vuex.Store({
+            mutations: {
+                increment (state) {
+                    state.count++
+                }
+            }
+        })
+        var vue = new Vue({
+            el: '#app',
+            ...options,
+            store
+        })
+        
     </script>
 </body>
 </html>

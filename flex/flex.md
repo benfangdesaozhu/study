@@ -68,7 +68,7 @@ justify-content: flex-start(默认)、flex-end、center、space-between、space-
 
 justify-content: flex-start(默认) // 左对齐
 justify-content: flex-end // 右对齐
-justify-content: flex-center // 中间对齐
+justify-content: center // 中间对齐
 justify-content: space-between // 两端对齐 子容器之间的间隔都相等
 justify-content: space-around // 子容器之间的左右间距相同
 ```
@@ -132,7 +132,7 @@ flex-basis属性（基础）
 
 flex-basis: <length|auto(默认)>
 
-flex-basis属性定义了子容器的主轴空间是否有多余，如果右多余的容器，则设置对应的子容器长度或者宽度。
+flex-basis属性定义了子容器的主轴空间是否有多余，如果有多余的容器，则设置对应的子容器长度或者宽度。
 ```
 
 ```
