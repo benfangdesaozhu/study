@@ -30,7 +30,6 @@
   }
   
   function applyMixin (Vue) {
-    debugger
     var version = Number(Vue.version.split('.')[0])
   
     if (version >= 2) {
@@ -149,6 +148,7 @@
   var Vue // bind on install
   
   var Store = function Store (options) {
+    debugger
     var this$1 = this;
     if ( options === void 0 ) options = {};
   

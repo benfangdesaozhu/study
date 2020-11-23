@@ -139,8 +139,8 @@ function applyMixin (Vue) {
    * @function installModule: options(module)传入的各个属性模块的注册和安装
    * @param {Object} store: new Store的实例
    * @param {Object} rootState: 初始化new Store时传入的state的值.如果不存在则为{}
-   * @param {Array} path: 
-   * @param {Object} module: options的值
+   * @param {Array} path: 当前嵌套模块的路径数组
+   * @param {Object} module: 当前安装的模块
    * @param {Boolean} hot: 
    */
   function installModule (store, rootState, path, module, hot) {
@@ -152,11 +152,12 @@ function applyMixin (Vue) {
     var modules = module.modules;
   
     // set state
-    // 让state数据变得可侦测
+    // 当前嵌套模块的路径不是根目录 && !hot
     if (!isRoot && !hot) {
       var parentState = getNestedState(rootState, path.slice(0, -1))
       var moduleName = path[path.length - 1]
       store._withCommit(function () {
+        // 让state数据变得可侦测
         Vue.set(parentState, moduleName, state || {})
       })
     }
