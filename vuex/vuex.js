@@ -54,6 +54,7 @@
      */
   
     function vuexInit () {
+      debugger
       var options = this.$options
       // store injection
       if (options.store) {
@@ -494,6 +495,7 @@
   }
   
   function getNestedState (state, path) {
+    debugger
     return path.length
       ? path.reduce(function (state, key) { return state[key]; }, state)
       : state

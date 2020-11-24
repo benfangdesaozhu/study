@@ -12,6 +12,7 @@
         <p> </p>
     </div>
     <script src="./../vue源码学习/vue2.6.js"></script>
+    <script src="./../vue源码学习/vueRouter.js"></script>
     <script src="./vuex.js"></script>
     <script>
         // https://github.com/DDFE/DDFE-blog/issues/8
@@ -24,7 +25,48 @@
                 }
             }
         }
-        
+        var router = new VueRouter({
+            mode: 'history',
+              routes: [
+                  {
+                      path: '/',
+                      name: '1231',
+                      component: {
+                        template: '<div>blog</div>'
+                      },
+                      children: [
+                        {
+                          path: '/1',
+                          name: 'children1231',
+                          component: {
+                            template: '<div>children1231</div>'
+                          },
+                        },
+                        {
+                          path: '/2',
+                          name: 'children21231',
+                          component: {
+                            template: '<div>children21231</div>'
+                          },
+                        }
+                      ]
+                  },
+                  {
+                      path: '/blog',
+                      name: '1231blog',
+                      component: {
+                        template: '<div class="login">blog</div>'
+                      }
+                  },
+                  {
+                      path: '/write',
+                      name: '1231write',
+                      component: {
+                        template: '<div class="write">write</div>'
+                      }
+                  }
+              ]
+          })
         const store = new Vuex.Store({
             mutations: {
                 increment (state) {
@@ -35,7 +77,9 @@
         var vue = new Vue({
             el: '#app',
             ...options,
-            store
+            store,
+            router,
+            strict: true
         })
         
     </script>

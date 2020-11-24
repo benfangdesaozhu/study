@@ -67,6 +67,7 @@ function applyMixin (Vue) {
 }
 ```
 那么我们来分析下new Vuex.store(options)
+![newStore的过程](./../vue源码学习/images/newStore.jpg)
 
 ```
  var Store = function Store (options) {
@@ -107,6 +108,8 @@ function applyMixin (Vue) {
     var ref = this;
     var dispatch = ref.dispatch;
     var commit = ref.commit;
+
+    // 替换原型中的dispatch和commit方法
     this.dispatch = function boundDispatch (type, payload) {
       return dispatch.call(store, type, payload)
     }
@@ -163,18 +166,21 @@ function applyMixin (Vue) {
     }
     
     if (mutations) {
+      // 注册对应模块的Mutation。供state修改
       Object.keys(mutations).forEach(function (key) {
         registerMutation(store, key, mutations[key], path)
       })
     }
   
     if (actions) {
+      // 注册对应模块的actions。供数据操作、提交mutation等异步操作使用
       Object.keys(actions).forEach(function (key) {
         registerAction(store, key, actions[key], path)
       })
     }
   
     if (getters) {
+      // 注册对应模块的getters。供state读取使用
       wrapGetters(store, getters, path)
     }
 
@@ -194,4 +200,22 @@ Store.prototype._withCommit = function _withCommit (fn) {
     fn()
     this._committing = committing
   };
+```
+
+```
+  /**
+   * @function registerMutation: 
+   * @param {Object} store: new Store的实例
+   * @param {} type: Mutation的key值
+   * @param {} handler: Mutation执行的回调
+   * @param {Array} path: 当前模块的路径
+   */
+function registerMutation (store, type, handler, path) {
+    if ( path === void 0 ) path = [];
+  
+    var entry = store._mutations[type] || (store._mutations[type] = [])
+    entry.push(function wrappedMutationHandler (payload) {
+      handler(getNestedState(store.state, path), payload)
+    })
+}
 ```
