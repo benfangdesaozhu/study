@@ -219,3 +219,65 @@ function registerMutation (store, type, handler, path) {
     })
 }
 ```
+
+```
+  /**
+   * @function registerAction: 注册action
+   * @param {Object} store: new Store的实例
+   * @param {} type: actions的key值
+   * @param {} handler: actions执行的回调
+   * @param {Array} path: 当前模块的路径
+   */
+function registerAction (store, type, handler, path) {
+    if ( path === void 0 ) path = [];
+  
+    var entry = store._actions[type] || (store._actions[type] = [])
+    var dispatch = store.dispatch;
+    var commit = store.commit;
+    entry.push(function wrappedActionHandler (payload, cb) {
+      var res = handler({
+        dispatch: dispatch,
+        commit: commit,
+        getters: store.getters,
+        state: getNestedState(store.state, path),
+        rootState: store.state
+      }, payload, cb)
+      if (!isPromise(res)) {
+        res = Promise.resolve(res)
+      }
+      if (store._devtoolHook) {
+        return res.catch(function (err) {
+          store._devtoolHook.emit('vuex:error', err)
+          throw err
+        })
+      } else {
+        return res
+      }
+    })
+  }
+  
+```
+```
+  /**
+   * @function wrapGetters: 注册getters
+   * @param {Object} store: new Store的实例
+   * @param {} moduleGetters: 模块的getters
+   * @param {Array} path: 当前模块的路径
+   */
+  function wrapGetters (store, moduleGetters, modulePath) {
+    Object.keys(moduleGetters).forEach(function (getterKey) {
+      var rawGetter = moduleGetters[getterKey]
+      if (store._wrappedGetters[getterKey]) {
+        console.error(("[vuex] duplicate getter key: " + getterKey))
+        return
+      }
+      store._wrappedGetters[getterKey] = function wrappedGetter (store) {
+        return rawGetter(
+          getNestedState(store.state, modulePath), // local state
+          store.getters, // getters
+          store.state // root state
+        )
+      }
+    })
+  }
+```
