@@ -6,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="dom-one">1</div>
+    <div id="dom-two">1</div>
+    <div id="dom-three">1</div>
+    <button id="btn">btn</button>
     <script>
         var strategyObj = {
     
@@ -17,6 +21,34 @@
             }
         }
         console.log(strategyObj.add(1,2))
+
+
+        function Observer(obj, targetVariable, callback) {
+        if (!obj.data) { obj.data = {} }
+        Object.defineProperty(obj, targetVariable, {
+            get(){
+                console.log(this)
+                return this.data[targetVariable]
+            },
+            set(val){
+                console.log(this)
+                this.data[targetVariable] = val
+                callback && callback(val) // 目标主动通知观察者
+            }
+        })
+        if(obj.data[targetVariable]) {
+            callback && callback(obj.data[targetVariable])
+        }
+    }
+
+    const obj = { data: { description: '商品原价：10元' } }
+    Observer(obj, 'description', value => {
+        document.querySelector('#dom-one').innerHTML = value
+        document.querySelector('#dom-two').innerHTML = value
+        document.querySelector('#dom-three').innerHTML = value
+    })
+    const btn = document.getElementById('btn')
+    btn.onclick = () => { obj.description = '优惠价：8元' }
     </script>
 </body>
 </html>
