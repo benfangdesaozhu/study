@@ -30,12 +30,22 @@ console.log(a,b) //{a: 2}, {a: 2}
 
 Object.assign(target, ...sources)[Object.assign的实现](https://github.com/benfangdesaozhu/study/blob/master/js%E5%9F%BA%E7%A1%80/6%E3%80%81Object.assign.js)
 
+var a = {b : {c : 2}}
+var b = {...a}
+
+...扩展运算符也可以浅复制
+
 **MDN**上对该方法的解释是：方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
 
 Array.prototype.slice()
 slice() 方法返回一个新的数组对象，这一对象是一个由 begin和 end（不包括end）决定的原数组的浅拷贝。原始数组不会被改变。
 Array.prototype.concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
 slice、和concat都是浅拷贝
+
+数组的话也可以使用扩展运算符进行浅拷贝
+var a = [{b:1}]
+var b = [...a]
+
 
 Underscore的实现（create a (shallow-cloned) duplicate of an object）创建对象的（浅克隆）副本
 ```

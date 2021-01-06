@@ -35,7 +35,7 @@ align-items
 align-content
 ```
 ```
-flex-directiion属性
+flex-direction属性
 决定主轴的方法： 可选的值有row（默认）、row-reverse、column、column-reverse四个
 row(默认): 主轴为水平方向，从左到右
 row-reverse: 主轴为水平方向，从右到左

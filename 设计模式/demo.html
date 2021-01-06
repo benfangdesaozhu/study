@@ -51,4 +51,24 @@
     btn.onclick = () => { obj.description = '优惠价：8元' }
     </script>
 </body>
+<div id="div"></div>
+ 
+<script>
+ 
+       var elem = document.querySelector('#div');
+ 
+       var event = document.createEvent('Event');
+ 
+       // 定义事件名称myEvent
+       event.initEvent('myEvent', true, true);
+ 
+       // 监听myEvent
+       elem.addEventListener('myEvent', function (e) {
+          console.log(e);
+       }, false);
+ 
+       // 使用目标对象去派发事件，可以是元素节点/事件对象
+       elem.dispatchEvent(event);
+ 
+</script>
 </html>

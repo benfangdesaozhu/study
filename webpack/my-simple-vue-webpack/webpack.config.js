@@ -5,7 +5,6 @@
 // "build": "webpack"
 // 这个时候，就可以使用npm run build来执行打包
 const path = require('path')
-const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 清理构建目录
 const vueLoaderPlugin = require('vue-loader/lib/plugin') 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -49,6 +48,7 @@ module.exports = {
     entry: {
         main: './src/main.js'
     },
+    // entry: './src/main.js',
     module: {
         // webpack只能理解js和json两种文件，用于对模块的源代码进行转换。loader 可以使你在 import 或"加载"模块时预处理文件
         // loader可以将文件从不同的语言转化为javascript或将内联图像转化为data url
@@ -190,7 +190,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './index.html')
+            template: path.resolve(__dirname, './src/public/index.html')
         }),
         new vueLoaderPlugin(),
         new CopyWebpackPlugins({

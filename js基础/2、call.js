@@ -34,9 +34,9 @@ Function.prototype.myCall = function () {
     // console.log(this) // 当前this指向sayWord
 
     let target = [...arguments].shift() // 将this要指向的目标值对象
-    if (typeof target !== 'function') {
-      throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
-    }
+    // if (typeof target !== 'function') {
+    //   throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+    // }
     target = target ? Object(target) : window // 例子2：（如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装。）
     target.fn = this // 将目标对象新增fn对象，对象的value是 sayWord方法
 

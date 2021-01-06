@@ -9,10 +9,22 @@
 
 function my_new () {
     const obj = {} // 创建一个对象（步骤1）
-    const oth = [].shift.call(arguments) // 获得构造函数
-    const result = oth.apply(obj, arguments) // 执行构造函数。 结构（步骤2）
+    const oth = [].shift.call(arguments) // 获得构造函数    
     obj.__proto__ = oth.prototype // 步骤3
+    const result = oth.apply(obj, arguments) // 执行构造函数。 结构（步骤2）
     console.log(oth, obj, result)
     return typeof result === 'object' ? result : obj // 步骤4
 }
-my_new(()=>{},1,2,3,4)
+
+
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.sayName = function() {
+       console.log(this.name)
+    }
+}
+new Person('cjm', 18, 'cxy')
+
+my_new(Person,'cjm', 18, 'cxy')

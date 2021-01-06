@@ -60,10 +60,11 @@ function Person (name) {
   }
 }
 var person1 = new Person('person1')
+
 var person2 = new Person('person2')
 
-person1.foo.call(person2)()
-person1.foo().call(person2)
+person1.foo.call(person2)() // person2 window
+person1.foo().call(person2) // person1 person2
   
 // 3优先级
 // 默认绑定 < 隐式绑定 < 显式绑定 < new绑定
