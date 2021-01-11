@@ -12,11 +12,17 @@
                 <input type="text" v-model="password" placeholder="请输入密码">
             </div>
             <button class="login-btn" @click="login">登录</button>
+            <div>{{ loginData.text }}</div>
+
+            <div>
+                {{ mapstateTest }}
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 // import {
 //     login,
 //     getByImgAction
@@ -30,11 +36,32 @@ export default {
           byimg: '', // 必应的背景图片
       }
   },
+  computed: {
+      ...mapGetters(['loginData']),
+      ...mapState({
+          mapstateTest(state){
+              console.log('mapState', state)
+              return state.login.loginData.text
+          }
+      })
+  },
   created(){
+      console.log(this.loginData, this.mapstateTest)
     //   this.getBiYingImg()
   },
   methods: {
+      ...mapActions([
+          'logininfoAction'
+      ]),
+    //   ...mapMutations(['LOGIN_DATA']), // 两种方式都可以
+      ...mapMutations({
+          login_data: 'LOGIN_DATA'
+      }),
       login () {
+        //   this.$store.commit('LOGIN_DATA', {text: 'new text'})
+          this.login_data({text: 'new text111'})
+        //   console.log(this.$store, this.$store.dispatch('logininfoAction', {text: 'new text'}))
+          console.log(this.loginData)
           if(!this.account || !this.password) {return}
         //   login({
         //       username: this.account,
