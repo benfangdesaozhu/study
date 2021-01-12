@@ -239,6 +239,8 @@ module.exports = {
 ```
 
 这个时候发现，热更新失效了。。。。（一个坑结束之后，另一个坑又起。查了下原因，发现这个https://github.com/webpack/webpack-dev-server/issues/2758）
+因为webpack5的target默认配置为web
+告知 webpack 为目标(target)指定一个环境。默认值为 "browserslist"，如果没有找到 browserslist 的配置，则默认为 "web"
 
 解决办法：
 1、将在package.json中配置的browserslist删除即可（显然不可能这么干，要不然上面的错误怎么解决呢）
