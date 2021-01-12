@@ -184,4 +184,72 @@
 
             接下来我们添加vue-router和xuex
 
-            
+
+
+引入postcss之后，会出现 You did not set any plugins, parser, or stringifier. Right now, PostCSS does nothing. Pick plugins for your case on https://www.postcss.parts/ and use them in postcss.config.js.
+
+出现这个问题的原因是因为没有创建对应的postcss.config.js文件引起的。
+
+接下来我们创建postcss.config.js并添加配置（postcss如果需要浏览器自动补全css兼容前缀，需要autoprefixer这个插件）
+npm i autoprefixer -D
+```
+const autoprefixer = require('autoprefixer');
+module.exports = {
+    plugins: [
+        autoprefixer({
+            browsers:['>0%']
+        })
+    ]
+};
+```
+这个时候重新启动项目。会出现 Replace Autoprefixer browsers option to Browserslist config.
+  Use browserslist key in package.json or .browserslistrc file.这个错误
+
+按照错误在package.json中加入配置后重启。
+```
+"browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ]
+```
+还会出现上述错误。
+
+Replace Autoprefixer browsers option to Browserslist config.
+  Use browserslist key in package.json or .browserslistrc file.
+
+  Using browsers option can cause errors. Browserslist config can
+  be used for Babel, Autoprefixer, postcss-normalize and other tools.
+
+  If you really need to use option, rename it to overrideBrowserslist.
+
+需要将postcss.config.js中之前使用的browsers更改为overrideBrowserslist 即可。
+
+
+
+```
+const autoprefixer = require('autoprefixer');
+module.exports = {
+    plugins: [
+        autoprefixer({
+            overrideBrowserslist:['>0%']
+        })
+    ]
+};
+```
+
+这个时候发现，热更新失效了。。。。（一个坑结束之后，另一个坑又起。查了下原因，发现这个https://github.com/webpack/webpack-dev-server/issues/2758）
+
+解决办法：
+1、将在package.json中配置的browserslist删除即可（显然不可能这么干，要不然上面的错误怎么解决呢）
+2、在webpack.config.js文件中加入target: "web"即可
+
+    这里根据当前环境来target: process.env.NODE_ENV === "development" ? "web" : "browserslist",
+
+    1、配置环境变量。
+    2、安装cross-env依赖（npm install cross-env -D）
+    3、在package.json的启动修改为"start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js"
+
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || {})
+    })

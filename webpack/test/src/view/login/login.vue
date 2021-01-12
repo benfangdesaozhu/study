@@ -14,10 +14,14 @@
             <button class="login-btn" @click="login">登录</button>
             <div>{{ loginData.text }}</div>
 
-            <div>
+            <div class="map-state-test">
                 {{ mapstateTest }}
             </div>
         </div>
+        <el-container>
+            <el-header>Header</el-header>
+            <el-main>Main111222</el-main>
+        </el-container>
     </div>
 </template>
 
@@ -41,7 +45,7 @@ export default {
       ...mapState({
           mapstateTest(state){
               console.log('mapState', state)
-              return state.login.loginData.text
+              return `${state.login.loginData.text}`
           }
       })
   },
@@ -110,5 +114,8 @@ export default {
 .login-btn {
     width: 150px;
     margin-top: 20px;
+}
+.map-state-test {
+    display: flex;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="page1">page1</h2>
+    <h2 class="page1">page1222333aaa</h2>
   </div>
 </template>
 <style lang="less" scoped>
