@@ -255,3 +255,18 @@ module.exports = {
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || {})
     })
+
+这个时候去修改单独的css文件（本例子中的styles目录下的文件），会发现，虽然会热更新起效果，但是修改后的样式并没有生效。
+查了资料发现：https://www.jianshu.com/p/362a193645d6
+
+然后再webpack.config.js中的loader、css和less修改即可
+```
+process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+// {
+//     loader: MiniCssExtractPlugin.loader
+// },
+```
+
+打包优化： 
+https://www.bilibili.com/video/BV1jy4y1S7fy
+https://blog.csdn.net/qq398577351/article/details/111525731

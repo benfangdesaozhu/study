@@ -1,7 +1,7 @@
 <template>
     <div class="login-bg">
-        <img class="login-by-icon" :src="byimg" alt="">
-        <div class="login-port">
+        <img v-if="false" class="login-by-icon" :src="byimg" alt="">
+        <div class="login-port" v-if="false">
             <div class="account">
                 <span>账号：</span>
                 <input class="input-style" type="text" v-model="account" placeholder="请输入账号">
@@ -18,10 +18,34 @@
                 {{ mapstateTest }}
             </div>
         </div>
+        <div class='m-test'>测试css热更新是否生效</div>
         <el-container>
             <el-header>Header</el-header>
             <el-main>Main111222</el-main>
         </el-container>
+        
+        <el-button type="primary">默认按钮</el-button>
+
+        <template>
+    <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        prop="date"
+        label="日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址">
+      </el-table-column>
+    </el-table>
+  </template>
     </div>
 </template>
 
@@ -38,6 +62,23 @@ export default {
           account: '',
           password: '',
           byimg: '', // 必应的背景图片
+          tableData: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄111'
+          }]
       }
   },
   computed: {
@@ -117,5 +158,8 @@ export default {
 }
 .map-state-test {
     display: flex;
+}
+.m-test {
+    color: #000;
 }
 </style>

@@ -23,9 +23,10 @@ module.exports = {
             { // 分离css后
                 test: /\.css$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader
-                    },
+                    process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    // {
+                    //     loader: MiniCssExtractPlugin.loader
+                    // },
                     {
                         loader: 'css-loader'
                     },
@@ -41,9 +42,10 @@ module.exports = {
             { // 分离css后
                 test: /\.less$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader
-                    },
+                    process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    // {
+                    //     loader: MiniCssExtractPlugin.loader
+                    // },
                     {
                         loader: 'css-loader'
                     },
