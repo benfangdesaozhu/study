@@ -2,11 +2,11 @@
     <div class="login-bg">
         <div class='m-test'>测试css热更新是否生效</div>
         <el-container>
-            <el-header>Header</el-header>
+            <el-header>{{ loginData.text }}</el-header>
             <el-main>Main111222</el-main>
         </el-container>
         
-        <el-button type="primary">默认按钮</el-button>
+        <el-button type="primary" @click="login">默认按钮</el-button>
 
         <template>
           <el-table

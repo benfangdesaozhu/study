@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
@@ -151,6 +152,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, './src/public/index.html')
         }),
+        new CopyWebpackPlugin({
+            patterns: [
+              { from: path.resolve(__dirname, './src/static'), to: "static" },
+              { from: path.resolve(__dirname, './src/public'), to: "public" },
+            ],
+        }),
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
@@ -198,6 +205,10 @@ module.exports = {
     
     target: process.env.NODE_ENV === "development" ? "web" : "browserslist",
     externals: {
-        echarts: 'echarts'
+        echarts: 'echarts',
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        Vuex: 'vuex',
+        ElementUI: 'element-ui',
     }
 }

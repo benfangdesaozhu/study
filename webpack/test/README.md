@@ -319,12 +319,47 @@ resolve:{
 >> 3.1.5 [externals 37:37](https://webpack.docschina.org/configuration/externals/#root) 使用外部引用[从输出的 bundle 中排除依赖，重而减小体积。可以将引入的echarts、vue、vuex、axios、element-ui等等]。
 
 ```
-使用了echarts之后，启动的速度是43秒。使用外链之后，时间变为24秒。如果上述东西全部使用的话。最后时间
+使用了echarts之后，启动的速度是43秒。使用外链之后，时间变为8秒。如果上述东西全部使用的话。最后时间
+其中在配置VueRouter的时候，会报Uncaught TypeError: Cannot redefine property: $router（无法重新定义属性：$ router）的错误
+
+这是因为我们在安装VueRouter的时候，与cdn引入造成重复引入
+
+解决办法是：在使用cdn的时候npm uninstall vue-router即可
+
 externals: {
-    echarts: 'echarts'
+    vue: 'Vue',
+    'vue-router': 'VueRouter',
+    Vuex: 'vuex',
+    ElementUI: 'element-ui',
 }
 ```
->3.2缩小查找的范围
->>3.2.1 缓存
->>3.2.2 cache-loader
+>> 3.1.6 [module.noParse](https://webpack.docschina.org/concepts/#mode) 阻止webpack解析与给定正则表达式匹配的任何文件。被忽略的文件不应该有来电import，require，define或任何其他进口机制。忽略大型库时，这可以提高构建性能。
 
+>> 3.1.7 [new webpack.IgnorePlugin](https://webpack.js.org/plugins/ignore-plugin/#root) IgnorePlugin阻止生成与正则表达式或过滤器函数匹配的模块import或require调用：
+
+>> 3.1.7 [thread-loader 多进程](https://www.npmjs.com/package/thread-loader) IgnorePlugin阻止生成与正则表达式或过滤器函数匹配的模块import或require调用：
+
+
+>3.2缩小查找的范围
+>>3.2.1 [options中的cache](https://webpack.js.org/configuration/other-options/#cachecachedirectory) 缓存配置（loader中的options可配置，根目录下也可以）
+    
+>>3.2.2 [cache-loader](https://www.npmjs.com/package/cache-loader) 可以将一些性能开销较大的  缓存在磁盘中。默认帮寸在node_modules/.cache/cache_modules目录下
+
+>>3.2.3 hard-source-webpack-plugin 已在webpack5中内置了模块缓存，因此不需要使用。
+
+
+#### 4 编译体积优化
+
+> 压缩js、html、css、图片
+
+> [optimize-css-assets-webpack-plugin](https://www.npmjs.com/package/optimize-css-assets-webpack-plugin) 优化和压缩css资源的插件
+
+>[terser-webpack-plugin](https://www.npmjs.com/package/terser-webpack-plugin) 优化和压缩js资源的插件
+
+>[image-webpack-loader](https://www.npmjs.com/package/image-webpack-loader) 优化和压缩图片资源的插件
+
+>[html-webpack-plugin] 可以配置去空格等。
+
+> [purgecss-webpack-plugin](https://www.npmjs.com/package/purgecss-webpack-plugin) 干掉无用的css
+
+mode 93:34的讲解
