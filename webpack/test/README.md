@@ -270,3 +270,61 @@ process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.l
 打包优化： 
 https://www.bilibili.com/video/BV1jy4y1S7fy
 https://blog.csdn.net/qq398577351/article/details/111525731
+
+下面进行webpack优化部分：
+
+1、性能分析
+
+2、编译体积的优化
+
+3、编译时间优化
+
+4、运行优化
+
+### 1、性能分析
+#### 1.1[日志美化](https://www.npmjs.com/package/friendly-errors-webpack-plugin)
+
+    需要使用到以下两个插件(感觉挺鸡肋。还不如直接看控制面板的报错更直观)
+    friendly-errors-webpack-plugin // 
+    node-notifier // 添加桌面通知
+
+#### 2.1[文件体积监控](https://www.npmjs.com/package/webpack-bundle-analyzer)
+
+    需要使用到以下插件(使用可以看npm文档)
+    webpack-bundle-analyzer 
+    并在package.json加入打包命令
+    "dev": "webpack --profile"。然后运行npm run dev 就能看到
+
+#### 3 编译时间优化
+
+>3.1 减少要处理的文件（时间 34:25）
+>> 3.1.1 extensions(指定文件扩展名)
+
+>> 3.1.2 alias(指定查找别名)
+
+>> 3.1.3 modules 告诉 webpack 解析模块时应该搜索的目录
+```
+resolve:{
+    alias:{
+        'vue$':'vue/dist/vue.runtime.esm.js',
+        '@':path.join(__dirname,'src')
+    },
+    extensions: ['.js', '.vue', '.json'],
+},
+```
+>> 3.1.4 [oneof](https://webpack.docschina.org/configuration/module/#ruleoneof) rule.oneOf 规则匹配时，只使用匹配的第一个规则
+```
+在这个css和less的loader中，使用oneOf。打包的时间反而更长了。
+```
+>> 3.1.5 [externals 37:37](https://webpack.docschina.org/configuration/externals/#root) 使用外部引用[从输出的 bundle 中排除依赖，重而减小体积。可以将引入的echarts、vue、vuex、axios、element-ui等等]。
+
+```
+使用了echarts之后，启动的速度是43秒。使用外链之后，时间变为24秒。如果上述东西全部使用的话。最后时间
+externals: {
+    echarts: 'echarts'
+}
+```
+>3.2缩小查找的范围
+>>3.2.1 缓存
+>>3.2.2 cache-loader
+

@@ -1,23 +1,5 @@
 <template>
     <div class="login-bg">
-        <img v-if="false" class="login-by-icon" :src="byimg" alt="">
-        <div class="login-port" v-if="false">
-            <div class="account">
-                <span>账号：</span>
-                <input class="input-style" type="text" v-model="account" placeholder="请输入账号">
-            </div>
-
-            <div>
-                <span>密码：</span>
-                <input type="text" v-model="password" placeholder="请输入密码">
-            </div>
-            <button class="login-btn" @click="login">登录</button>
-            <div>{{ loginData.text }}</div>
-
-            <div class="map-state-test">
-                {{ mapstateTest }}
-            </div>
-        </div>
         <div class='m-test'>测试css热更新是否生效</div>
         <el-container>
             <el-header>Header</el-header>
@@ -27,25 +9,26 @@
         <el-button type="primary">默认按钮</el-button>
 
         <template>
-    <el-table
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
-    </el-table>
-  </template>
+          <el-table
+            :data="tableData"
+            style="width: 100%">
+            <el-table-column
+              prop="date"
+              label="日期"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="address"
+              label="地址">
+            </el-table-column>
+          </el-table>
+        </template>
+        <div id="main1" style="width: 600px;height: 600px"></div>
     </div>
 </template>
 
@@ -93,6 +76,25 @@ export default {
   created(){
       console.log(this.loginData, this.mapstateTest)
     //   this.getBiYingImg()
+    
+  },
+  mounted(){
+    var myChart = echarts.init(document.getElementById('main1'));
+    myChart.setOption({
+        title: {
+            text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        xAxis: {
+            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        },
+        yAxis: {},
+        series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+        }]
+    });
   },
   methods: {
       ...mapActions([

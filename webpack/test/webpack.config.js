@@ -7,7 +7,24 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
 console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV)
 // console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV, CONFIG)
+
+// 性能分析部分 
+
+// 1、日志美化 文档地址https://www.npmjs.com/package/friendly-errors-webpack-plugin
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const notifier = require('node-notifier');
+const ICON = path.join(__dirname, 'icon.jpg');
+// 2、打包速度分析（speed-measure-webpack5-plugin） 文档地址 
+// 暂时没用。会报错 不论是5还是原版的
+// 5的报错是vue-loader说我没引用
+// const SpeedMeasureWebpack5Plugin = require('speed-measure-webpack5-plugin')
+// const smp = new SpeedMeasureWebpack5Plugin()
+
+// 2、文件体积监控 webpack-bundle-analyzer https://www.npmjs.com/package/webpack-bundle-analyzer
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 module.exports = {
+    // entry: './src/main.jss', // 测试日志美化错误
     entry: './src/main.js',
     output: {
         path: path.join(__dirname, 'dist'),
@@ -142,7 +159,25 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || {})
-        })
+        }),
+        // 日志美化
+        new FriendlyErrorsWebpackPlugin({
+            onErrors: (severity, errors) => {
+              if (severity !== 'error') {
+                return;
+              }
+              const error = errors[0];
+              notifier.notify({
+                title: "Webpack error",
+                // message: severity + ': ' + error.name,
+                message: error.name,
+                subtitle: error.file || '',
+                icon: ICON
+              });
+            }
+        }),
+        // 2、文件体积监控
+        new BundleAnalyzerPlugin()
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
@@ -162,4 +197,7 @@ module.exports = {
     },
     
     target: process.env.NODE_ENV === "development" ? "web" : "browserslist",
+    externals: {
+        echarts: 'echarts'
+    }
 }
