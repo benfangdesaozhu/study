@@ -1,3 +1,4 @@
 /js基础/es6/babel/node_modules
 /webpack/my-simple-vue-webpack/node_modules/
 /webpack/test/node_modules/
+/webpack/test/dist/

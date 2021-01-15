@@ -362,4 +362,109 @@ externals: {
 
 > [purgecss-webpack-plugin](https://www.npmjs.com/package/purgecss-webpack-plugin) 干掉无用的css
 
-mode 93:34的讲解
+> [tree shaking](https://webpack.docschina.org/guides/tree-shaking/#root) 通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)
+
+>> 
+
+> [Scope hoisting](https://webpack.docschina.org/plugins/module-concatenation-plugin/#root)
+### 5 mode(默认是production) 区分环境 93:34的讲解
+
+在webpack.config.js(node环境的) process.env.NODE_ENV 默认是undefined
+
+在代码中（比如main.js中打印）process.env.NODE_ENV 的默认值是production(和mode值一样)
+
+#### 5.1 mode的配置 [--mode和--env具体配置方法和说明](https://webpack.docschina.org/api/cli/#environment-options)
+
+    --mode： 定义 webpack 所需的 mode
+
+    这里有个取mode的值的优先级：在命令行配置的--mode > 在webpack.config.js配置的mode > 默认的mode(production)
+
+> webpack的默认值为production
+
+> webpack serve的默认值是development
+
+> 可以在模块内通过，process.env.NODE_ENV获取当前环境变量，无法在webpack配置文件中获取此变量
+
+```
+// 在package.json中的
+script: {
+    "testMode": "webpack",
+    "testMode1": "webpack --mode=development"
+}
+// 在webpack.config.js中加入打印
+console.warn('webpack.config.js的环境变量=', process.env.NODE_ENV)
+// 不论执行哪个npm run testMode或者npm run testMode1打印结果都一样
+// 打印结果：webpack.config.js的环境变量=, undefined
+
+// 在main.js中（入口文件）中加入打印
+console.warn('main=', process.env.NODE_ENV)
+// 打印结果为 npm run testMode 的打印结果为默认值production（如果配置文件没配mode的话,配了取配置的值）
+
+// 执行 npm run testMode1的打印结果为development（不论配置文件是否配置mode值，都取命令行的development）
+```
+    Warning
+    注意，命令行接口（Command Line Interface）参数的优先级，高于配置文件参数。例如，如果将 --mode="production" 传入 webpack CLI，而配置文件使用的是 development，最终会使用 production。
+
+#### 5.2 [--env的配置和使用方法](https://webpack.docschina.org/guides/environment-variables/)
+
+    --env： 当它是一个函数时，传递给配置的环境变量
+
+    该配置和--mode一样，无法改变webpack.config.js中打印的process.env.NODE_ENV的值。
+    只能在回调中使用
+
+    修改 package: "testDev": "webpack --env NODE_ENV=local --env TEST=test"
+
+    修改webpack.config.js配置
+
+    module.exports = env => {
+        console.log('--dev', env)
+        // 执行npm run testDev
+        // --dev { WEBPACK_BUNDLE: true, NODE_ENV: 'local', TEST: 'test' }
+        return {
+            
+        };
+    };
+
+#### 5.3 [定义全局变量](https://webpack.docschina.org/plugins/define-plugin/):  允许在 **编译时** 创建配置的全局常量
+    new webpack.DefinePlugin({ 
+        // 定义在编译阶段使用的全局变量，在浏览器运行阶段就只是个值
+        'test': JSON.stringify('test')
+    })
+
+    同样的，该配置只能配置打包过程中的变量，对于webpack.config.js中依旧是访问不到的
+
+#### 5.4 [cross-env插件](https://www.npmjs.com/package/cross-env): 跨操作系统设置环境变量
+
+    "start": "cross-env NODE_ENV=development TEST=test webpack serve --config webpack.config.js",
+    
+
+    这个只会影响webpack.config.js文件内的process.env的值。
+
+    console.log(process.evn.NODE_ENV, process.evn.TEST) // development, test
+
+
+### 6 代码分割
+
+6.1 入口点分割（多入口文件配置）
+
+6.2 懒加载（动态import）
+
+> 用户需要什么功能就只加载这个功能对应代码，也就是所谓的按需加载，在给单页面应用做按需加载优化时一般采用以下原则：
+
+>> 1、对网站功能进行划分，每一个类一个chunk
+
+>> 2、对于首次打开页面需要的功能直接加载，某些依赖大量代码的功能点可以按需加载
+
+>> 3、被分割出去的代码需要一个按需加载的时间
+
+6.3 prefetch
+
+> 使用预先拉取，表示该模块可能以后会用到。浏览器会在空闲的时候下载该模块。
+
+> prefetch 的作用就是告诉浏览器未来可能会用到该资源，
+
+prefetch 预获取（浏览器空闲加载。没用性能问题）
+
+preload 预加载（预加载，肯定会用到，需要提前获取。在首页慎用，会引起性能隐患）
+
+6.4 split chunks plugins 79:00

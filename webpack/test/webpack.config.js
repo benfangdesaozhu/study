@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
-console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV)
+console.warn(process.env.NODE_ENV === "development", process.env)
 // console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV, CONFIG)
 
 // 性能分析部分 
@@ -24,14 +24,17 @@ const ICON = path.join(__dirname, 'icon.jpg');
 // 2、文件体积监控 webpack-bundle-analyzer https://www.npmjs.com/package/webpack-bundle-analyzer
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-module.exports = {
-    // entry: './src/main.jss', // 测试日志美化错误
+module.exports = (env = {}) => {
+    console.log('--dev', env)
+    return {
+        // entry: './src/main.jss', // 测试日志美化错误
     entry: './src/main.js',
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].[hash].js'
     },
-    mode: 'development',
+    // mode: process.env.NODE_ENV === "development" ? 'development' : 'production',
+    // mode: "development",
     module: {
         rules: [
             // { // 未分离css前
@@ -164,27 +167,27 @@ module.exports = {
             filename: "css/[name].[hash:8].css",
             chunkFilename: "[id].css",
         }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || {})
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        // }),
         // 日志美化
-        new FriendlyErrorsWebpackPlugin({
-            onErrors: (severity, errors) => {
-              if (severity !== 'error') {
-                return;
-              }
-              const error = errors[0];
-              notifier.notify({
-                title: "Webpack error",
-                // message: severity + ': ' + error.name,
-                message: error.name,
-                subtitle: error.file || '',
-                icon: ICON
-              });
-            }
-        }),
+        // new FriendlyErrorsWebpackPlugin({
+        //     onErrors: (severity, errors) => {
+        //       if (severity !== 'error') {
+        //         return;
+        //       }
+        //       const error = errors[0];
+        //       notifier.notify({
+        //         title: "Webpack error",
+        //         // message: severity + ': ' + error.name,
+        //         message: error.name,
+        //         subtitle: error.file || '',
+        //         icon: ICON
+        //       });
+        //     }
+        // }),
         // 2、文件体积监控
-        new BundleAnalyzerPlugin()
+        // new BundleAnalyzerPlugin()
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
@@ -210,5 +213,6 @@ module.exports = {
         'vue-router': 'VueRouter',
         Vuex: 'vuex',
         ElementUI: 'element-ui',
+    }
     }
 }

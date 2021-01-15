@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "build": "cross-env NODE_ENV=production TEST=test webpack --config webpack.config.js",
     "build:end": "webpack --config webpack.config.js",
-    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js",
-    "dev": "webpack --progress"
+    "start": "cross-env NODE_ENV=development TEST=test webpack serve --config webpack.config.js",
+    "dev": "webpack --progress",
+    "testMode": "webpack",
+    "testMode1": "webpack --mode=development",
+    "testServe": "webpack",
+    "testServe1": "webpack --mode=production",
+    "testDev": "webpack --env NODE_ENV=local --env TEST=test"
   },
   "keywords": [],
   "author": "",

@@ -12,6 +12,9 @@ import "./styles/index.less"
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI)
+
+console.warn('main=', process.env.NODE_ENV)
+
 new Vue({
     router,
     store,
