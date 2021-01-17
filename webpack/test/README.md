@@ -468,3 +468,16 @@ prefetch 预获取（浏览器空闲加载。没用性能问题）
 preload 预加载（预加载，肯定会用到，需要提前获取。在首页慎用，会引起性能隐患）
 
 6.4 split chunks plugins 79:00
+
+
+
+### 7 babel
+
+@babel/preset-env默认只转化新的javascript语法，而不转化新的api,比如Iterator、Generator、Set、Map、Proxy、Reflect、Symbol、Promise,以及一些在全剧对象上的方法Object.assign
+
+比如ES6在Array对象上新增Array.form方法。babel不会转化这个，需要使用babel-polyfill（polyfill：垫片）来转化
+
+@babel-polyfill 会污染全局变量。
+
+@babel-runtime 解决全局空间污染的问题， 提供编译模块的工具函数
+更像一种按需加载的实现
