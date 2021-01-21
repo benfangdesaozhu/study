@@ -354,7 +354,7 @@ externals: {
 
 > [optimize-css-assets-webpack-plugin](https://www.npmjs.com/package/optimize-css-assets-webpack-plugin) 优化和压缩css资源的插件
 
->[terser-webpack-plugin](https://www.npmjs.com/package/terser-webpack-plugin) 优化和压缩js资源的插件
+>[terser-webpack-plugin](https://www.npmjs.com/package/terser-webpack-plugin) 多进程/多实例 优化和压缩js资源的插件（webpack4需要安装，webpack5内置了）
 
 >[image-webpack-loader](https://www.npmjs.com/package/image-webpack-loader) 优化和压缩图片资源的插件
 
@@ -481,3 +481,5 @@ preload 预加载（预加载，肯定会用到，需要提前获取。在首页
 
 @babel-runtime 解决全局空间污染的问题， 提供编译模块的工具函数
 更像一种按需加载的实现
+
+polyfill service

@@ -31,7 +31,7 @@ module.exports = (env = {}) => {
     entry: './src/main.js',
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[name].[hash].js'
+        filename: '[name].[chunkhash].js'
     },
     // mode: process.env.NODE_ENV === "development" ? 'development' : 'production',
     // mode: "development",
@@ -105,7 +105,7 @@ module.exports = (env = {}) => {
                             fallback: {
                                 loader: 'file-loader',
                                 options: {
-                                    name: 'img/[name].[hash:8].[ext]',
+                                    name: 'img/[name].[chunkhash:8].[ext]',
                                     publicPath: '../'
                                 }
                             }
@@ -123,7 +123,7 @@ module.exports = (env = {}) => {
                             fallback: {
                             loader: 'file-loader',
                             options: {
-                                name: 'media/[name].[hash:8].[ext]',
+                                name: 'media/[name].[chunkhash:8].[ext]',
                                 publicPath: '../'
                             }
                             }
@@ -141,7 +141,7 @@ module.exports = (env = {}) => {
                             fallback: {
                                 loader: 'file-loader',
                                 options: {
-                                name: 'font/[name].[hash:8].[ext]',
+                                name: 'font/[name].[chunkhash:8].[ext]',
                                 publicPath: '../'
                                 }
                             }
@@ -164,7 +164,7 @@ module.exports = (env = {}) => {
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
-            filename: "css/[name].[hash:8].css",
+            filename: "css/[name].[chunkhash:8].css",
             chunkFilename: "[id].css",
         }),
         // new webpack.DefinePlugin({
@@ -187,7 +187,7 @@ module.exports = (env = {}) => {
         //     }
         // }),
         // 2、文件体积监控
-        // new BundleAnalyzerPlugin()
+        new BundleAnalyzerPlugin()
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),

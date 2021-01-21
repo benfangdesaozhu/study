@@ -15,5 +15,10 @@
             "version": "7.0.0-beta.0"
           }
         ]
-      ]
+      ],
+      "env": {
+        "development" : {
+          "compact": false
+        }
+      }
 }
