@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const vconsolePlugin = require('./vconsole.plugin')
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
 console.warn(process.env.NODE_ENV === "development", process.env)
 // console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV, CONFIG)
@@ -187,7 +188,10 @@ module.exports = (env = {}) => {
         //     }
         // }),
         // 2、文件体积监控
-        new BundleAnalyzerPlugin()
+        new BundleAnalyzerPlugin(),
+        new vconsolePlugin({
+            enable: process.env.NODE_ENV === 'development' ? true : false
+        }),
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
