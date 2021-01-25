@@ -5,7 +5,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const vconsolePlugin = require('./vconsole.plugin')
+// const vconsolePlugin = require('./vconsole.plugin')
+const vconsolePlugin = require('vconsole-webpack5-plugin') // 该引用线上的npm包
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
 console.warn(process.env.NODE_ENV === "development", process.env)
 // console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV, CONFIG)

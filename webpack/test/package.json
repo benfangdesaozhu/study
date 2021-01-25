@@ -43,6 +43,7 @@
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "vconsole": "^3.4.0",
+    "vconsole-webpack5-plugin": "^1.0.3",
     "vue-loader": "^15.9.6",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.12",

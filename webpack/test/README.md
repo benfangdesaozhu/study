@@ -483,3 +483,95 @@ preload 预加载（预加载，肯定会用到，需要提前获取。在首页
 更像一种按需加载的实现
 
 polyfill service
+
+
+
+
+
+
+
+
+
+#### 配置webpack的步骤省略了，在package.json文件中添加以下命令行（webpagck版本为5，cli的版本是4）
+```
+// package.json文件添加
+ "debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js --
+config webpack.config.js"
+
+// 在node_modules中找到webpack目录，进入bin目录,然后在webpack.js中打上debugger即可
+```
+启动 npm run debug
+
+然后再浏览器中输入（chrome://inspect/#devices）。进入调试：这个时候就能进入对应的断点了
+
+```
+const cli = {
+	name: "webpack-cli",
+	package: "webpack-cli",
+	binName: "webpack-cli",
+	installed: isInstalled("webpack-cli"),
+	url: "https://github.com/webpack/webpack-cli"
+};
+// 这里能看到以下几个函数
+
+// 是否install对应包
+const isInstalled = packageName => {
+	try {
+		require.resolve(packageName);
+
+		return true;
+	} catch (err) {
+		return false;
+	}
+};
+
+const runCli = cli => {
+	const path = require("path");
+	const pkgPath = require.resolve(`${cli.package}/package.json`);
+	// eslint-disable-next-line node/no-missing-require
+	const pkg = require(pkgPath);
+	// eslint-disable-next-line node/no-missing-require
+	require(path.resolve(path.dirname(pkgPath), pkg.bin[cli.binName]));
+};
+
+
+if(!cli.installed) {
+    // 在运行webpack的时候，如果没有依赖webpack-cli,然后做对应操作。
+}else{
+    // 运行cli
+    runCli(cli)
+}
+```
+
+webpack-cli的执行结果
+
+webpack-cli对配置文件和命令行参数进行转换最终生成配置选项参数--options
+
+最终会根据配置参数实例化webpack对象，然后执行构建流程。
+
+
+
+loader
+
+从右向左
+
+编写一个[markdown-loader](https://github.com/peerigon/markdown-loader/blob/master/index.js)
+
+
+vconsole的插件[参考这个](https://github.com/benfangdesaozhu/vconsole-webpack5-plugin)。
+
+zip压缩的插件
+
+npm的发布
+
+1、npm init -y创建一个
+
+2、package文件的name要符合规范（不能有大写字母）。否则会报400 的错误（npm publish 400 Bad Request - PUT(参考对应issues)[https://github.com/npm/npm/issues/15787]）
+
+3、编写对应的npm包
+
+4、npm login 登陆npm(如果没有需要先创建一个)
+
+5、最后将写好的包执行npm publish发布
+
+6、如果需要删除。需要执行npm unpublish 包名 --force（这个命令只能删除24小时以内发布的新包）
