@@ -35,7 +35,7 @@ module.exports = (env = {}) => {
         path: path.join(__dirname, 'dist'),
         filename: '[name].[chunkhash].js'
     },
-    // mode: process.env.NODE_ENV === "development" ? 'development' : 'production',
+    mode: process.env.NODE_ENV === "development" ? 'development' : 'production',
     // mode: "development",
     module: {
         rules: [

@@ -575,3 +575,56 @@ npm的发布
 5、最后将写好的包执行npm publish发布
 
 6、如果需要删除。需要执行npm unpublish 包名 --force（这个命令只能删除24小时以内发布的新包）
+
+
+将vue项目发布到本地的nginx上。（windows）
+
+history的模式下。我们将包npm run build 打包之后
+
+找到nginx的配置文件。nginx安装目录下的conf\nginx.conf
+```
+http {
+    server {
+         listen       8090; #监听的端口号
+         server_name  localhost;
+         location / {
+            # root   C:/Users/hspcadmin/Desktop/10024/;
+            # root   D:/study/study/vueRouter/;
+            root   D:/study/study/webpack/test/dist; #启动后的访问的目录
+            try_files $uri $uri/ /index.html last; #[history模式的配置(history模式需要加上这个。hash则不需要)](参考：https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90)
+            index index.html;
+            # index  index.html index.htm;
+            autoindex on;
+        }
+    }
+}
+```
+1、然后启动nginx(使用cmd打开)到nginx.exe文件的目录地址
+
+2、然后启动nginx: start nginx（看是否成功启动：浏览器输入：http://127.0.0.1:8090/）
+
+3、关闭nginx：nginx -s stop 或者 taskkill /f /t /im nginx.exe
+
+
+hash模式下
+
+一样的打包 npm run build
+
+```
+http {
+    server {
+         listen       8090; #监听的端口号
+         server_name  localhost;
+         location / {
+            # root   C:/Users/hspcadmin/Desktop/10024/;
+            # root   D:/study/study/vueRouter/;
+            root   D:/study/study/webpack/test/dist; #启动后的访问的目录
+            # try_files $uri $uri/ /index.html last; # history需要加上这个。hash则不需要
+            index index.html;
+            # index  index.html index.htm;
+            autoindex on;
+        }
+    }
+}
+```
+然后一样的上述步骤。[详情可查看具体配置](./nginx.conf)
