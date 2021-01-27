@@ -29,6 +29,15 @@
           </el-table>
         </template>
         <div id="main1" style="width: 600px;height: 600px"></div>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage4"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400">
+        </el-pagination>
     </div>
 </template>
 
@@ -42,6 +51,7 @@ export default {
   name: 'login',
   data () {
       return {
+          currentPage4: 4,
           account: '',
           password: '',
           byimg: '', // 必应的背景图片
@@ -97,6 +107,13 @@ export default {
     });
   },
   methods: {
+    
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
       ...mapActions([
           'logininfoAction'
       ]),
