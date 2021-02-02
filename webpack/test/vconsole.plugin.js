@@ -8,7 +8,7 @@ class vconsolePlugin {
     apply(compiler) {
         const vConsolePath = path.join('./src/vconsole.js')
         compiler.hooks.entryOption.tap('vconsolePlugin', (compilation, entry) => {
-            console.log(vConsolePath, entry, this.options)
+            // console.log(vConsolePath, entry, this.options)
             if(this.options.enable){
                 entry.main.import.push(`./${vConsolePath}`)
             }

@@ -5,10 +5,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-// const vconsolePlugin = require('./vconsole.plugin')
-const vconsolePlugin = require('vconsole-webpack5-plugin') // 该引用线上的npm包
+const vconsolePlugin = require('./vconsole.plugin')
+// const vconsolePlugin = require('vconsole-webpack5-plugin') // 该引用线上的npm包
 // const CONFIG = require('./CONFIG') // 这里可以配置对应的测试或者正式的域名之类的
-console.warn(process.env.NODE_ENV === "development", process.env)
+// console.warn(process.env.NODE_ENV === "development", process.env)
 // console.warn(process.env.NODE_ENV === "development", process.env.NODE_ENV, CONFIG)
 
 // 性能分析部分 
@@ -95,7 +95,8 @@ module.exports = (env = {}) => {
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                exclude: path.resolve(__dirname, '/node_modules/')
             },
             {
                 test: /\.(jpe?g|png|gif)$/i, //图片文件
@@ -104,10 +105,14 @@ module.exports = (env = {}) => {
                         loader: 'url-loader',
                         options: {
                             limit: 10240,
+                            // 可以使用common.js语法。避免再项目中引用图片会生成 [object Module] 导致图片显示不出来的
+                            // 默认为true,是使用es语法。参考https://webpack.js.org/loaders/file-loader/
+                            esModule: false, 
                             fallback: {
                                 loader: 'file-loader',
                                 options: {
-                                    name: 'img/[name].[chunkhash:8].[ext]',
+                                    // 这里使用 chunkhash 生成不了图片。会导致生成图片失效
+                                    name: 'img/[name].[contenthash:8].[ext]', 
                                     publicPath: '../'
                                 }
                             }
@@ -125,7 +130,7 @@ module.exports = (env = {}) => {
                             fallback: {
                             loader: 'file-loader',
                             options: {
-                                name: 'media/[name].[chunkhash:8].[ext]',
+                                name: 'media/[name].[contenthash:8].[ext]',
                                 publicPath: '../'
                             }
                             }
@@ -143,7 +148,7 @@ module.exports = (env = {}) => {
                             fallback: {
                                 loader: 'file-loader',
                                 options: {
-                                name: 'font/[name].[chunkhash:8].[ext]',
+                                name: 'font/[name].[contenthash:8].[ext]',
                                 publicPath: '../'
                                 }
                             }
@@ -189,7 +194,7 @@ module.exports = (env = {}) => {
         //     }
         // }),
         // 2、文件体积监控
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new vconsolePlugin({
             enable: process.env.NODE_ENV === 'development' ? true : false
         }),

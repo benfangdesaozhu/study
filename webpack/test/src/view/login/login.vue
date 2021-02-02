@@ -1,5 +1,6 @@
 <template>
     <div class="login-bg">
+        <img :src='require("@/public/test.jpg")'>
         <div class='m-test'>测试css热更新是否生效</div>
         <el-container>
             <el-header>{{ loginData.text }}</el-header>
