@@ -194,7 +194,7 @@ module.exports = (env = {}) => {
         //     }
         // }),
         // 2、文件体积监控
-        // new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin(),
         new vconsolePlugin({
             enable: process.env.NODE_ENV === 'development' ? true : false
         }),
