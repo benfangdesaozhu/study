@@ -104,7 +104,13 @@ Cache-Control: max-age=61256155
 
 #### **缓存校验字段**
 
+```
+上述的首部字段是决定了是否向服务端发送请求，比如设置的缓存时间没过期，那么直接从本地缓存中取对应资源（在chrome中体现为memory cache或者disk cache），若缓存时间过期或资源不走缓存（强制刷新或者Ctrl+F5刷新），则会重新发送请求
+
+
+
 为了让客户端与服务器之间能实现缓存文件是否更新的验证、提升缓存的复用率，Http1.1新增了几个首部字段来做这件事情。
+```
 ##### **1. Last-Modified**
 
     服务器将资源传递给客户端后，会将资源最后的修改时间以Last-Modified:GMT的形式加在首部一起返回给客户端
@@ -115,6 +121,35 @@ Cache-Control: max-age=61256155
 > 例子
 
 > Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT 
+
+```
+客户端会为资源标记上该信息，下次再请求的时候，会把该信息附带再请求报文中一并给服务器做检查。
+1、若传递的时间值与服务器上该资源最终修改时间一致，则说明该资源没有被修改过，直接返回304状态码,并且内容为空，这样就节省了传输数据量。
+2、若不一致，则返回200状态码，和第一次请求资源类似。
+
+```
+![last-modified](./images/last-modified.png)
+
+> 1、if-Modified-since: last-modified-value
+
+> 示例：if-Modified-since: Thu, 31 Mar 2016 07:07:52 GMT
+
+> 请求首部告诉服务端，如果客户端传来的最后修改时间与服务端一致，直接返回304即可。（当前浏览器都是使用这个请求首部来向服务端传递保存的last-modified的值）
+
+> 2、if-Unmodified-since: last-modified-value
+
+> 告知服务端，如果客户端传来的最后修改时间和服务端不一致，则返回412（412 Precondition Failed（先决条件失败）表示客户端错误）的状态码给客户端。
+
+问题：last-Modified存在一定问题。当服务端内的资源被修改了，但是内容确没有发生变化，会因为last-Modified没有匹配上从而重新去发起请求。
 ##### **2. ETag**
-![http缓存](./images/http缓存.png)
-https://imweb.io/topic/5795dcb6fb312541492eda8c
+```
+    http1.1为了解决last-Modified可能存在不准确的问题,推出了ETag实体首部。
+
+    作用和last-modified是一样的。这里直接看图就好了。
+```
+![ETag例子](./images/ETag-lz.png)
+![ETag流程](./images/ETag-lc.png)
+
+最后总结看以下这张图：
+
+![http缓存总结](./images/http缓存总结.png)
