@@ -153,3 +153,5 @@ Cache-Control: max-age=61256155
 最后总结看以下这张图：
 
 ![http缓存总结](./images/http缓存总结.png)
+
+[HTTP缓存控制小结](https://imweb.io/topic/5795dcb6fb312541492eda8c)
