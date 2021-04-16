@@ -91,8 +91,8 @@ var p2 = new Promise(function (resolve, reject) {
   setTimeout(() => resolve(p1), 1000)
 })
 
-p2.then(result => console.log(result)).catch(error => console.log(error)) 
-// 如果p1是resolve则打印2222222；如果p1是reject则打印111111
+p2.then(result => console.log(result, 'a')).catch(error => console.log(error, 'b')) 
+// 如果p1是resolve则打印2222222,'a'；如果p1是reject则打印111111,'b'
 ```
 从上面例子中，p1和p2都是promise的实例。但是p2的resolve方法的参数是p1。即一个异步操作的结果是返回另一个异步操作。
 
