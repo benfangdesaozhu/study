@@ -113,7 +113,7 @@ p2.then(result => console.log(result, 'a')).catch(error => console.log(error, 'b
     .catch(error => console.log(error, 222))
     // Error: fail 222
 </script>
-// 通过上述的秒速，这个就很好理解了。结合事件循环来讲述执行顺序
+// 通过上述的描述，这个就很好理解了。结合事件循环来讲述执行顺序
 // 1、首先宏任务script 会执行分别执行p1和p2。
 // 2、并将p1内的settimeout和p2内的settimeout（settimeout宏任务）放入宏任务队列中。
 // 3、执行p2.then()方法。创建promise的并不是个微任务。而是它的.then()方法是个微任务。
