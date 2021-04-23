@@ -935,7 +935,7 @@ function jiequ (s, bool) {
 console.log(myAtoi("42"))
 
 var longestCommonPrefix = function(strs) {
-    debugger
+    // debugger
     if(!strs.length) return ""
     if(strs.length === 1) {
         return strs[0]
@@ -974,54 +974,64 @@ var head = {
             }
         }
     }
-var a ={
-	"name": "s-iiaasset-nw202102",
-	"type": "object",
-	"desc": "智能投顾资产",
-	"props": [{
-		"name": "topspace",
-		"desc": "上间距",
-		"type": "enum",
-		"option": [{
-			"key": "0",
-			"value": "否"
-		}, {
-			"key": "1",
-			"value": "是"
-		}]
-	}, {
-		"name": "bottomspace",
-		"desc": "下间距",
-		"type": "enum",
-		"option": [{
-			"key": "0",
-			"value": "否"
-		}, {
-			"key": "1",
-			"value": "是"
-		}]
-	}, {
-		"name": "title",
-		"type": "text",
-		"desc": "组件标题",
-		"placeholder": "字数限制,8个字以内",
-		"option": {
-			"max": 8,
-			"min": 1
-		}
-	}, {
-		"name": "icon",
-		"type": "image",
-		"desc": "图标",
-		"option": {
-			"type": "url",
-			"width": "56",
-			"height": "56",
-			"fmt": "png"
-		},
-		"placeholder": "尺寸必须为56*56px,格式为png"
-	}]
-}
+	var testDefinedPropertyArray = [1,2,3,4,5]
+    // testDefinedPropertyArray.forEach((item,index) => {
+    //     Object.defineProperty(testDefinedPropertyArray, index, {
+    //         configurable: true,
+    //         enumerable: true,
+    //         get: function(val){
+    //             console.log(val,'get')
+    //             return item
+    //         },
+    //         set: function(val){
+    //             console.log(val,'set')
+    //             item = val
+    //         }
+    //     })
+    // })
+    // testDefinedPropertyArray[7] = 3
+    // console.log(testDefinedPropertyArray)
+    var proxy = new Proxy(testDefinedPropertyArray, {
+        get: function(target,item,sl){
+            console.log(target,item,sl, 'get')
+        },
+        set: function(target,item,val){
+            console.log(target,item,val, 'set')
+            target[item] = val
+        }
+    })
+    console.log(proxy)
+
+    const PEDNING = 0
+    const RESOLVE = 1
+    const REJECT = 2
+    function myPromise(fn){
+        let _this = this
+        this.state = PEDNING
+        this.value = null
+        this.resolve = function(val){
+            _this.state = RESOLVE
+            _this.value = val
+        }
+        this.reject = function(val){
+            _this.state = REJECT
+            _this.value = val
+        }
+        try{
+            console.log(this, 'scuuess')
+            fn(this.resolve, this.reject)
+        }catch(error){
+            console.log(this, 'error')
+            this.reject(error)
+        }
+    }
+    myPromise.prototype.then = function(res,rej){
+        if(this.state === RESOLVE){
+            res(this.value)
+        }else if(this.state === REJECT){
+            rej(this.value)
+        }
+    }
 </script>
 </body>
 </html>

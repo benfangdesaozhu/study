@@ -49,7 +49,7 @@ flex-wrap属性
 flex-wrap:nowrap（默认）、wrap、wrap-reverse可选三个值
 flex-wrap: nowrap: 不换行
 flex-wrap: wrap:换行
-flex-wrap: reverse-wap:换行。并且第一行在下面
+flex-wrap: reverse-warp:换行。并且第一行在下面
 ```
 ```
 flex-flow属性

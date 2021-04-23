@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+        }
+        .red {
+            background: red;
+        }
+        .blue {
+            background: blue;
+        }
+        .yellow {
+            background: yellow;
+        }
+        .w100 {
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+        }
+        .w-100 {
+            margin-top: 10px;
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 水平垂直居中 flex-->
+    <div class="center-test1 red w100">
+        <div class="center-test1-content blue">就是要玩</div>
+    </div>
+    <style>
+        .center-test1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <!-- 定位 -->
+    <div class="center-test2 red w100">
+        <div class="center-test2-content blue">就是要玩</div>
+    </div>
+    <style>
+    .center-test2 {
+        position: relative;
+    }
+    .center-test2-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    /* 需要知道子容器的宽度 */
+    /* .center-test2 {
+        position: relative;
+    }
+    .center-test2-content {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+    } */
+    </style>
+    <!-- table -->
+    <div class="center-test3 red w100">
+        <div class="center-test3-content">
+            sdafs
+        </div>
+    </div>
+    <style>
+        .center-test3 {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+
+    <!-- 两边固定、中间自适应  float-->
+    <div class="sfy-layout1 w-100">
+        <div class="sfy-left1 blue w100" style="margin-top: 0;"></div>
+        <div class="sfy-center1 red">sdfdsfdsf</div>
+        <div class="sfy-right1 yellow w100" style="margin-top: 0;"></div>
+    </div>
+    <style>
+        .sfy-layout1 {
+            padding-left: 100px;
+            padding-right: 100px;
+            box-sizing: border-box;
+        }
+        .sfy-left1 {
+            float: left;
+            margin-left: -100px;
+        }
+        .sfy-right1 {
+            float: right;
+            margin-right: -100px;
+        }
+        .sfy-center1 {
+            float: left;
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+    <!-- 两边固定、中间自适应  position -->
+    <div class="sfy-layout2 w-100">
+        <div class="sfy-left2 blue w100" style="margin-top: 0;"></div>
+        <div class="sfy-center2 red">sdfdsfdsf</div>
+        <div class="sfy-right2 yellow w100" style="margin-top: 0;"></div>
+    </div>
+    <style>
+        .sfy-layout2 {
+            padding-left: 100px;
+            padding-right: 100px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .sfy-left2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .sfy-right2 {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .sfy-center2 {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+    <!-- 两边固定、中间自适应  flex -->
+    <div class="sfy-layout3 w-100">
+        <div class="sfy-left3 blue w100" style="margin-top: 0;"></div>
+        <div class="sfy-center3 red">sdfdsfdsf</div>
+        <div class="sfy-right3 yellow w100" style="margin-top: 0;"></div>
+    </div>
+    <style>
+        .sfy-layout3 {
+            display: flex;
+        }
+        .sfy-center3 {
+            flex: 1;
+        }
+    </style>
+    <!-- 两边固定、中间自适应  table -->
+    <div class="sfy-layout4 w-100">
+        <div class="sfy-left4 blue w100" style="margin-top: 0;"></div>
+        <div class="sfy-center4 red">sdfdsfdsf</div>
+        <div class="sfy-right4 yellow w100" style="margin-top: 0;"></div>
+    </div>
+    <style>
+        .sfy-layout4 {
+            display: table;
+        }
+        .sfy-left4 {
+            display:table-cell;
+            width: 100px;
+        }
+        .sfy-center4 {
+            height: 100%;
+        }
+        .sfy-right4 {
+            display:table-cell;
+            width: 100px;
+        }
+    </style>
+    <!-- 
+        BFC: 块级格式上下文；定义了一个独立的渲染区域，它规定内部元素如何布局，与外部元素没有任何关系。
+
+        BFC的布局规则：
+            1、内部的盒子会在垂直方向上一个一个放置
+            2、盒子垂直方向的距离由margin决定，同属于一个BFC的两个相邻盒子上边距上下边距会发生重叠
+            3、BFC就是一个独立的容器，容器内部的子元素不会影响到外面的元素，反之亦然
+
+        哪些属性会产生BFC：
+            1、根元素
+            2、float不为none的
+            3、position不为relative和static
+            4、display:inline-block、flex、inline-flex
+            5、overflow: hidden
+     -->
+
+     <!-- 
+         盒模型：
+         ie盒模型：border-sizing: border-box; 盒子宽度：border+paddin+content
+         标准盒模型： border-sizing: content-box; 盒子宽度： content+padding
+      -->
+
+      <!-- 写一个三角形 -->
+      <!-- 
+          哪个方向上有对应色值。那么三角形就指向这个方向的反方向
+          比如以下例子：bottom有颜色，就形成了一个向上的三角形
+     -->
+      <div class="tran"></div>
+      <style>
+          .tran {
+              width: 0;
+              height: 0;
+              border-top: 5px solid transparent;
+              border-right: 5px solid transparent;
+              border-bottom: 5px solid red;
+              border-left: 5px solid transparent;
+          }
+      </style>
+
+      <!-- 超出省略号 -->
+      <div class="overflow w100 blue">
+        sdfsdfsdfsdfsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdfsdfsdfsdfsd
+      </div>
+      <style>
+          .overflow {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+          }
+      </style>
+
+      <!-- flex 复习 -->
+      <!-- 
+          容器的属性： 
+            display: flex、inline-flex
+            flex-direction: row、row-reverse、column、column-reverse
+            flex-warp: noWarp(默认)、warp(换行)、reverse-warp
+            justify-content: center、flex-start、flex-end、space-between
+            align-items: flex-start、flex-end、center
+          
+          子容器：flex: flex-grow(放大：默认1)、flex-shrink（缩小：默认1）、flex-basis（有剩余空间的时候，设置剩余空间值）
+
+            flex: 1; 也就是 flex-grow: 1
+            flex: 1 1; 也就是 flex-grow 、flex-shrink的缩写
+            flex: 300px; 也就是flex-grow、flex-basis的缩写
+
+       -->
+       <div class="test-flex">
+            <div class="test-left blue"></div>
+            <div class="test-center red"></div>
+            <div class="test-right yellow"></div>
+       </div>
+       <style>
+           .test-flex {
+               display: flex;
+               height: 100px;
+           }
+           .test-left {
+               flex: 220px;
+           }
+           .test-center {
+               flex: 1;
+           }
+           .test-right {
+               flex: 0 1
+           }
+       </style>
+</body>
+</html>
