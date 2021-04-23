@@ -129,4 +129,130 @@
                 不存在则取看客户端发送的首部if-none-match/if-match是否和ETag一致，如果一致304.
 
                 也可以看客户端发送的首部if-modified-sice的时间是否在last-modified的时间内：如果存在，则304
+4、渲染
+    1、dom树构建（js阻塞解析：解析构建DOM时，遇到script时，会暂停解析先加载js并执行js内部的代码）
+    2、css规则树
+    3、将dom树和css规则树合并成渲染树
+    4、根据渲染树绘制出对应页面
 
+重绘和重排（回流）
+
+重排会引起重绘，重绘不会引起重排
+
+引起重排的改变元素大小，位置，添加删除元素等
+引起重绘的改变字体颜色、背景色等
+
+
+优化：（可以使用lightHouse来进行分析）
+白屏优化（是首屏优化的子集）：白屏时间=页面开始展示的时间-开始请求的时间点（用户开始请求页面时开始计算到开始显示内容结束）
+
+    1、DNS查询
+    2、建立TCP连接
+    3、发送首个HTTP请求、返回HTML文档、HTML文档head解析完毕
+
+    白屏优化方式：服务端渲染；预渲染和骨架屏
+
+首屏优化：首屏时间= 首屏内容渲染结束时间点 - 开始请求的时间点 （开始请求时间点和首屏内容渲染结束时间点）
+
+    1、减少http请求
+    2、升级http，使用http2
+    3、服务端渲染
+    4、静态资源使用CDN
+    5、css放在头部、js放在尾部
+    6、http缓存
+    7、压缩文件，减少文件体积大小
+        webpack：
+            js：uglifyPlugin
+            css： miniCssExtractplugin
+            html: htmlwebpackplugin
+            开启gzip: compressionWebpackPlugin
+    8、图片优化（图片懒加载）
+    9、减少重绘重排
+
+
+    webpack当中的优化：
+
+        编译时间的优化(构建速度)：
+            1、使用高版本webpack
+            2、缩小打包作用域
+                1、extensions
+                2、alias
+                3、noParse
+            3、多线程 thread-loader
+            4、开启缓存
+            5、ddl
+        编译体积的优化：
+            压缩代码
+                通过minicssExtractplugin提取css文件，然后通过optimize-css-assets-webpack-plugin
+                uglifyplugin
+            提取公共资源：
+                1、externals不打包进bundle中
+                2、splitChunksplugin进行分离（webpack4内置了）
+
+            externals
+
+            tree-shaking
+
+            scope-hoisting
+
+    webpack5新特性预览：https://github.com/HolyZheng/holyZheng-blog/issues/48
+
+    打包原理：
+
+        webpack
+            从配置文件webpack.config.js的参数初始化compiler对象，加载所以配置的插件，然后开始编译
+            根据配置中找到入口文件，
+            从入口文件出发，调用所有的loader对模块进行编译，再找到该模块依赖的模块，递归进行此步骤。
+            当loader翻译完所有模块后，得到每个模块最终的内容和他们之间的依赖关系。
+            在根据入口和模块之间的关系，组成一个个包含多个模块的chunk,再把每个chunk转换成一个单独的文件加到输入列表
+            根据确定好的内容，根据配置确定输入的路径和文件名，把文件内容写入到文件中
+
+            在以上过程中，webpack会根据特定的钩子函数来执行特定的事情。
+
+            class vconsolePlugin {
+                constructor(options) {
+                    this.options = Object.assign({
+                        enable: false
+                    }, options)
+                }
+                apply(compiler) {
+                    const vConsolePath = path.join('./src/vconsole.js')
+                    compiler.hooks.entryOption.tap('vconsolePlugin', (compilation, entry) => {
+                        // console.log(vConsolePath, entry, this.options)
+                        if(this.options.enable){
+                            entry.main.import.push(`./${vConsolePath}`)
+                        }
+                    }) 
+                }
+            }
+
+
+        常见的loader
+            url-loader
+            file-loader
+            css-loader
+            style-loader
+            sass、less-loader
+            postcss-loader
+            vue-loader
+            babel-loader
+        常见的plugins
+            cleanWebpackPlugin
+            MiniCssExtractPlugin
+            uglifyWebpackplugin
+            htmlwebpackplugin
+            copywebpackplugin
+            VueLoaderPlugin
+    webpack插件怎么实现的：
+        本质上是一种事件流，核心模块：tapable Hooks构建出=》compiler（编译）+ compilation(创建出bundles)
+
+    webpack的热更新原理：
+        1、启动阶段
+            使用webpack-dev-server去启动本地服务，内部实现了webpack、express、websocket，
+            用express启动本地服务，当浏览器访问资源时对此作出响应
+            服务端和客户端使用socket连接
+
+        2、更新阶段
+            webpack监听文件变化，修改后 触发compiler 重新编译，
+            编译完成后通过socket向客户端推送当前修改的的。
+            客户端的socket监听到文件修改后，进行局部刷新
