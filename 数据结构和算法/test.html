@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+.text {
+    z-index: 1;
+    overflow: hidden;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100px;
+	height: 100px;
+    border-radius: 50%;
+	background-color: transparent;
+    /* mix-blend-mode: multiply; */
+}
+
+video {
+    overflow: hidden;
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    border-radius: 50%;
+    /* height: 100%; */
+    background: transparent;
+    /* mix-blend-mode: screen; */
+}
+    </style>
+</head>
+<!-- <body>
+    <div class="figure">
+    </div>
+    <p>Hey <a href="http://www.example.com" onclick="window.alert('Joe' + name); return false;">Joe</a>!</p>
+</body> -->
+<body>
+	<h1>Traditional Event Handling</h1>
+	
+	<p>Hey Joe!</p>
+
+	<script>
+    </script>
+    <div id="div"></div>
+ 
+    <script>
+     
+           var elem = document.querySelector('#div');
+     
+           var event = document.createEvent('Event');
+     
+           // 定义事件名称myEvent
+           event.initEvent('myEvent', true, true);
+     
+           // 监听myEvent
+           elem.addEventListener('myEvent', function (e) {
+              console.log(e, 1111);
+           }, false);
+     
+           // 使用目标对象去派发事件，可以是元素节点/事件对象
+           elem.dispatchEvent(event);
+           
+		var triggerAlert = function () {
+			window.alert("Hey Joe");
+            elem.dispatchEvent(event);
+		};
+		
+		// 分配事件处理程序
+		document.onclick = triggerAlert;
+		
+		// 分配另一个事件处理程序
+		window.onload = triggerAlert;
+		
+		// 删除刚刚分配给window的事件处理程序
+        window.onload = null;
+        
+        
+    </script>
+</body>
+<script src="./underscore.js"></script>
+<script>
+    function triggerAlert(name) {
+			window.alert("Hey " + name);
+		}
+    console.log(_)
+    _.debounce(function(){console.log(1)}, 1000)(1)
+
+
+</script>
+</html>

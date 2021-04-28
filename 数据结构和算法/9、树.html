@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 树 ---->分层数据抽象模式（非顺序数据结构）。第一个非顺序数据结构是散列表
+        // 一个树结构包括一系列存在父子关系的节点。每个节点都有父节点（除了顶部的第一个节点）以及零个或多个子节点组成
+
+        // 位于顶部的叫做根节点。它没有父节点。树中每个元素都叫节点。节点分为内部节点和外部节点。内部节点是至少有一个子节点。
+        // 外部节点（叶节点）指的是没有子节点
+        // 有关树的另一个术语是子树。子树由节点和它的后代构成
+
+        // 节点的一个属性是深度，节点的深度取决于它的祖先节点的数量。
+        // 树的高度取决于所有节点深度的最大值
+
+        // 二叉树和二叉搜索树
+
+        // 二叉树中的节点最多只能有两个子节点：一个是左侧子节点，另一个是右侧子节点
+        // 二叉搜索树（BST）是二叉树的一种，但是它只允许你在左侧节点存储（比父节点）小的值，在右侧节点存储（比父节点）大（或者等于）的值
+        function Node (ele) {
+            this.ele = ele
+            this.left = null
+            this.right = null 
+        }
+        function BinarySearchTree () {
+            this.root = null
+            this.insert = function (key) { // 插入一个键
+                var node = new Node(key)
+                if (!this.root) {
+                    this.root = node
+                } else {
+                    this.insertNode(this.root, node)
+                }
+            } 
+            this.insertNode = function (oldNode, newNode) {
+                console.log()
+                if (oldNode.ele > newNode.ele) {
+                    if(oldNode.left) {
+                        this.insertNode(oldNode.left, newNode)
+                    } else {
+                        oldNode.left = newNode
+                    }
+                } else {
+                    if(oldNode.right) {
+                        this.insertNode(oldNode.right, newNode)
+                    } else {
+                        oldNode.right = newNode
+                    }
+                }
+            }
+            this.search = function (key) {} // 如果存在就return true 反之false
+        }
+        var tree = new BinarySearchTree()
+        tree.insert(11)
+        tree.insert(7)
+        tree.insert(15)
+        tree.insert(5)
+        tree.insert(3)
+        tree.insert(9)
+        tree.insert(8)
+        tree.insert(10)
+        tree.insert(13)
+        tree.insert(12)
+        tree.insert(14)
+        tree.insert(20)
+        tree.insert(18)
+        tree.insert(25)
+        tree.insert(6)
+        console.log(tree)
+
+        // 树的遍历 （访问树的每一个节点并对它们进行某种操作的过程。）访问树的所有节点有三种： 中序、先序、倒序
+
+        // 中序： （中序遍历是一种以上行顺序访问BST所有节点的遍历方式，也就是以从最小到最大的顺序访问所有节点。中序遍历的一种应用就是对树进行排序操作）
+        
+        var inOrderTraverseNode = function (node, callback) {
+            debugger
+            if(node !== null) { // 递归执行条件
+                inOrderTraverseNode(node.left, callback)
+                callback(node.ele)
+                inOrderTraverseNode(node.right, callback)
+            }
+        }
+        BinarySearchTree.prototype.inOrderTraverse = function (callback) {
+            // debugger
+            // 这个打断点执行。了解js的执行顺序
+            inOrderTraverseNode(this.root, callback)
+        }
+        tree.inOrderTraverse((val)=>{
+            console.log('中序==================', val)
+        })
+        console.log("===================")
+        // 先序：先序遍历是以优先于后代节点的顺序访问每个节点的。先序遍历的一种应用是打印一个结构化的文档
+        BinarySearchTree.prototype.preOrderTraverse = function (callback) {
+            preOrderTraverseNode(this.root, callback)
+        }
+        var preOrderTraverseNode = function (node, callback) {
+            if (node !== null) {
+                callback(node.ele); //{1}
+                preOrderTraverseNode(node.left, callback); //{2}
+                preOrderTraverseNode(node.right, callback); //{3}
+            }
+        }
+        tree.preOrderTraverse((val)=>{
+            console.log(val)
+        })
+        console.log("===================")
+        // 后序遍历：则是先访问节点的后代节点，再访问节点本身。后序遍历的一种应用是计算一个目录和它的子目录中所有文件所占空间的大小。
+        BinarySearchTree.prototype.afterOrderTraverse = function (callback) {
+            afterOrderTraverseNode(this.root, callback)
+        }
+        var afterOrderTraverseNode = function (node, callback) {
+            if (node !== null) {
+                afterOrderTraverseNode(node.left, callback); //{2}
+                afterOrderTraverseNode(node.right, callback); //{3}
+                callback(node.ele); //{1}
+            }
+        }
+        tree.afterOrderTraverse((val)=>{
+            console.log(val)
+        })
+        console.log("===================")
+        // 搜索树中的值
+        var current1 = null
+        // 最小值
+        var searchMin = function (node) {
+            // debugger
+            let current = node
+            if (current && current.left) {
+                return searchMin(current.left) // 这里一定要return 出去。不然会执行137行注释部分，导致返回的是undefined
+            } else {
+                current1 = current 
+                return current
+            }
+            // // 用递归之后还是会执行这里的代码。导致函数没有返回值。最后返回的undefined
+
+            // let current = node
+            // if (current) {
+            //     while (current && current.left) {
+            //         current = current.left
+            //     }
+            //     return current
+            // }
+            // return null;
+        }
+        BinarySearchTree.prototype.min = function (node) {
+            return searchMin(this.root)
+        }
+        console.log(tree.min(), current1)
+        console.log("===================")
+        // 最大值
+        var searchMax = function (node) {
+            let current = node
+            if (current) {
+                while (current && current.right) {
+                    current = current.right
+                }
+                return current
+            }
+            return null;
+        }
+        BinarySearchTree.prototype.max = function (node) {
+            return searchMax(this.root)
+        }
+        console.log(tree.max())
+        console.log("===================")
+        // 搜索特定的值
+        var searchOther = function (node, key) {
+            if (node === null) {
+                return false
+            }
+            if (node.ele < key) {
+                return searchOther(node.right, key)
+            } else if (node.ele > key) {
+                return searchOther(node.left, key)
+            } else {
+                return node
+            }
+        }
+        BinarySearchTree.prototype.search1 = function (key) {
+            return searchOther(this.root, key)
+        }
+        console.log(tree.search1(3))
+        // 移除一个节点
+
+        function findMin (node) {
+            if (node.left) {
+                return findMin(node.left)
+            } else {
+                return node
+            }
+        }
+        var removeAt = function (node, key) {
+            debugger
+            if (node === null) {
+                return false
+            }
+            if (node.ele < key) {
+                node.right = removeAt(node.right, key)
+                return node
+            } else if (node.ele > key) {
+                node.left = removeAt(node.left, key)
+                return node
+            } else {
+                if (!node.left && !node.right) {
+                    node = null
+                    return node
+                } else if (node.left && node.right === null) {
+                    node = node.left
+                    return node
+                } else if (node.left === null && node.right) {
+                    node = node.right
+                    return node
+                } else if (node.left && node.right) {
+                    var minNode = findMin(node.right)
+                    node.ele = minNode.ele
+                    node.right = removeAt(node.right, minNode.ele)
+                    return node
+                }
+            }
+        }
+        BinarySearchTree.prototype.remove = function (key) {
+            return removeAt(this.root, key)
+        }
+        console.log(tree.remove(6), tree)
+
+
+        // 平衡二叉树  和 红黑树
+    </script>
+</body>
+</html>

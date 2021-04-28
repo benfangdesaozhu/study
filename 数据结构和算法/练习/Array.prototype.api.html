@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [1,2,3,4,1,2,222]
+        // reduce(callbacn(prev,curr,index,array 数组),first参数)
+        // 如果调用reduce的数组为空，会报错
+        let value = arr.reduce((prev, curr) => {
+            console.log(prev,curr)
+            return 2
+        })
+        console.log(`value=${value}`)
+        Object.defineProperty(Array.prototype, 'reduce1', 
+        {
+            value: function(callback,initial){
+                console.log(this, arguments)
+                if(this === null) {
+                    throw Error(`Array.prototype.reduce called on null or undefined`)
+                }
+                if(typeof callback !== 'function') {
+                    throw Error(`${callback} is not a function`)
+                }
+                var o = this
+                var length = o.length
+
+                var k = initial ? 0 : 1
+                var value = initial || this[0]
+                if(length === 0) {
+                    throw Error('Reduce of empty array ' +'with no initial value')
+                }
+                while(k < length) {
+                    value = callback(value, this[k], k, o)
+                    k++
+                }
+                return value
+            }
+        })
+        let value1 = arr.reduce1((a,b)=>{ console.log(a,b) ;return a + b})
+        console.log(arr, `value=${value1}`)
+
+        //Array.prototype.flat 数组扁平化方法 （按照一个可指定深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组）
+
+        var flatArr = [4,2,[1,2,[2,[44,53,32],2]]]
+        flatArr.flat()
+        console.log(flatArr, flatArr.flat(Infinity))
+
+        function flat1 (flatArr, deepIndex = 1) {
+            // debugger
+            if(deepIndex > 0) {
+                return flatArr.reduce((prev, curr) => {
+                    return prev.concat(Array.isArray(curr) ? flat1(curr, deepIndex-1) : curr)
+                },[])
+            }else {
+                return flatArr.slice()
+            }
+        }
+        console.log(flatArr, flat1(flatArr, Infinity))
+
+
+/**
+ * @param {number} capacity
+ */
+ var LRUCache = function(capacity) {
+    this.max = capacity
+    this.LRU = []
+};
+
+/** 
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function(key) {
+    let [bool, index] = [false, 0]        
+    for(let i = 0; i < this.LRU.length; i++) {
+        if(this.LRU[i].hasOwnProperty(key)) { // 存在
+            [bool, index] = [true, i] 
+            break
+        }
+    }
+    if(bool) {
+        let curr = this.LRU[index]
+        this.LRU.splice(index,1)
+        this.LRU.push(curr)
+        return curr[key]
+    } else {
+        return -1
+    }
+};
+
+/** 
+ * @param {number} key 
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function(key, value) {
+    // 查看缓存中是否有该缓存
+        // 如果有，替换
+        // 如果没有 查看缓存中是否超出长度。
+            // 没超过，添加
+            // 超过：删除栈底缓存，放入最新的缓存
+    let [bool, index] = [false, 0]        
+    for(let i = 0; i < this.LRU.length; i++) {
+        if(this.LRU[i].hasOwnProperty(key)) { // 存在
+            [bool, index] = [true, i] 
+            break
+        }
+    }
+    if(bool) {// 存在，替换并且放入最后
+        // this.LRU[index][key] = value
+        let curr = this.LRU[index]
+        curr[key] = value
+        this.LRU.splice(index,1)
+        this.LRU.push(curr)
+    } else { // 不存在--> 判断是否超出
+        deal.call(this, key, value)
+    }
+};
+function deal(key,value) {
+    if(this.LRU.length === this.max){
+        this.LRU.shift()
+    }
+    this.LRU.push({[key]: value})
+}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */
+
+ let lRUCache = new LRUCache(2);
+lRUCache.put(2, 1);
+lRUCache.put(2, 2); 
+lRUCache.get(2);    
+lRUCache.put(1,1); 
+lRUCache.put(4,1); 
+lRUCache.get(2);   
+
+    </script>
+</body>
+</html>

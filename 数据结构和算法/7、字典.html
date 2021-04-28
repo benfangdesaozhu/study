@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // es6 map
+        // 集合、字典和散列表可以存储不重复的值
+        // 字典
+        function dictionary () {
+            this.items = {}
+            /**
+            * @function set 向字典中添加新元素
+            **/
+            this.set = function (key, value) {
+                this.items[key] = value
+            }
+            /**
+            * @function get 通过键值查找特定的数值并返回
+            **/
+            this.get = function (key) {
+                if (this.has(key)) {
+                    return this.items[key]
+                } else {
+                    throw('没有找到对应key值')
+                }
+            }
+            /**
+            * @function has 如果某个键值存在于这个字典中，则返回true，反之则返回false。
+            **/
+            this.has = function (key) {
+                return this.items.hasOwnProperty(key)
+            }
+            /**
+            * @function keys 获取这个字典的所以键名。通过数组返回
+            **/
+            this.keys = function () {
+                return Object.keys(this.items)
+            }
+            /**
+            * @function values 获取这个字典的所以值名。通过数组返回
+            **/
+            this.values = function () {
+                return Object.values(this.items)
+            }
+            
+            /**
+            * @function size 获取这个字典的长度
+            **/
+            this.size = function () {
+                var length = 0
+                for(var i in this.items) {
+                    length ++
+                }
+                return length
+            }
+            /**
+            * @function delete 删除某个字段的值
+            **/
+            this.delete = function (key) {
+                if (this.has(key)) {
+                    delete this.items[key]
+                    return true
+                }
+                return false
+            }
+            /**
+            * @function clear 删除所有
+            **/
+            this.clear = function () {
+                this.items = {}
+            }
+        }
+        let dict1 = new dictionary()
+        dict1.set('a', 1)
+        dict1.set('b', 2)
+        dict1.set('c', 3)
+        console.log(dict1.has('a'))
+
+        console.log(dict1.get('a'))
+        // console.log(dict1.get('d'))
+        console.log(dict1.size())
+        console.log(dict1.keys())
+        console.log(dict1.values())
+        console.log(dict1.delete('c'))
+        console.log(dict1.clear())
+        console.log(dict1)
+
+    </script>
+
+    
+</body>
+</html>

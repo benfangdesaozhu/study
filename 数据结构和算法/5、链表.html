@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    // 2021-03-22练习
+    // 单链表
+    function Node (ele) {
+        let obj = {}
+        obj.element = ele
+        obj.next = null
+        return obj
+    }
+    function List(){
+        this.head = null
+        this.length = 0
+        this.append=function(ele){
+            let node = Node(ele)
+            let curr = this.head
+            let prev = this.head
+            this.length++
+            if(!this.head) { // 不存在
+                this.head = node
+                return
+            }
+            while(curr.next) {
+                prev = curr
+                curr = curr.next
+            }
+            curr.next = node
+        }
+        this.search = function(ele){
+            let curr = this.head
+            if(!this.head) {
+                return false
+            } 
+            while(curr) {
+                if(curr.element === ele) {
+                    return true
+                }
+                curr = curr.next
+            }
+            return false
+        }
+        this.insert= function(position, ele){
+            if(position < 0 || position > this.length) {
+                return null
+            }
+            
+            let node = Node(ele)
+            let curr = this.head
+            if(position === 0) { // 插入首位
+                this.head = node.next = curr
+            }
+            let index = 1
+            while(curr.next) {
+                if(index === position) {
+                    let next = curr.next
+                    curr.next = node
+                    curr.next.next = next
+                    this.length++
+                }
+                curr = curr.next
+                index++
+            }
+        }
+        this.delete = function(ele) {
+            let curr = this.head
+            let prev = null
+            while(curr.next) {
+                if(curr.element === ele) {
+                    prev.next = curr.next
+                    this.length--
+                    return
+                }
+                prev = curr
+                curr =  curr.next
+            }
+        }
+    }
+    var test = new List();
+    [1,2,3,4].forEach(element => {
+        test.append(element)
+    });
+
+    // 双链表
+    function doubleNode (ele) {
+        let obj = Object.create(null)
+        obj.ele = ele
+        obj.next = null
+        obj.prev = null
+        return obj
+    }
+    function DoubleList(){
+        // 头节点
+        this.head = null
+        // 尾节点
+        this.tail = null
+        this.length = 0
+        // 添加
+        this.append = function (ele) {
+            let node = doubleNode(ele)
+            this.length++
+            if(!this.head) {
+                this.head = node
+                return
+            }
+            let curr = this.head
+            let prev = null
+            while(curr.next) {
+                prev = curr
+                curr = curr.next
+            }
+            curr.next = node
+            node.prev = curr
+        }
+        this.insert=function(position, ele){
+            if(position < 0 || position > this.length) {
+                return false
+            }
+            let curr = this.head
+            let node = doubleNode(ele)
+            
+            let index = 0
+            if(position === 0) { // 插入首位 
+                curr.prev = node
+                node.next = curr
+            }
+            let prev = this.head
+            while(index !== position) {
+                prev = curr
+                curr= curr.next
+                index++
+            }
+            curr.prev = node
+            prev.next = node
+            node.next = curr
+            node.prev = prev
+            this.length++
+        }
+        this.delete = function(ele) {
+            debugger
+            let curr = this.head
+            let prev = null
+            while(curr && curr.ele !== ele) {
+                prev = curr
+                curr = curr.next
+            }
+            prev.next = curr.next
+            curr.next.prev = prev
+        }
+    }
+    var test1 = new DoubleList();
+    [1,2,3,4].forEach(element => {
+        test1.append(element)
+    });
+</script>
+<!--注释的内容
+<body>
+    <script>
+        // 链表：
+        // 存储有序的元素集合，但不同于数组，链表中元素在内存中并不是连续放置的。每一个元素由一个存储元素本身的节点和一个指向下一个元素的指针组成。
+        function Node (element) {
+            this.element = element // 元素本身
+            this.next = null // 指向下一个节点的指针
+        }
+        function LinkedList () {
+            this.header = new Node('head')
+            this.insert = insert
+            this.delete = function () {}
+            this.find = find
+            // this.findPrev = findPrev
+            this.display = display; 
+        }
+        function find (item) {
+            let currentNode = this.header
+            while (currentNode.element !== item) {
+                currentNode = currentNode.next
+            }
+            return currentNode
+        }
+        function insert (newElement, ele) {
+            let newEle = new Node(newElement)
+            let currNode = this.find(ele)
+            currNode.next = newEle
+            newElement.next = currNode.next
+        }
+        function display () {
+            let currNode = this.header
+            while ( !(currNode.next == null) ){
+                // console.log( currNode.next.element );
+                currNode = currNode.next;
+            }
+        }
+        var fruits = new LinkedList();
+
+        fruits.insert('Apple' , 'head');
+        fruits.insert('Banana' , 'Apple');
+        fruits.insert('Pear' , 'Banana');
+        // fruits.insert('Pear' , 'aaa');
+        fruits.display()
+    </script>
+    <script>
+        // 链表： 存储有序的集合，但区分于数组，链表中的元素不是连续放置的
+
+        // function LinkedList () {
+        //     function Node (element) {
+        //         this.element = element
+        //         this.next = null
+        //     }
+        //     var length = 0
+        //     var head = null
+        //     this.indexOf = function (ele) {
+        //         var current = head, index = -1
+        //         while(current) {
+        //             if (current.element === ele) {
+        //                 return index
+        //             }
+        //             index++  
+        //             current = current.next
+        //         }
+        //         return -1
+        //     }
+        //     this.append = function (ele) {
+        //         var node = new Node(ele), current;
+        //         console.log(head, current)
+        //         if (head === null) { // 链表不存在数据时
+        //             head = node
+        //         } else { // 存在
+        //             current = head
+        //             while (current.next) {
+        //                 console.log(current)
+        //                 current = current.next
+        //             }
+        //             current.next = node
+        //         }
+        //         length++
+        //     }
+
+        //     this.removeAt = function (ele) {
+
+        //     }
+        // }
+        // var linked = new LinkedList()
+        // linked.append(10)
+        // linked.append(15)
+        // linked.append(20)
+        // console.log(linked)
+        // console.log(linked.indexOf(1))
+        // console.log(linked.indexOf(20))
+    </script>
+    <script>
+        // 链表
+        function Node (ele) {
+            this.element = ele
+            this.next = null
+        }
+        function LinkedList () {
+            this.length = 0
+            this.linkedObj = null
+            this.indexOf = function (ele) {
+                var current = this.linkedObj
+                var index = 0
+                while (current) {
+                    if (current.element === ele) {
+                        return index
+                    }
+                    index++
+                    current = current.next
+                }
+                return -1
+            }
+            this.append = function (ele) {
+                var node = new Node(ele)
+                if(this.linkedObj === null) {
+                    this.linkedObj = node
+                } else {
+                    var current = this.linkedObj
+                    while (current.next) {
+                        current = current.next
+                    }
+                    current.next = node
+                }
+                this.length++
+            }
+            this.removeAt = function (position) {
+                if (position > -1 && position < this.length) {
+                    var current = this.linkedObj
+                    var previous
+                    var index = 0
+                    if (position === 0) {
+                        this.linkedObj = current.next
+                    } else {
+                        while (index < position) {
+                            index++
+                            previous = current
+                            current = current.next
+                        }
+                        previous.next = current.next
+                    }
+                    this.length--
+                } else {
+                    return null
+                }
+            }
+            this.insert = function (position, element) {
+                var node = new Node(element)
+                if (position > -1 && position < this.length) {
+                    var current = this.linkedObj
+                    var previous
+                    var index = 0
+                    if (position === 0) {
+                        node.next = current
+                        this.linkedObj = node
+                    } else {
+                        while (index < position) {
+                            index++
+                            previous = current
+                            current = current.next
+                        }
+                        node.next = current
+                        previous.next = node
+                    }
+                    this.length++
+                } else {
+                    return null
+                }
+            }
+            this.toString = function () {
+                var string = ''
+                var current = this.linkedObj
+                while (current) {
+                    string=current.element
+                    current = current.next
+                }
+                return string
+            }
+            this.isEmpty = function () {
+                return this.length === 0
+            }
+            this.size = function () {
+                return this.length
+            }
+            this.remove = function(element){
+                var index = this.indexOf(element)
+                return this.removeAt(index)
+            }
+            this.getHead = function () {
+                return this.linkedObj
+            }
+        }
+        var linked = new LinkedList()
+        // linked.append(10)
+        // linked.append(15)
+        // linked.append(20)
+        // console.log(linked)
+        // linked.removeAt(1)
+        // console.log(linked)
+        // linked.insert(1,222)
+        // linked.insert(2,2223)
+        // linked.insert(4,2223)
+        // console.log(linked)
+        // console.log(linked.toString())
+        // console.log(linked.indexOf(222))
+        // linked.remove(222)
+        // console.log(linked)
+        linked.append(1)
+        linked.append(2)
+        linked.append(3)
+        linked.append(4)
+        console.log(linked.linkedObj)
+        // 24. 两两交换链表中的节点
+        var swapPairs = function(head) {
+            debugger
+            let sb = new Node(0)
+            sb.next = head
+            let shao = sb
+            while (shao.next!=null && shao.next.next!=null) {
+                var prev = shao.next // 代表第一次的1
+                var next = shao.next.next // 代表第一次的2
+                shao.next = next // 0 指向 2
+                prev.next = next.next // 1 指向 3
+                next.next = prev // 2 指向 1
+                shao = prev // 将此时的1 也就是交换后的1当哨兵 继续循环
+            }
+            return sb.next
+        };
+        //console.log(swapPairs(linked.linkedObj))
+        
+        // 141. 环形链表 //leetcode-cn.com/problems/linked-list-cycle
+        //给定一个链表，判断链表中是否有环。
+
+        // 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+        var hasCycle = function (head) {
+            
+            /*
+            var obj = {}
+            var curr = head
+            while(curr) {
+                // 在链表中存在相同val的值的情况。 这里就不满足
+                if(obj.hasOwnProperty(curr.element)){
+                    return true
+                }
+                obj[curr.element] = curr.element
+                curr = curr.next
+            }
+            return false
+            */
+
+           // 标志法
+            /*
+            var curr = head
+            while(curr) {
+                if(curr.flag) return true
+                curr.flag = true
+                curr = curr.next
+            }
+            */
+            
+            // 哈希表
+            var curr = head
+            let myMap = new Map()
+            while(curr) {
+                if(myMap.get(curr.val) === curr.next) return true
+                myMap.set(curr.val, curr.next)
+                curr = curr.next
+            }
+            return false
+            // 快慢指针（双指针法）
+            // 利用 JSON.stringify() 不能序列化含有循环引用的结构
+        }
+        hasCycle(linked.linkedObj)
+
+        // 环形链表 II //leetcode-cn.com/problems/linked-list-cycle-ii
+        // 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+
+        // 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+
+        var detectCycle = function(head) {
+            var curr = head
+            var myMap = new Map()
+            while (curr) {
+                if(myMap.get(curr) === curr) {
+                    return curr
+                }
+                myMap.set(curr, curr)
+                curr = curr.next
+            }
+            return null
+        }
+        // K 个一组翻转链表 https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+    </script>
+
+    <script>
+        // 双向链表
+        function DoublyNode (ele) {
+            this.element = ele
+            this.next = null
+            this.prev = null
+        }
+        function DoublyLinkedList () {
+            this.length = 0
+            this.linkedObj = null
+            this.tail = null; //新增的
+            this.insert = function (position, ele) {
+                var node = new DoublyNode(ele)
+                var current = this.linkedObj
+                var previous
+                if (position > -1 &&  position < this.length) {
+                    if (position === 0) {
+                        if (!this.linkedObj) { // 新增
+                            this.linkedObj = node
+                            this.tail = node
+                        } else {
+                            node.next = current
+                            current.prev = node
+                            this.linkedObj = node
+                        }
+                    } else if (position === this.length - 1) {
+                        current.next = node
+                        node.prev = current
+                        this.linkedObj = current
+                    } else {
+                        var index = 0
+                        while(index < position) {
+                            index++
+                            previous = current
+                            current = current.next
+                        }
+                        node.next = current
+                        previous.next = node
+                        current.prev = node
+                        node.prev = previous
+                    }
+                    length++
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+            this.removeAt = function (position) {
+                var current = this.linkedObj
+                var previous
+                if (position > -1 &&  position < this.length) {
+                    if (position === 0) {
+                        this.linkedObj = current.next
+                        this.linkedObj.prev = null
+                        
+                    } else {
+                        var index = 0
+                        while(index < position) {
+                            index++
+                            previous = current
+                            current = current.next
+                        }
+                        previous.next = current.next
+                        current.next.prev = previous
+                    }
+                    length--
+                    return current.element
+                } else {
+                    return null
+                }
+            }
+        }
+    </script>
+    <script>
+        function CircleNode (ele) {
+            this.element = ele
+            this.next = null
+        }
+        // 单向循环链表
+        function CircleLinkedList () {
+            this.length = 1
+            this.linkedObj = new CircleNode('head')
+            this.tailObj = null
+            this.append = function (ele) {
+                var eleNode = new CircleNode(ele)
+                this.findPosition().next = eleNode
+                eleNode.next = this.linkedObj
+                this.length++
+            }
+            this.insert = function (position, ele) {
+                var eleNode = new CircleNode(ele)
+                var current = this.findPosition(position)
+                var lastNode = this.findPosition()
+                // 插入要判断插入的位置
+                if(position === 0) {
+                    if (this.length === 0) {
+                        this.linkedObj.next = eleNode
+                        eleNode.next = this.linkedObj
+                    } else {
+                        eleNode.next = current.next
+                        current.next = eleNode
+                        lastNode.next = this.linkedObj
+                    }
+                    this.length++
+                    return 
+                }
+                eleNode.next = current.next
+                current.next = eleNode
+                
+                this.length++
+            }
+            this.remove = function (item) {
+                var removeItem = this.findItem(item)
+                var current = this.linkedObj
+                while(current.next) {
+                    if (current.element = item) {
+                        current.next = removeItem.next
+                        return
+                    }
+                }
+            }
+            this.findItem = function (item) {
+                var current = this.linkedObj
+                var index = 0
+                while(index++ < this.length){
+                    if(current.element === item) {
+                        return current
+                    }
+                    current = current.next
+                }
+                return null
+            }
+            this.findPosition = function (position = this.length) {
+                var current = this.linkedObj
+                var index = 1
+                while(index++ < position){
+                    current = current.next
+                }
+                return current
+            }
+        }
+        var circle = new CircleLinkedList()
+        console.warn("====================")
+        circle.append(1)
+        circle.append(2)
+        circle.append(23)
+        circle.append(33)
+        console.log(circle.findPosition())
+        console.log(circle.findPosition(2))
+        console.log(circle.findItem(2))
+        console.log(circle.insert(2,3333))
+        console.log(circle)
+
+        // 约瑟夫环问题
+        // https://zhuanlan.zhihu.com/p/106564331
+        // 在罗马人占领乔塔帕特后，39 个犹太人与Josephus及他的朋友躲到一个洞中，39个犹太人决定宁愿死也不要被敌人抓。
+        //于是决定了自杀方式，41个人排成一个圆圈，由第1个人开始报数，每报数到第3人该人就必须自杀。
+        //然后下一个重新报数，直到所有人都自杀身亡为止。然而Josephus 和他的朋友并不想遵从，Josephus要他的朋友先假装遵从，
+        //他将朋友与自己安排在第16个与第31个位置，于是逃过了这场死亡游戏。
+
+        // 那么问题就来了，在n个人围成一圈，由第一个人开始报数，没报数到m人，该人就必须自杀，
+        //直到剩下s个人为止时。那么在这场死亡游戏中，想要投机取巧的话，事先应该站到什么位置呢？(假设s小于n)。
+    </script>
+</body>
+-->
+</html>

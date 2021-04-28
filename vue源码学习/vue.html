@@ -11,6 +11,7 @@
     <div id="app">
         <!--[if IE]> html语句 <![endif]-->
         <!-- 注释呢222 -->
+        fsfdsdfsf
         <p>
             <span @click="test1">hello 
             <!-- 注释呢 -->
@@ -29,6 +30,7 @@
       </router-link>
       <router-link to="/blog">Go to blog</router-link>
       <router-link to="/write">Go to write</router-link>
+      <router-link to="/write1">{{test.a}}</router-link>
       
       <router-view name="1231">
         <router-view name="children1231">Go to 2</router-view>
@@ -64,6 +66,7 @@
               test1(){
                 console.log(111, this.list)
                 this.list[0] = 4
+                this.test.a = 2
               }
             }
         }
@@ -103,6 +106,13 @@
                   },
                   {
                       path: '/write',
+                      name: '1231write',
+                      component: {
+                        template: '<div class="write">write</div>'
+                      }
+                  },
+                  {
+                      path: '/write1',
                       name: '1231write',
                       component: {
                         template: '<div class="write">write</div>'

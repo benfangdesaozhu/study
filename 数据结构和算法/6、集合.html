@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // es6 set
+        function Set () {
+             this.items = {}
+        }
+        /**
+        * @function add 添加进该集合中
+        **/
+        Set.prototype.add = function (value) {
+            if (this.has(value)) {
+                return false
+            } else { // 不存在 就添加
+                this.items[value] = value
+                return true
+            }
+        }
+        /**
+        * @function remove 删除该集合中的某个值
+        **/
+        Set.prototype.remove = function (value) {
+            if (this.has(value)) { // 存在 就移除成功
+                delete this.items[value]
+                return true
+            } else {
+                return false
+            }
+        }
+        /**
+        * @function has 是否存在这个集合
+        **/
+        Set.prototype.has = function (value) {
+            // in操作符 指定的属性在指定的对象或原型链中，则in运算符返回true
+            // return value in items
+
+            // hasOwnProperty 会返回一个boolean值，指示对象自身属性中是否有指定属性（也就是，是否有指定的键）
+            return this.items.hasOwnProperty(value)
+        }
+        /**
+        * @function clear 删除该集合中的所有值
+        **/
+        Set.prototype.clear = function () {
+            this.items = {}
+        }
+        /**
+        * @function size 该集合中的长度
+        **/
+        Set.prototype.size = function () {
+// 该方法只能在现代浏览器中返回 （比如IE9以上版本、Firefox 4以上版本、Chrome 5以上版本、Opera 12以上版本、Safari 5以上版本，等等）
+            // return Object.keys(items).length 
+            var count = 0
+            for (var item in this.items) {
+                if (this.items.hasOwnProperty(item)) {
+                    count++
+                }
+            }
+            return count
+        }
+        /**
+        * @function values 该集合中的值
+        **/
+        Set.prototype.values = function () {
+// 该方法只能在现代浏览器中返回 （比如IE9以上版本、Firefox 4以上版本、Chrome 5以上版本、Opera 12以上版本、Safari 5以上版本，等等）
+            
+            // console.log(items, Object.keys(items))
+            // return Object.keys(items)
+            var list = []
+            for (var item in this.items) {
+                list.push(this.items[item])
+            }
+            return list
+        }
+        var set = new Set()
+        set.add(1)
+        set.add(2)
+        console.log(set)
+
+        // 并集：对于给定两个集合，返回一个包含两个集合所有元素的新集合(实现可传入多个参数)
+        Set.prototype.union = function () {
+            var setList = [...arguments]
+            for (var i = 0; i < setList.length; i++) {
+                let itemList = setList[i].values()
+                for(var j = 0; j < itemList.length; j++) {
+                    this.add(itemList[j])
+                }
+            }
+            return this.values()
+        }
+        var setA = new Set()
+        setA.add(1)
+        setA.add(2)
+        setA.add(3)
+        var setB = new Set()
+        setB.add(3)
+        setB.add(4)
+        setB.add(5)
+        setB.add(6)
+        var setD = new Set()
+        setD.add(2)
+        setD.add(30)
+        setD.add(4)
+        setD.add(5)
+        setD.add(6)
+        var setE = new Set()
+        setE.add(301)
+        setE.add(41)
+        setE.add(51)
+        setE.add(61)
+        var setc = new Set()
+        var unionAB = setc.union(setA, setB, setD, setE)
+        console.log(unionAB)
+        // 交集：对于给定两个集合，返回一个包含都含有的元素的新集合
+        // 两个比较容易实现。多个需要每个交集遍历。
+        Set.prototype.Intersection = function () {
+            var setList = [...arguments]
+            var firstSet = setList[0]
+            for (var i = 1; i < setList.length; i++) {
+                let itemList = setList[i].values()
+                for(var j = 0; j < itemList.length; j++) {
+                    if (firstSet.has(itemList[j])) {
+                        this.add(itemList[j])
+                    }
+                }
+            }
+            return this.values()
+        }
+        
+        var setd = new Set()
+        var IntersectionAll = setd.Intersection(setA, setB)
+        console.log(IntersectionAll)
+        // 差集：对于给定两个集合，存在某一个a当中，并且不存在b中的新集合(a的差集)
+        Set.prototype.diffSet = function (a ,b) {
+            for (var i = 0; i < b.size(); i++) {
+                if (!a.has(b.values()[i])) {
+                    this.add(b.values()[i])
+                }
+            }
+            return this.values()
+        }
+        var setDiff = new Set()
+        console.log(setDiff.diffSet(setB, setA))
+        // 子集：验证一个给定集合是否是另一集合的子集
+        Set.prototype.Subset = function (father, child) {
+            if (father.size() < child.size()) {
+                return false
+            }
+            for (var i = 0; i < child.size(); i++) {
+                if (!father.has(child.values()[i])) {
+                    return false
+                }
+            }
+            return true
+        }
+        
+        var setF = new Set()
+        setF.add(301)
+        setF.add(41)
+        setF.add(51)
+        setF.add(61)
+        setF.add(21)
+        var setf = new Set()
+        console.log(setf.Subset(setF, setE))
+    </script>
+</body>
+</html>

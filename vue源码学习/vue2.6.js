@@ -732,6 +732,7 @@
   };
 
   Dep.prototype.notify = function notify () {
+    console.log(this.subs)
     // stabilize the subscriber list first
     var subs = this.subs.slice();
     if (!config.async) {
@@ -741,6 +742,7 @@
       subs.sort(function (a, b) { return a.id - b.id; });
     }
     for (var i = 0, l = subs.length; i < l; i++) {
+      console.log(subs[i])
       subs[i].update();
     }
   };
@@ -3281,6 +3283,7 @@
     options,
     isRenderWatcher
   ) {
+    console.dir(vm)
     this.vm = vm;
     if (isRenderWatcher) {
       vm._watcher = this;

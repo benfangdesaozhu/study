@@ -250,3 +250,7 @@ function defineReactive(data, key, val) {
 }
 
 ```
+
+流程总结：
+
+    1、

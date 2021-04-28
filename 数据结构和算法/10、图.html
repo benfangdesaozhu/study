@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function dictionary () {
+            this.items = {}
+            /**
+            * @function set 向字典中添加新元素
+            **/
+            this.set = function (key, value) {
+                this.items[key] = value
+            }
+            /**
+            * @function get 通过键值查找特定的数值并返回
+            **/
+            this.get = function (key) {
+                if (this.has(key)) {
+                    return this.items[key]
+                } else {
+                    throw('没有找到对应key值')
+                }
+            }
+            /**
+            * @function has 如果某个键值存在于这个字典中，则返回true，反之则返回false。
+            **/
+            this.has = function (key) {
+                return this.items.hasOwnProperty(key)
+            }
+            /**
+            * @function keys 获取这个字典的所以键名。通过数组返回
+            **/
+            this.keys = function () {
+                return Object.keys(this.items)
+            }
+            /**
+            * @function values 获取这个字典的所以值名。通过数组返回
+            **/
+            this.values = function () {
+                return Object.values(this.items)
+            }
+            
+            /**
+            * @function size 获取这个字典的长度
+            **/
+            this.size = function () {
+                var length = 0
+                for(var i in this.items) {
+                    length ++
+                }
+                return length
+            }
+            /**
+            * @function delete 删除某个字段的值
+            **/
+            this.delete = function (key) {
+                if (this.has(key)) {
+                    delete this.items[key]
+                    return true
+                }
+                return false
+            }
+            /**
+            * @function clear 删除所有
+            **/
+            this.clear = function () {
+                this.items = {}
+            }
+        }
+        // 图也是一种非线性的数据结构
+        // 图是网络结构的抽象模型。图是一组由边连接的节点（或顶点）。
+        // 学习图是重要的，因为任何二元关系都可以用图来表示
+        function Graph () {
+            this.vertices = [] // 存储所有顶点的名字
+            this.adList = new dictionary() // 创建一个字典，存储邻接表
+            this.addVertex = function(v){
+                this.vertices.push(v) 
+                this.adList.set(v, [])
+            }
+            this.addEdge = function (v, w) { // 一个用来向图中添加一个新的顶点（因为图实例化后是空的）
+                this.adList.get(v).push(w)
+                this.adList.get(w).push(v)
+            }
+            this.toString = function(){ // 一个方法用来添加顶点之间的边
+                var s = '';
+                for (var i=0; i<this.vertices.length; i++){ //{10}
+                    s += this.vertices[i] + ' -> ';
+                    var neighbors = this.adList.get(this.vertices[i]); //{11}
+                    for (var j=0; j<neighbors.length; j++){ //{12}
+                        s += neighbors[j] + ' ';
+                    }
+                    s += '\n'; //{13}
+                }
+                return s
+            }
+        }
+        var graph = new Graph();
+        var myVertices = ['A','B','C','D','E','F','G','H','I'] //{7}
+        for (var i=0; i<myVertices.length; i++){ //{8}
+            graph.addVertex(myVertices[i])
+        }
+        graph.addEdge('A', 'B') //{9}
+        graph.addEdge('A', 'C')
+        graph.addEdge('A', 'D')
+        graph.addEdge('C', 'D')
+        graph.addEdge('C', 'G')
+        graph.addEdge('D', 'G')
+        graph.addEdge('D', 'H')
+        graph.addEdge('B', 'E')
+        graph.addEdge('B', 'F')
+        graph.addEdge('E', 'I')
+        console.log(graph.toString())
+    </script>
+    <script>
+        function ArrayList () {
+    this.array = []
+    this.insert = function (ele) {
+        this.array.push(ele)
+    }
+    this.toString = function () {
+        return this.array.join('')
+    }
+    // 冒泡排序
+    this.bubbleSort = function () {
+        let array = this.array
+        let length = array.length
+        for (let i = 0; i < length; i++) {
+            for (let j = 0; j < length; j++) {
+                if(array[j] > array[j+1]) {
+                    // 变量接收
+                    // let temp = array[j]
+					// array[j] = array[j+1]
+                    // array[j+1] = temp
+
+                    // 解构赋值
+                    [array[j], array[j+1]] = [array[j+1], array[j]]
+                }
+            }
+        }
+    }
+    // 选择排序
+    this.selectionSort = function () {
+        let minA = null
+        let array = this.array
+        let length = array.length
+        for (let i = 0; i < length; i++) {
+            minA = array[i]
+            for (let j = i; j < length - 1; j++) {
+                if(minA > array[j+1]){
+                    minA = array[j+1]
+                }
+            }
+            let index = array.indexOf(minA)
+            console.log(minA, index)
+            var prev = array[i]
+            array[i] = minA
+            array[index] = prev
+            // [array[i], array[index]] = [minA, array[i]]
+        }
+    }
+    // 插入排序
+    this.insertSort = function () {
+        let array = this.array
+        let length = array.length
+        let temp = null
+        let j = null
+        for (let i = 0; i < length; i++) {
+            j = i
+            temp = array[i]
+            while (j > 0 && array[j - 1] > temp) {
+                array[j] = array[j - 1]
+                j--
+            }
+            array[j] = temp
+        }
+    }
+
+    // 归并排序(将数组分割对半分，直到分到单个数组为止，每两个数组比较后放入新的数组。)分治法
+
+    this.merge = function () {
+        sliceArray(this.array)
+    }
+    // 快速排序（先划分（2、3、4 称为划分操作）---> 分治5）
+    // 1、先找数组中的任意一项作为基准元素pivot
+    // 2、创建两个指针。左边指向数组的第一个项，右边指向数组的最后一项。
+    // 3、移动左指针直到找到一个基准元素大的值（找到后停止，右指针动），接着移动右指针，直到右指针找到比基准元素小的值。左右指针的值对换（swap）。
+    // 4、接着走第三步。直到左右指针相等。停止。
+    // 5、接着，算法对划分后的小数组（基准元素两侧的数组。）进行2、3、4操作。
+    this.quick = function () {
+        this.hfOperat(this.array, 0, this.array.length - 1)
+        console.log(this.array)
+    }
+    this.hfOperat = function (array, left, right) {
+        let index
+        if (left < right) {
+            index = this.quickSort(array, left, right)
+            this.hfOperat(array, left, index - 1)
+            this.hfOperat(array, index+1, right)
+        }
+    }
+    this.quickSort = function (array, left, right) {
+        let pivot = array[Math.ceil(array.length/2)]
+        while(left < right) {
+            while(array[right] >= pivot && left < right){
+                right--
+            }
+            while(array[left] <= pivot && left < right){
+                left++
+            }
+            if(left < right) {
+                let rightcount = array[right]
+                array[right] = array[left]
+                array[left] = rightcount
+            }
+        }
+        array[Math.ceil(array.length/2)] = array[left]
+        array[left] = pivot
+        return left
+    }
+}
+function sliceArray (array) {
+    let length = array.length
+    if (length === 1) return array
+    var mid = Math.floor(length / 2)
+    var lArray = array.slice(0, mid)
+    var rArray = array.slice(mid, length)
+    console.log("====",lArray, rArray)
+    return mergeSort(sliceArray(lArray), sliceArray(rArray))
+}
+// 这里相当于合并两个有序数组
+function mergeSort (lArray, rArray) {
+    let result = []
+    let li = 0
+    let ri = 0
+    while(li < lArray.length && ri < rArray.length) {
+        if(lArray[li] < rArray[ri]) {
+            result.push(lArray[li])
+            li ++
+        } else {
+            result.push(rArray[ri])
+            ri ++
+        }
+    }
+    while (li < lArray.length) {
+        result.push(lArray[li])
+        li++
+    }
+    while (ri < rArray.length) {
+        result.push(rArray[ri])
+        ri++
+    }
+    console.log("!!!!",result)
+    return result
+}
+var list = new ArrayList()
+list.insert(5)
+list.insert(3)
+list.insert(4)
+list.insert(7)
+list.insert(2)
+list.insert(8)
+list.insert(6)
+list.insert(9)
+list.insert(1)
+// list.bubbleSort()
+// list.selectionSort()
+// list.insertSort()
+// list.merge()
+list.quick()
+console.log(list.array)
+    </script>
+</body>
+</html>

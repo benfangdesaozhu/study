@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+       var merge = function(nums1, m, nums2, n) {
+            var pos = m+n-1
+            var m1 = m - 1
+            var n1 = n - 1
+            while(n1 >= 0 && m1 >= 0) {
+                if(nums1[m1] > nums2[n1]) {
+                    nums1[pos--] = nums1[m1--]
+                } else {
+                    nums1[pos--] = nums2[n1--]
+                }
+            }
+            while(n1 >= 0) {
+                nums1[pos--] = nums2[n1--]
+            }
+            return nums1
+        };
+        merge([1,2,3,0,0,0], 3, [2,5,6], 3)
+
+
+        // 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+
+        // 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。
+        // 如果 pos 是 -1，则在该链表中没有环。注意，pos 仅仅是用于标识环的情况，并不会作为参数传递到函数中。
+        /**
+         * @param {ListNode} head
+         * @return {ListNode}
+         */
+        var detectCycle = function(head) {
+            // 先判断是否有环
+            // es6 set
+            // let newSet = new Set()
+            // while(head) {
+            //     if(newSet.has(head)) {
+            //         return head
+            //     } else {
+            //         newSet.add(head)
+            //     }
+            //     head = head.next
+            // }
+            // return null
+
+            // 错了。不能成功，这个。还需要改进
+            let slow = head
+            let fast = head.next
+            while(fast && fast.next) {
+                if(slow === fast) {
+                    fast = head
+                    while(slow !== fast){
+                        slow = slow.next
+                        fast = fast.next
+                    }
+                    return slow
+                }
+                slow = slow.next
+                fast = fast.next.next
+            }
+            return null
+        };
+        function wheCircle (head){
+            // 快慢指针判断是否有环
+            let slow = head
+            let fast = head.next
+            while(fast && fast.next) {
+                if(slow === fast) {
+                    return true
+                }
+                slow = slow.next
+                fast = fast.next.next
+            }
+            return false
+        }
+
+        // 我们使用两个指针，fast 与 slow。它们起始都位于链表的头部。随后，slow 
+        // 指针每次向后移动一个位置，而 fast 指针向后移动两个位置。如果链表中存在环，则 fast 
+        // 指针最终将再次与 slow 指针在环中相遇。
+
+        // 如下图所示，设链表中环外部分的长度为 a。slow 指针进入环后，又走了 b 的距离与 fast 
+        // 相遇。此时，fast 指针已经走完了环的 n 圈，因此它走过的总距离为 a+n(b+c)+b=a+(n+1)^b+nc
+
+
+
+
+
+//         给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
+
+//         注意：如果 s 中存在这样的子串，我们保证它是唯一的答案。
+
+// 示例 1：
+
+// 输入：s = "ADOBECODEBANC", t = "ABC"
+// 输出："BANC"
+// 示例 2：
+
+// 输入：s = "a", t = "a"
+// 输出："a"
+
+// 
+var judgeSquareSum = function(c) {
+    var i = 0, j = Math.floor(Math.sqrt(c)), s = 0
+    while(i <= j){
+        s = i * i + j * j
+        if(s == c) return true
+        s > c ? j-- : i++
+    }
+    return false
+};
+//给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+// 示例 1:
+
+// 输入: s = "abcabcbb"
+// 输出: 3 
+// 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+// 示例 2:
+
+// 输入: s = "bbbbb"
+// 输出: 1
+// 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+// 示例 3:
+
+// 输入: s = "pwwkew"
+// 输出: 3
+// 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+//      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+// 示例 4:
+
+// 输入: s = ""
+// 输出: 0
+
+var lengthOfLongestSubstring = function(s) {
+    var arr = []
+    var max = 0
+    for(var i = 0 ; i < s.length; i++) {
+        var index = arr.indexOf(s[i])
+        if(index !== -1) {
+            arr.splice(0, index+1)
+        }
+        arr.push(s[i])
+        max = Math.max(arr.length, max)
+    }
+    return max
+};
+var lengthOfLongestSubstring = function(s) {
+    var newMap = new Map()
+    var max = 0
+    var left = 0
+    var right = 0
+    for(var i = 0 ; i < s.length; i++) {
+        if(newMap.has(s[i])){
+            left = Math.max(newMap.get(s[i])+1, left)
+        }
+        newMap.set(s[i], i)
+        max = Math.max(max, right-left+1)
+        right++
+    }
+    return max
+};
+
+
+// Dota2 的世界里有两个阵营：Radiant(天辉)和 Dire(夜魇)
+
+// Dota2 参议院由来自两派的参议员组成。现在参议院希望对一个 Dota2 游戏里的改变作出决定。
+// 他们以一个基于轮为过程的投票进行。在每一轮中，每一位参议员都可以行使两项权利中的一项：
+
+// 禁止一名参议员的权利：
+
+// 参议员可以让另一位参议员在这一轮和随后的几轮中丧失所有的权利。
+
+// 宣布胜利：
+
+// 如果参议员发现有权利投票的参议员都是同一个阵营的，他可以宣布胜利并决定在游戏中的有关变化。
+
+//  
+
+// 给定一个字符串代表每个参议员的阵营。字母 “R” 和 “D” 分别代表了 Radiant（天辉）和 Dire（夜魇）。然后，如果有 n 个参议员，给定字符串的大小将是 n。
+
+// 以轮为基础的过程从给定顺序的第一个参议员开始到最后一个参议员结束。
+// 这一过程将持续到投票结束。所有失去权利的参议员将在过程中被跳过。
+
+// 假设每一位参议员都足够聪明，会为自己的政党做出最好的策略，
+// 你需要预测哪一方最终会宣布胜利并在 Dota2 游戏中决定改变。输出应该是 Radiant 或 Dire。
+
+//  
+
+// 示例 1：
+
+// 输入："RD"
+// 输出："Radiant"
+// 解释：第一个参议员来自 Radiant 阵营并且他可以使用第一项权利让第二个参议员失去权力，
+// 因此第二个参议员将被跳过因为他没有任何权利。然后在第二轮的时候，第一个参议员可以宣布胜利，因为他是唯一一个有投票权的人
+// 示例 2：
+
+// 输入："RDD"
+// 输出："Dire"
+// 解释：
+// 第一轮中,第一个来自 Radiant 阵营的参议员可以使用第一项权利禁止第二个参议员的权利
+// 第二个来自 Dire 阵营的参议员会被跳过因为他的权利被禁止
+// 第三个来自 Dire 阵营的参议员可以使用他的第一项权利禁止第一个参议员的权利
+// 因此在第二轮只剩下第三个参议员拥有投票的权利,于是他可以宣布胜利
+//  
+
+// 提示：
+
+// 给定字符串的长度在 [1, 10,000] 之间.
+var predictPartyVictory = function(senate) {
+    // 队列 
+    var Radiant = []
+    var Dire = []
+    for(var i = 0 ; i < senate.length; i++) {
+        senate[i] === 'R' ? Radiant.push(i) : Dire.push(i)
+    }
+    while(Radiant.length && Dire.length) {
+        if(Radiant[0] < Dire[0]) {
+            Radiant.push(Radiant[0]+senate.lengh)
+        } else {
+            Dire.push(Dire[0]+senate.lengh)
+        }
+        Dire.shift()
+        Radiant.shift()
+    }
+    if(Radiant.length) {
+        return 'Radiant'
+    }
+    if(Dire.length) {
+        return 'Dire'
+    }
+};
+
+// 在柠檬水摊上，每一杯柠檬水的售价为 5 美元。
+
+// 顾客排队购买你的产品，（按账单 bills 支付的顺序）一次购买一杯。
+
+// 每位顾客只买一杯柠檬水，然后向你付 5 美元、10 美元或 20 美元。你必须给每个顾客正确找零，
+// 也就是说净交易是每位顾客向你支付 5 美元。
+
+// 注意，一开始你手头没有任何零钱。
+
+// 如果你能给每位顾客正确找零，返回 true ，否则返回 false 。
+
+// 示例 1：
+
+// 输入：[5,5,5,10,20]
+// 输出：true
+// 解释：
+// 前 3 位顾客那里，我们按顺序收取 3 张 5 美元的钞票。
+// 第 4 位顾客那里，我们收取一张 10 美元的钞票，并返还 5 美元。
+// 第 5 位顾客那里，我们找还一张 10 美元的钞票和一张 5 美元的钞票。
+// 由于所有客户都得到了正确的找零，所以我们输出 true。
+// 示例 2：
+
+// 输入：[5,5,10]
+// 输出：true
+// 示例 3：
+
+// 输入：[10,10]
+// 输出：false
+// 示例 4：
+
+// 输入：[5,5,10,10,20]
+// 输出：false
+// 解释：
+// 前 2 位顾客那里，我们按顺序收取 2 张 5 美元的钞票。
+// 对于接下来的 2 位顾客，我们收取一张 10 美元的钞票，然后返还 5 美元。
+// 对于最后一位顾客，我们无法退回 15 美元，因为我们现在只有两张 10 美元的钞票。
+// 由于不是每位顾客都得到了正确的找零，所以答案是 false。
+//  
+
+// 提示：
+
+// 0 <= bills.length <= 10000
+// bills[i] 不是 5 就是 10 或是 20 
+var lemonadeChange = function(bills) {
+    var lq5 = []
+    var lq10 = []
+    for(let i = 0; i < bills.length; i++) {
+        if(bills[i] - 5 === 0) {
+            lq5.push(bills[i])
+        } else if(bills[i] - 5 === 5){
+            if(lq5.length > 0){
+                lq5.shift()
+                lq10.push(bills[i])
+            } else {
+                return false
+            }
+        }else if(bills[i] - 5 === 15) {
+            if(lq10.length > 0 && lq5.length > 0){
+                lq10.shift()
+                lq5.shift()
+            } else if (lq5.length >= 3) {
+                lq5.shift()
+                lq5.shift()
+                lq5.shift()
+            } else {
+                return false
+            }
+        }
+    }
+    return true
+};
+// 1*2 // 1
+// 2*1 // 1
+// 2*2 // 2
+
+// 3*1 // 1
+// 3*2 // 3 !(3+2-2)/!2 = 3 
+// 3*3 // 6 !(3+3-2)/!2 = 6
+// 3*4 // 10 !(3+4-2)/!3 = 5*4*3*2/3*2
+// 3*5 // 
+// 7*3 // !8/ 6!/2! 56/2 28
+
+
+
+// 我们用 f(i, j) 表示从左上角走到 (i, j)的路径数量，其中 i 和 j 的范围分别是 [0, m) 和 [0, n)。
+
+// 由于我们每一步只能从向下或者向右移动一步，因此要想走到 (i, j)，如果向下走一步，那么会从 (i-1, j) 走过来；
+// 如果向右走一步，那么会从 (i, j-1) 走过来。因此我们可以写出动态规划转移方程：
+
+// f(i, j) = f(i-1, j) + f(i, j-1)
+
+// 需要注意的是，如果 i=0，那么 f(i-1,j) 并不是一个满足要求的状态，我们需要忽略这一项；
+// 同理，如果 j=0，那么 f(i,j-1) 并不是一个满足要求的状态，我们需要忽略这一项。
+
+// 初始条件为 f(0,0)=1，即从左上角走到左上角有一种方法。
+
+// 最终的答案即为 f(m-1,n-1)。
+var uniquePaths = function(m, n) {
+
+};
+
+// 给定一个字符串数组，将字母异位词组合在一起。
+// 字母异位词指字母相同，但排列不同的字符串。
+
+// 示例:
+
+// 输入: ["eat", "tea", "tan", "ate", "nat", "bat"]
+// 输出:
+// [
+//   ["ate","eat","tea"],
+//   ["nat","tan"],
+//   ["bat"]
+// ]
+// 说明：
+
+// 所有输入均为小写字母。
+// 不考虑答案输出的顺序。
+var groupAnagrams = function(strs) {
+    var newMap = new Map()
+    for(str of strs) {
+        var result = Array.from(str).sort().toString()
+        var list = newMap.has(result) ? newMap.has(result): new Array()
+        list.push(str)
+        newMap.set(result, list)
+    }
+    return Array.from(newMap.values)
+};
+    </script>
+</body>
+</html>
