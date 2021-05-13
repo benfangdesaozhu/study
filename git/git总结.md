@@ -49,3 +49,14 @@ git tag -a v1.5 3bd8a5f0ba（末尾指定提交的校验和（或部分校验和
 删除本地的tag: git tag -d show
 删除远程的tag：git push origin --delete <tagname>
 
+
+
+
+### git分支
+
+#### 分支创建
+
+命令：git branch <branchName>
+
+#### 分支切换
+命令：**git checkout <branchName>**
