@@ -69,7 +69,8 @@ git tag -a v1.5 3bd8a5f0ba（末尾指定提交的校验和（或部分校验和
 #### 分支的合并
 命令： **git merge <branchname>**
 #### 删除分支
-命令： **git branch -d <branchname>**
+命令： **git branch -d <branchname>**(删除本地)
+命令： **git push -d <branchname>**(删除本地)
 
 
 ### 分支管理
@@ -80,3 +81,8 @@ git tag -a v1.5 3bd8a5f0ba（末尾指定提交的校验和（或部分校验和
 
 #### 推送
 命令：**git push**
+
+rebase和merge的区别
+
+![merge](./img/merge.png)
+![rebase](./img/rebase.png)
