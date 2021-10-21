@@ -95,3 +95,8 @@ rebase和merge的区别
 > git branch --set-upstream-to=origin/my-test //将本地分支my-test关联到远程分支my-test上   
   
 > git branch -a //查看远程分支
+  
+  git reset --soft HEAD^   撤销commit
+
+#### 删除分支s
+#### 删除分支
