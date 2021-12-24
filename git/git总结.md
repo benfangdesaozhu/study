@@ -100,3 +100,6 @@ rebase和merge的区别
 
 #### 删除分支s
 #### 删除分支
+  git branch -d branchName(删除本地分支)
+  
+  yarn dev -p 3001 更换端口
