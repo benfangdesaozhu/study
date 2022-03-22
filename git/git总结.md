@@ -1,3 +1,7 @@
+https://mp.weixin.qq.com/s/2_ad5DRsrD_LVqmp-EmMmw
+
+https://www.bookstack.cn/read/git-tutorial/docs-commands-git-stash.md
+
 #### 打标签
 
 创建标签：标签分为两种:轻量标签（lightweight）与附注标签（annotated）
@@ -96,10 +100,32 @@ rebase和merge的区别
   
 > git branch -a //查看远程分支
   
-  git reset --soft HEAD^   撤销commit
+  git reset --soft HEAD^   撤销commit (回退你已提交的 commit，并将 commit 的修改内容放回到暂存区。)
 
 #### 删除分支s
 #### 删除分支
   git branch -d branchName(删除本地分支)
   
   yarn dev -p 3001 更换端口
+
+#### git stash
+  git stash 命令将用于暂时保存没有提交的工作。运行该命令后，所有没有commit的代码，都会暂时从工作区移除，回到上一次commit的状态
+
+  # 暂时保存没有提交的工作
+  git stash 或者 git stash save 'message' 可以备注信息
+
+  # 列出所有暂时保存的工作
+  git stash list
+
+  # 恢复最近一次stash的文件
+  git stash pop
+
+  # 删除所有的stash
+  git stash clear
+
+#### git cherry-pick
+  给定一个或多个现有提交，应用每个提交引入的更改，为每个提交记录一个新的提交。这需要您的工作树清洁（没有从头提交的修改）。
+
+  将已经提交的 commit，复制出新的 commit 应用到分支里
+
+  git cherry-pick commit1 commit2
