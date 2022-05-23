@@ -1,0 +1,106 @@
+.container {
+  // background: #e5e5e5;
+  padding: 100px 0 122px 0;
+}
+.head {
+  width: 1200px;
+  display: flex;
+  justify-content: space-between;
+}
+.news-consult {
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 58px;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  color: #222222;
+}
+.more {
+  margin-top: 7px;
+}
+.cards {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  margin-bottom: 5px;
+}
+.child-card {
+  position: relative;
+  top: 80px;
+  width: 590px;
+  height: 529px;
+  // margin: 51px 20px 4px 0;
+  background: #ffffff;
+  border-radius: 12px;
+  transform: translateY(0);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+.child-card:hover {
+  // height: 554px;
+
+  transform: translateY(-10px);
+  // margin: 20px 20px 0 0;
+  box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-out;
+}
+.image {
+  width: 590px;
+  height: 260px;
+  position: relative;
+  border-radius: 12px 12px 0px 0px;
+}
+.headline {
+  position: absolute;
+  top: 87px;
+  left: 91px;
+  right: 92px;
+  font-family: 'Alibaba PuHuiTi';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 53px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: #222222;
+}
+// .child-card:hover .headline {
+//   top: 100px;
+// }
+.title {
+  margin: 35px 37px 0 37px;
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 38px;
+  text-align: justify;
+  text-transform: capitalize;
+  color: #222222;
+}
+// .child-card:hover .title {
+//   margin: 60px 37px 0 37px;
+// }
+.text {
+  margin: 28px 37px 0 37px;
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: justify;
+  text-transform: capitalize;
+  color: #999999;
+}
+// .child-card:hover .text {
+//   margin: 29px 37px 0 37px;
+// }
+
+.opacity-show {
+  opacity: 1;
+  top: 0px;
+  transition: opacity 1.4s ease 0s, top 1.4s ease 0s;
+}

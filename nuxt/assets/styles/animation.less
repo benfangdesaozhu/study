@@ -1,0 +1,114 @@
+/* 组件淡入淡出 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 向左滑出
+-------------------------------------- */
+.slide-left-enter,
+.slide-left-leave {
+  opacity: 0;
+}
+.slide-left-enter-active {
+  animation: slide-left-in 0.1s linear;
+}
+.slide-left-leave-active {
+  animation: slide-left-out 0.1s linear;
+}
+@keyframes slide-left-in {
+  0% {
+    transform: translate(100%, 0);
+  }
+  50% {
+    transform: translate(50%, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes slide-left-out {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50%, 0);
+  }
+  100% {
+    transform: translate(100%, 0);
+  }
+}
+
+/* 向下滑出
+-------------------------------------- */
+.slide-down-enter-active {
+  animation: slide-down-in 0.2s ease-in-out;
+}
+.slide-down-leave-active {
+  animation: slide-down-out 0.2s ease-in-out;
+}
+@keyframes slide-down-in {
+  0% {
+    transform: translate(0, -100%);
+  }
+  50% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes slide-down-out {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(0, -100%);
+  }
+}
+
+/* 列表平滑过渡
+-------------------------------------- */
+.flip-list-move {
+  transition: all 0.2s linear;
+}
+
+.fade-list-leave-active {
+  position: absolute;
+  transition: all linear 0.2s;
+}
+
+.fade-list-enter,
+.fade-list-leave-to {
+  opacity: 0;
+}
+
+/* 组件过渡
+-------------------------------------- */
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+.component-fade-enter,
+.component-fade-leave-to {
+  opacity: 0;
+}
+
+/* 向上滑出
+-------------------------------------- */
+.slide-in-up-enter-active,
+.slide-in-up-leave-active {
+  transition: 0.2s;
+  transform: translate(0, 0);
+}
+.slide-in-up-enter,
+.slide-in-up-leave-to {
+  transform: translate(0, 100%);
+}
