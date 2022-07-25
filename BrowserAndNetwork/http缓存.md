@@ -1,7 +1,8 @@
 ### 引言
+
     通过网络获取资源的成本高和时间长；因此合理的使用缓存，能降低获取资源的成本和时间，这也便成为性能优化的一个很关键的方面（缓存对第一次获取无效）。
 
-### 与缓存相关的httP首部字段。
+### 与缓存相关的httP首部字段
 
 1. **通用首部**
 
@@ -41,6 +42,7 @@
     在HTTP1.0时期，给客户端设置缓存的方式通过两个字段Expires、pragma来实现。虽然这两个字段早可抛弃，但是为了做向下兼容，还是能在很多网站上看到这两个字段。
 
 #### **[1、Pragma](https://cloud.tencent.com/developer/section/1189975)**
+
 ```
     Pragma: no-cache(告知客户端不要对读取该资源缓存，每次都从服务器请求资源)
 
@@ -54,6 +56,7 @@
 
     
 ```
+
 #### **[2、Expires 设置缓存日期](https://cloud.tencent.com/developer/section/1189940)**
 
 > 语法
@@ -65,6 +68,7 @@
 > Expires: wed, 21 Oct 2020 07:28:00 GMT
 
 > Expires: 0 ；代表资源已过期
+
 ```
 如果同时存在Expires和Cache-control;
 
@@ -101,7 +105,6 @@ Cache-Control: max-age=61256155
 > Cache-control: proxy-revalidate
 > Cache-control: s-maxage=\<seconds>\
 
-
 #### **缓存校验字段**
 
 ```
@@ -111,6 +114,7 @@ Cache-Control: max-age=61256155
 
 为了让客户端与服务器之间能实现缓存文件是否更新的验证、提升缓存的复用率，Http1.1新增了几个首部字段来做这件事情。
 ```
+
 ##### **1. Last-Modified**
 
     服务器将资源传递给客户端后，会将资源最后的修改时间以Last-Modified:GMT的形式加在首部一起返回给客户端
@@ -120,7 +124,7 @@ Cache-Control: max-age=61256155
 
 > 例子
 
-> Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT 
+> Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT
 
 ```
 客户端会为资源标记上该信息，下次再请求的时候，会把该信息附带再请求报文中一并给服务器做检查。
@@ -128,6 +132,7 @@ Cache-Control: max-age=61256155
 2、若不一致，则返回200状态码，和第一次请求资源类似。
 
 ```
+
 ![last-modified](./images/last-modified.png)
 
 > 1、if-Modified-since: last-modified-value
@@ -141,17 +146,21 @@ Cache-Control: max-age=61256155
 > 告知服务端，如果客户端传来的最后修改时间和服务端不一致，则返回412（412 Precondition Failed（先决条件失败）表示客户端错误）的状态码给客户端。
 
 问题：last-Modified存在一定问题。当服务端内的资源被修改了，但是内容确没有发生变化，会因为last-Modified没有匹配上从而重新去发起请求。
+
 ##### **2. ETag**
+
 ```
     http1.1为了解决last-Modified可能存在不准确的问题,推出了ETag实体首部。
 
     作用和last-modified是一样的。这里直接看图就好了。
 ```
+
 ![ETag例子](./images/ETag-lz.png)
 ![ETag流程](./images/ETag-lc.png)
 
 最后总结看以下这张图：
 
 ![http缓存总结](./images/http缓存总结.png)
+[http缓存总结](https://www.processon.com/diagraming/601a78565653bb3aa0b6d7f8)
 
 [HTTP缓存控制小结](https://imweb.io/topic/5795dcb6fb312541492eda8c)

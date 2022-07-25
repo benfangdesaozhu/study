@@ -1,255 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script src="./vue2.6.js"></script>
     <script src="./vueRouter.js"></script>
     <div id="app">
-        <!--[if IE]> html语句 <![endif]-->
-        <!-- 注释呢222 -->
-        fsfdsdfsf
-        <p>
-            <span @click="test1">hello 
-            <!-- 注释呢 -->
-            </span>
-            <span>vue</span>
-          </p>
-          <!-- 注释呢12313131 -->
-          <div v-for="item in list">
-            {{item}}
-          </div>
+      <!--[if IE]> html语句 <![endif]-->
+      <!-- 注释呢222 -->
+      fsfdsdfsf
+      <p>
+        <span @click="test1"
+          >hello
+          <!-- 注释呢 -->
+        </span>
+        <span>vue</span>
+      </p>
+      <!-- 注释呢12313131 -->
+      <div v-for="item in list">{{item}}</div>
 
-          
-      <router-link to="/">Go to 1
-        
+      <router-link to="/"
+        >Go to 1
+
         <router-link to="/2">Go to 2</router-link>
       </router-link>
       <router-link to="/blog">Go to blog</router-link>
       <router-link to="/write">Go to write</router-link>
       <router-link to="/write1">{{test.a}}</router-link>
-      
+
       <router-view name="1231">
         <router-view name="children1231">Go to 2</router-view>
       </router-view>
-      
+
       <router-view name="children1231">Go to 2</router-view>
     </div>
     <script>
-        // vue是个自执行函数。
+      // vue是个自执行函数。
 
-        // defineReactive$$1
+      // defineReactive$$1
 
-        //initComputed  new watcher()  在实例化下。有computed属性的时候会执行
+      //initComputed  new watcher()  在实例化下。有computed属性的时候会执行
 
-        // Vue.prototype.$watch  new watcher() // 有watch属性的时候
+      // Vue.prototype.$watch  new watcher() // 有watch属性的时候
 
-        // mountComponent  new watcher()
-        console.dir(VueRouter)
-        // console.dir(new VueRouter({}))
-        
-        var options = {
-            data () {
-                return {
-                    id: 1,
-                    heh: 2,
-                    test: {
-                        a: 1
-                    },
-                    list: [1,2,3]
-                }
+      // mountComponent  new watcher()
+      console.dir(VueRouter);
+      // console.dir(new VueRouter({}))
+
+      var options = {
+        data() {
+          return {
+            id: 1,
+            heh: 2,
+            test: {
+              a: 1,
             },
-            methods: {
-              test1(){
-                console.log(111, this.list)
-                this.list[0] = 4
-                this.test.a = 2
+            list: [1, 2, 3],
+          };
+        },
+        methods: {
+          test1() {
+            console.log(111, this.list);
+            var a = [1];
+            a.push(111);
+            this.list.push(1);
+            // this.list[0] = 4;
+            // this.test.a = 2;
+          },
+        },
+      };
+      // Vue.use(VueRouter)
+      var router = new VueRouter({
+        mode: "history",
+        routes: [
+          {
+            path: "/",
+            name: "1231",
+            component: {
+              template: "<div>blog</div>",
+            },
+            children: [
+              {
+                path: "/1",
+                name: "children1231",
+                component: {
+                  template: "<div>children1231</div>",
+                },
+              },
+              {
+                path: "/2",
+                name: "children21231",
+                component: {
+                  template: "<div>children21231</div>",
+                },
+              },
+            ],
+          },
+          {
+            path: "/blog",
+            name: "1231blog",
+            component: {
+              template: '<div class="login">blog</div>',
+            },
+          },
+          {
+            path: "/write",
+            name: "1231write",
+            component: {
+              template: '<div class="write">write</div>',
+            },
+          },
+          {
+            path: "/write1",
+            name: "1231write",
+            component: {
+              template: '<div class="write">write</div>',
+            },
+          },
+        ],
+      });
+      var vue = new Vue({
+        el: "#app",
+        ...options,
+        router: router,
+      });
+      // vue.heh = 3
+      // console.log(vue)
+      // vue.$set(vue.test, 'a', 2)
+      //
+      // Vue.use(VueRouter)
+    </script>
+
+    <script>
+      // var arrayProto = Array.prototype
+      // // 创建一个对象作为拦截器
+      // var arrayMethods = Object.create(arrayProto)
+
+      // // 改变数组自身内容的7个方法
+      // var methodsToPatch = [
+      //     'push',
+      //     'pop',
+      //     'shift',
+      //     'unshift',
+      //     'splice',
+      //     'sort',
+      //     'reverse'
+      // ]
+
+      /**
+       * Intercept mutating methods and emit events
+       */
+      // methodsToPatch.forEach(function (method) {
+      //     var original = arrayProto[method]      // 缓存原生方法
+      //     Object.defineProperty(arrayMethods, method, {
+      //         enumerable: false,
+      //         configurable: true,
+      //         writable: true,
+      //         value:function mutator(...args){
+      //             console.log('进来了',...args, this)
+      //         var result = original.apply(this, args)
+      //         return result
+      //         }
+      //     })
+      // })
+      // arrayMethods.push(1,2,3)
+      // console.log(arrayMethods.push(1,2,3))
+      // var a = []
+      // a.__proto__ = arrayMethods
+      // a.push(1)
+    </script>
+    <script>
+      /**
+       * parentElm  // 当前节点对应的真实dom节点
+       * oldCh  // 旧的子Vnode
+       * newCh  // 新的子Vnode
+       **/
+      function updateChildren(
+        parentElm,
+        oldCh,
+        newCh,
+        insertedVnodeQueue,
+        removeOnly
+      ) {
+        let oldStartIdx = 0; // 旧的开始位置索引
+        let newStartIdx = 0; // 新的开始位置索引
+        let oldEndIdx = oldCh.length - 1; // 旧的结束位置索引
+        let oldStartVnode = oldCh[0]; // 旧的第一个Vnode
+        let oldEndVnode = oldCh[oldEndIdx]; // 旧的最后一个Vnode
+        let newEndIdx = newCh.length - 1; // 新的结束位置索引
+        let newStartVnode = newCh[0]; // 新的第一个Vnode
+        let newEndVnode = newCh[newEndIdx]; // 新的最后一个Vnode
+        let oldKeyToIdx, idxInOld, vnodeToMove, refElm;
+        const canMove = !removeOnly;
+
+        while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+          if (isUndef(oldStartVnode)) {
+            oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
+          } else if (isUndef(oldEndVnode)) {
+            oldEndVnode = oldCh[--oldEndIdx];
+          } else if (sameVnode(oldStartVnode, newStartVnode)) {
+            patchVnode(
+              oldStartVnode,
+              newStartVnode,
+              insertedVnodeQueue,
+              newCh,
+              newStartIdx
+            );
+            oldStartVnode = oldCh[++oldStartIdx];
+            newStartVnode = newCh[++newStartIdx];
+          } else if (sameVnode(oldEndVnode, newEndVnode)) {
+            patchVnode(
+              oldEndVnode,
+              newEndVnode,
+              insertedVnodeQueue,
+              newCh,
+              newEndIdx
+            );
+            oldEndVnode = oldCh[--oldEndIdx];
+            newEndVnode = newCh[--newEndIdx];
+          } else if (sameVnode(oldStartVnode, newEndVnode)) {
+            // Vnode moved right
+            patchVnode(
+              oldStartVnode,
+              newEndVnode,
+              insertedVnodeQueue,
+              newCh,
+              newEndIdx
+            );
+            canMove &&
+              nodeOps.insertBefore(
+                parentElm,
+                oldStartVnode.elm,
+                nodeOps.nextSibling(oldEndVnode.elm)
+              );
+            oldStartVnode = oldCh[++oldStartIdx];
+            newEndVnode = newCh[--newEndIdx];
+          } else if (sameVnode(oldEndVnode, newStartVnode)) {
+            // Vnode moved left
+            patchVnode(
+              oldEndVnode,
+              newStartVnode,
+              insertedVnodeQueue,
+              newCh,
+              newStartIdx
+            );
+            canMove &&
+              nodeOps.insertBefore(
+                parentElm,
+                oldEndVnode.elm,
+                oldStartVnode.elm
+              );
+            oldEndVnode = oldCh[--oldEndIdx];
+            newStartVnode = newCh[++newStartIdx];
+          } else {
+            if (isUndef(oldKeyToIdx))
+              oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
+            idxInOld = isDef(newStartVnode.key)
+              ? oldKeyToIdx[newStartVnode.key]
+              : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
+            if (isUndef(idxInOld)) {
+              // New element
+              createElm(
+                newStartVnode,
+                insertedVnodeQueue,
+                parentElm,
+                oldStartVnode.elm,
+                false,
+                newCh,
+                newStartIdx
+              );
+            } else {
+              vnodeToMove = oldCh[idxInOld];
+              if (sameVnode(vnodeToMove, newStartVnode)) {
+                patchVnode(
+                  vnodeToMove,
+                  newStartVnode,
+                  insertedVnodeQueue,
+                  newCh,
+                  newStartIdx
+                );
+                oldCh[idxInOld] = undefined;
+                canMove &&
+                  nodeOps.insertBefore(
+                    parentElm,
+                    vnodeToMove.elm,
+                    oldStartVnode.elm
+                  );
+              } else {
+                // same key but different element. treat as new element
+                createElm(
+                  newStartVnode,
+                  insertedVnodeQueue,
+                  parentElm,
+                  oldStartVnode.elm,
+                  false,
+                  newCh,
+                  newStartIdx
+                );
               }
             }
-        }
-        // Vue.use(VueRouter)
-        var router = new VueRouter({
-              mode: 'history',
-              routes: [
-                  {
-                      path: '/',
-                      name: '1231',
-                      component: {
-                        template: '<div>blog</div>'
-                      },
-                      children: [
-                        {
-                          path: '/1',
-                          name: 'children1231',
-                          component: {
-                            template: '<div>children1231</div>'
-                          },
-                        },
-                        {
-                          path: '/2',
-                          name: 'children21231',
-                          component: {
-                            template: '<div>children21231</div>'
-                          },
-                        }
-                      ]
-                  },
-                  {
-                      path: '/blog',
-                      name: '1231blog',
-                      component: {
-                        template: '<div class="login">blog</div>'
-                      }
-                  },
-                  {
-                      path: '/write',
-                      name: '1231write',
-                      component: {
-                        template: '<div class="write">write</div>'
-                      }
-                  },
-                  {
-                      path: '/write1',
-                      name: '1231write',
-                      component: {
-                        template: '<div class="write">write</div>'
-                      }
-                  }
-              ]
-          })
-        var vue = new Vue({
-            el: '#app',
-            ...options,
-            router: router
-        })
-        // vue.heh = 3
-        // console.log(vue)
-        // vue.$set(vue.test, 'a', 2)
-        // 
-        // Vue.use(VueRouter)
-    </script>
-
-    <script>
-        // var arrayProto = Array.prototype
-        // // 创建一个对象作为拦截器
-        // var arrayMethods = Object.create(arrayProto)
-
-        // // 改变数组自身内容的7个方法
-        // var methodsToPatch = [
-        //     'push',
-        //     'pop',
-        //     'shift',
-        //     'unshift',
-        //     'splice',
-        //     'sort',
-        //     'reverse'
-        // ]
-
-        /**
-         * Intercept mutating methods and emit events
-         */
-        // methodsToPatch.forEach(function (method) {
-        //     var original = arrayProto[method]      // 缓存原生方法
-        //     Object.defineProperty(arrayMethods, method, {
-        //         enumerable: false,
-        //         configurable: true,
-        //         writable: true,
-        //         value:function mutator(...args){
-        //             console.log('进来了',...args, this)
-        //         var result = original.apply(this, args)
-        //         return result
-        //         }
-        //     })
-        // })
-        // arrayMethods.push(1,2,3)
-        // console.log(arrayMethods.push(1,2,3))
-        // var a = []
-        // a.__proto__ = arrayMethods
-        // a.push(1)
-
-
-    </script>
-    <script>
-        /**
-         * parentElm  // 当前节点对应的真实dom节点
-         * oldCh  // 旧的子Vnode
-         * newCh  // 新的子Vnode
-         **/
-function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
-    let oldStartIdx = 0 // 旧的开始位置索引
-    let newStartIdx = 0 // 新的开始位置索引
-    let oldEndIdx = oldCh.length - 1 // 旧的结束位置索引
-    let oldStartVnode = oldCh[0] // 旧的第一个Vnode
-    let oldEndVnode = oldCh[oldEndIdx] // 旧的最后一个Vnode
-    let newEndIdx = newCh.length - 1 // 新的结束位置索引
-    let newStartVnode = newCh[0] // 新的第一个Vnode
-    let newEndVnode = newCh[newEndIdx] // 新的最后一个Vnode
-    let oldKeyToIdx, idxInOld, vnodeToMove, refElm
-    const canMove = !removeOnly
-
-    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-      if (isUndef(oldStartVnode)) {
-        oldStartVnode = oldCh[++oldStartIdx] // Vnode has been moved left
-      } else if (isUndef(oldEndVnode)) {
-        oldEndVnode = oldCh[--oldEndIdx]
-      } else if (sameVnode(oldStartVnode, newStartVnode)) {
-        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
-        oldStartVnode = oldCh[++oldStartIdx]
-        newStartVnode = newCh[++newStartIdx]
-      } else if (sameVnode(oldEndVnode, newEndVnode)) {
-        patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx)
-        oldEndVnode = oldCh[--oldEndIdx]
-        newEndVnode = newCh[--newEndIdx]
-      } else if (sameVnode(oldStartVnode, newEndVnode)) { // Vnode moved right
-        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx)
-        canMove && nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm))
-        oldStartVnode = oldCh[++oldStartIdx]
-        newEndVnode = newCh[--newEndIdx]
-      } else if (sameVnode(oldEndVnode, newStartVnode)) { // Vnode moved left
-        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
-        canMove && nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
-        oldEndVnode = oldCh[--oldEndIdx]
-        newStartVnode = newCh[++newStartIdx]
-      } else {
-        if (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
-        idxInOld = isDef(newStartVnode.key)
-          ? oldKeyToIdx[newStartVnode.key]
-          : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx)
-        if (isUndef(idxInOld)) { // New element
-          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
-        } else {
-          vnodeToMove = oldCh[idxInOld]
-          if (sameVnode(vnodeToMove, newStartVnode)) {
-            patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue, newCh, newStartIdx)
-            oldCh[idxInOld] = undefined
-            canMove && nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm)
-          } else {
-            // same key but different element. treat as new element
-            createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
+            newStartVnode = newCh[++newStartIdx];
           }
         }
-        newStartVnode = newCh[++newStartIdx]
+        if (oldStartIdx > oldEndIdx) {
+          refElm = isUndef(newCh[newEndIdx + 1])
+            ? null
+            : newCh[newEndIdx + 1].elm;
+          addVnodes(
+            parentElm,
+            refElm,
+            newCh,
+            newStartIdx,
+            newEndIdx,
+            insertedVnodeQueue
+          );
+        } else if (newStartIdx > newEndIdx) {
+          removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
+        }
       }
-    }
-    if (oldStartIdx > oldEndIdx) {
-      refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm
-      addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
-    } else if (newStartIdx > newEndIdx) {
-      removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
-    }
-  }
     </script>
     <script>
-        var unicodeLetters = 'a-zA-Z\u00B7\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u037D\u037F-\u1FFF\u200C-\u200D\u203F-\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD';
-        var ncname = "[a-zA-Z_][\\-\\.0-9_a-zA-Z" + unicodeLetters + "]*";
-        var qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
-        var startTagOpen = new RegExp(("^<" + qnameCapture));
+      var unicodeLetters =
+        "a-zA-Z\u00B7\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u037D\u037F-\u1FFF\u200C-\u200D\u203F-\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD";
+      var ncname = "[a-zA-Z_][\\-\\.0-9_a-zA-Z" + unicodeLetters + "]*";
+      var qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
+      var startTagOpen = new RegExp("^<" + qnameCapture);
 
-        console.error('<div class="sss">asas</div>'.match(startTagOpen))
-        console.error('<div>asas</div>'.match(startTagOpen))
+      console.error('<div class="sss">asas</div>'.match(startTagOpen));
+      console.error("<div>asas</div>".match(startTagOpen));
     </script>
-</body>
+  </body>
 </html>

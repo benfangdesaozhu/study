@@ -22,6 +22,7 @@ dispaley: inline-flex
 相同点：都能让子元素成一个弹性盒子
 不同点：一个是块级。默认宽度100%，一个是行内块级元素，宽高默认和子元素的宽高一致
 ```
+
 [详情看这个例子](./../flex.html)
 
 ```
@@ -34,6 +35,7 @@ justify-content
 align-items
 align-content
 ```
+
 ```
 flex-direction属性
 决定主轴的方法： 可选的值有row（默认）、row-reverse、column、column-reverse四个
@@ -42,6 +44,7 @@ row-reverse: 主轴为水平方向，从右到左
 column: 主轴为垂直方向，从上到下
 column-reverse: 主轴为垂直方向，从下到上
 ```
+
 ```
 flex-wrap属性
 定义子容器在容器内排列不下的时候，如何换行
@@ -51,6 +54,7 @@ flex-wrap: nowrap: 不换行
 flex-wrap: wrap:换行
 flex-wrap: reverse-warp:换行。并且第一行在下面
 ```
+
 ```
 flex-flow属性
 flex-flow是flex-direction和flex-wrap的缩写
@@ -72,6 +76,7 @@ justify-content: center // 中间对齐
 justify-content: space-between // 两端对齐 子容器之间的间隔都相等
 justify-content: space-around // 子容器之间的左右间距相同
 ```
+
 ```
 align-items属性
 
@@ -85,6 +90,7 @@ align-items: center; 交叉轴的中点对齐
 align-items: baseline; 子容器的第一行文字的基线对齐
 align-items: stretch; 如果子容器没有设置高度或者为auto.则子容器占满整个容器的高度
 ```
+
 ```
 align-content属性
 
@@ -101,6 +107,7 @@ stretch（默认值）：轴线占满整个交叉轴。
 ```
 
 #### 子容器的属性（order、flex-grow、flex-shrink、flex-basis、flex、align-self）
+
 ```
 order属性
 
@@ -108,6 +115,7 @@ order:<integer(整数)>
 
 order属性的值。定义了子容器的排列顺序，数值越小，越在前面
 ```
+
 ```
 flex-grow属性(伸、放大)
 flex-grow: <number(默认为0)>
@@ -117,6 +125,7 @@ flex-grow属性定义了子容器的放大比例。默认为0，即如果存在�
 如果只有一个子容器设置为1，则这个子容器则占满剩余的部分
 如果给每个子容器都设置了这个值1。则子容器平分整个容器的空间。
 ```
+
 ```
 flex-shrink属性(缩、缩小)
 
@@ -127,6 +136,7 @@ flex-shrink属性定义了子容器的缩小比例。默认为1，即如果空�
 这个属性生效的前提是：flex 元素仅在默认宽度之和大于容器的时候才会发生收缩。其收缩的大小是依据 flex-shrink 的值。
 
 ```
+
 ```
 flex-basis属性（基础）
 
@@ -143,6 +153,8 @@ flex是flex-grow，flex-shrink、flex-basis的简写。默认 0 1 auto。后两�
 flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
 
 该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+
+flex: 1 === flex: 1 1 0;
 
 建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
 ```

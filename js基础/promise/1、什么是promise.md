@@ -28,7 +28,7 @@ promises的核心思想是：promise代表异步操作的结果。 一个承诺�
 
 ```
 var a = new Promise(function(resolve,reject){
-	resolve(1)
+ resolve(1)
 })
 
 a.then(res=>{console.log(res)}) // 1
@@ -36,6 +36,7 @@ a.then(res=>{console.log(res)}) // 1
 a.then(res=>{console.log(res)}) // 1
 
 ```
+
 Promise 也有一些缺点：
 
     * 无法取消Promise。一旦创建它就会立即执行，无法中途取消
@@ -79,6 +80,7 @@ a.then(
 )
 // then函数可以接受两个回调函数作为参数,第一个回调函数在状态由pending转换为fulfilled时执行，第二个回调函数在状态由pending转换为rejected的时候执行。这两个回调函数都能接受Promise对象传出的值
 ```
+
 resolve函数的参数除了正常的值以外，还可能是另一个 Promise 实例:如下
 
 ```
@@ -94,6 +96,7 @@ var p2 = new Promise(function (resolve, reject) {
 p2.then(result => console.log(result, 'a')).catch(error => console.log(error, 'b')) 
 // 如果p1是resolve则打印2222222,'a'；如果p1是reject则打印111111,'b'
 ```
+
 从上面例子中，p1和p2都是promise的实例。但是p2的resolve方法的参数是p1。即一个异步操作的结果是返回另一个异步操作。
 
 注意：这时的p1的状态会传给p2，也就是。p1的状态决定了p2的状态。如果p1的状态是pending，那么p2的回调函数就会等待p1的状态改变；如果p1的状态已经是fulfilled或者rejected，那么p2的回调函数将会立刻执行。
@@ -146,6 +149,7 @@ Promise.resolve(1).then(res=>{console.log(res); return 2}).then(res=>console.log
 // 1
 // 2
 ```
+
 Promise.prototype.catch
 
 Promise.prototype.catch等价于.then(null, function(){}),用于指定发生错误时的回调
@@ -162,6 +166,7 @@ a.then(res => console.log(res), error => console.log(error))
 a.catch(error => console.log(error))
 // 上下都是一致的。都打印这个异常  Error: 测试抛错误
 ```
+
 如果异步操作抛出错误，状态就会变为rejected，就会调用catch方法指定的回调函数，处理这个错误。另外，then方法指定的回调函数，如果运行中抛出错误，也会被catch方法捕获。
 
 注意：如果Promise的状态已经变为fulfilled。这个时候抛出的异常，不能被catch捕捉到;示例如下
@@ -219,7 +224,6 @@ setTimeout(() => { console.log(123) }, 2000);
 
 catch方法返回的还是一个 Promise 对象，因此后面还可以接着调用then方法。
 
-
 Promise.prototype.finally()：注意：回调的方法不接受任何参数
 
 Promise.prototype.finally()方法 是es2018引入标准的
@@ -268,7 +272,9 @@ Promise.prototype.finally = function (callback) {
 };
 // 从上面的实现还可以看到，finally方法总是会返回原来的值。
 ```
+
 例子：
+
 ```
 var a = new Promise(function(resolve, reject){
     resolve(1)
@@ -294,6 +300,7 @@ a.then(res => {console.log(res);})
 Promise.all()
 
 作用：将多个Promise对象包装成一个Promise对象
+
 ```
 语法：var a = Promise.all([p1, p2, ..., pn])
 Promise.all 接收一个数组作为参数。数组中每一项都是Promise的实例,
@@ -340,7 +347,6 @@ Promise.all([a,b,c,d,e]).then(function (posts) {
 // 从上面的例子我们可以看到。在c 未catch的时候，会被all方法捕获错误，但是catch之后，由于catch方法会返回一个promise的实例，所有c就算是rejected的，它的错误依旧不会被捕获
 ```
 
-
 Promise.race() （race英文表示竞争）
 
 作用：同样是将多个 Promise 实例，包装成一个新的 Promise 实例。
@@ -369,9 +375,9 @@ Promise.race([a,b]).then(res=>{
 // 当a的状态先变时，Promise.race的状态便为fulfilled.
 ```
 
-
 Promise.resolve()
 作用：将现有对象转为 Promise 对象，Promise.resolve方法就起到这个作用。
+
 ```
 Promise.resolve()的方法相当于
 
@@ -415,10 +421,10 @@ new Promise(function(resolve,reject){
 和第三点类似。只是没有参数而已
 ```
 
-
 Promise.reject()
 
 作用：Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
+
 ```
 const p = Promise.reject('出错了');
 // 等同于
@@ -429,6 +435,7 @@ p.then(null, function (s) {
 });
 // 出错了
 ```
+
 注意，Promise.reject()方法的参数，会原封不动地作为reject的理由，变成后续方法的参数。这一点与Promise.resolve方法不一致。例子如下
 
 ```
@@ -445,4 +452,4 @@ Promise.reject(thenable)
 // true
 ```
 
-https://www.yuque.com/ostwind/es6/docs-promise#704f29e0
+<https://www.yuque.com/ostwind/es6/docs-promise#704f29e0>
