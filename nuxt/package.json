@@ -1,0 +1,56 @@
+{
+  "name": "vr-website-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "PORT=4001 HOST=0.0.0.0 nuxt --open",
+    "devWin": "set PORT=4001 && nuxt --open",
+    "build": "HOST=0.0.0.0 nuxt build",
+    "start": "HOST=0.0.0.0 nuxt start",
+    "generate": "HOST=0.0.0.0 nuxt generate",
+    "lint:fix": "eslint --fix .",
+    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:prettier": "prettier --check .",
+    "lint": "yarn lint:js && yarn lint:prettier",
+    "lintfix": "prettier --write --list-different . && yarn lint:js --fix",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,vue,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,vue}": "eslint --fix --max-warnings 0"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/i18n": "^7.2.2",
+    "@nuxtjs/vuetify": "^1.12.3",
+    "core-js": "^3.19.3",
+    "nuxt": "^2.15.8",
+    "nuxt-gsap": "^0.1.4",
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14",
+    "vuetify": "^2.6.5",
+    "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.16.3",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@nuxtjs/eslint-config": "^8.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@vue/cli-plugin-eslint": "^5.0.4",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-nuxt": "^3.1.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "husky": "^7.0.4",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "lint-staged": "^12.1.2",
+    "postcss-pxtorem": "^5.1.1",
+    "prettier": "^2.5.1"
+  }
+}

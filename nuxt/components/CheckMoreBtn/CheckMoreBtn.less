@@ -1,0 +1,45 @@
+// 移动端样式
+.c-check-more-btn-port {
+  width: 100%;
+  .c-check-more-btn-port-container {
+    width: 410px;
+    height: 88px;
+    border-radius: 44px;
+    border: 2px solid #000;
+    .c-check-more-btn-port-container-text {
+      margin-right: 32px;
+      color: #000;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .c-check-more-btn-port-container-img {
+      width: 30px;
+    }
+  }
+}
+// pc的样式
+.c-container-more-btn-port-pc {
+  .c-check-more-btn-port-container {
+    // width: 122px;
+    height: 50px;
+    padding: 0 32px;
+    border-radius: 25px;
+    border: 1px solid #000;
+    cursor: pointer;
+    &-text {
+      margin-right: 12px;
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    &-img {
+      width: 15px;
+      transition: all ease 0.3s;
+    }
+  }
+  .c-check-more-btn-port-container:hover .c-check-more-btn-port-container-img {
+    display: inline-block;
+    margin-left: 10px;
+    transition: all ease 0.3s;
+  }
+}

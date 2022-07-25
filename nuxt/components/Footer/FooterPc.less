@@ -1,0 +1,98 @@
+.c-footer {
+  width: 100%;
+  min-width: 1200px;
+  box-sizing: border-box;
+}
+.container {
+  position: relative;
+  background: #222222;
+  .c-container-link {
+    display: flex;
+    padding-top: 86px;
+    padding-bottom: 86px;
+    &-list {
+      display: flex;
+      .col:nth-of-type(1),
+      .col:nth-of-type(3),
+      .col:nth-of-type(4) {
+        margin-right: 76px;
+      }
+      .col:nth-of-type(2) {
+        margin-right: 83px;
+      }
+      .col:nth-of-type(1) .title {
+        margin-bottom: 24px;
+      }
+      .col {
+        .title {
+          font-family: 'PingFang SC';
+          font-weight: 400;
+          font-size: 16px;
+          color: #ffffff;
+        }
+        .list {
+          margin-bottom: 18px;
+          font-family: 'PingFang SC';
+          font-size: 14px;
+          letter-spacing: 0.04em;
+          color: #999999;
+        }
+        .list:nth-last-of-type(1) {
+          margin-bottom: 0;
+        }
+        .series {
+          height: 26px;
+          margin-bottom: 26px;
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 26px;
+          letter-spacing: 0.04em;
+          text-transform: capitalize;
+          color: #ffffff;
+        }
+      }
+    }
+    &-privacy {
+      p:nth-of-type(1) {
+        margin-bottom: 26px;
+        color: #fff;
+        font-size: 16px;
+      }
+      p:nth-of-type(2),
+      p:nth-of-type(3),
+      p:nth-of-type(4) {
+        margin-bottom: 18px;
+        color: #999;
+        font-size: 14px;
+      }
+      p:nth-of-type(4) {
+        margin-bottom: 29px;
+      }
+      .wr-logo-icon {
+        width: 81px;
+      }
+    }
+  }
+}
+.copyright {
+  position: relative;
+  background: #111111;
+  &-content {
+    display: flex;
+    align-items: center;
+    height: 71px;
+    color: #999;
+    font-size: 12px;
+  }
+  .logo {
+    width: 20px;
+    margin-right: 10px;
+  }
+  .cp-rt {
+    .text-decoration {
+      text-decoration: underline;
+    }
+  }
+}
