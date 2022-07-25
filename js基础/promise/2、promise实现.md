@@ -229,3 +229,25 @@ https://zhuanlan.zhihu.com/p/183801144
 瓶子君
 
 https://www.promisejs.org/implementing/
+
+<!-- promise all的实现 -->
+ function customerPromiseAll(promises) {
+    return new Promise((resolve, reject) => {
+      let resultCount = 0; //计数器
+      let promiseLen = promises.length; //传入的promise个数
+      let results = new Array(promiseLen);//初始化数组用于存放返回结果
+ 
+      //按顺序执行
+      for (let i = 0; i < promiseLen; i++) {
+        promises[i].then(value => {
+          resultCount++;
+          results[i] = value; //保证执行结果的顺序
+          if (resultCount === promises.length) {
+            return resolve(results) //执行完最后一个promise，则返回
+          }
+        }, error => {
+          reject(error) //执行错误直接reject
+        })
+      }
+    })
+  }

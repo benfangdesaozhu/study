@@ -48,3 +48,6 @@ setTimeout(() => {
     })
    })
    // nextTick=>nextTick=>nextTick=>nextTick=>timer1=>promise1
+
+
+   

@@ -16,6 +16,7 @@ const vconsolePlugin = require('./vconsole.plugin')
 // 1、日志美化 文档地址https://www.npmjs.com/package/friendly-errors-webpack-plugin
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const notifier = require('node-notifier');
+const { optimize } = require('webpack')
 const ICON = path.join(__dirname, 'icon.jpg');
 // 2、打包速度分析（speed-measure-webpack5-plugin） 文档地址 
 // 暂时没用。会报错 不论是5还是原版的
@@ -35,6 +36,11 @@ module.exports = (env = {}) => {
         path: path.join(__dirname, 'dist'),
         filename: '[name].[chunkhash].js'
     },
+    // optimize: {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //       }
+    // },
     mode: process.env.NODE_ENV === "development" ? 'development' : 'production',
     // mode: "development",
     module: {
@@ -218,11 +224,11 @@ module.exports = (env = {}) => {
     
     target: process.env.NODE_ENV === "development" ? "web" : "browserslist",
     externals: {
-        echarts: 'echarts',
-        vue: 'Vue',
-        'vue-router': 'VueRouter',
-        Vuex: 'vuex',
-        ElementUI: 'element-ui',
-    }
+            echarts: 'echarts',
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            Vuex: 'vuex',
+            ElementUI: 'element-ui',
+        }
     }
 }

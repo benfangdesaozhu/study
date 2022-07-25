@@ -33,6 +33,8 @@
             height: 100px;
         }
     </style>
+    <!-- 参考这个 -->
+    <!-- https://interview-cheatsheet.umaru.io/html_css#flex-circle-center -->
 </head>
 <body>
     <!-- 水平垂直居中 flex-->
@@ -194,7 +196,12 @@
             4、display:inline-block、flex、inline-flex
             5、overflow: hidden
      -->
+     <!-- 重绘和重排（回流）
 
+重排会引起重绘，重绘不会引起重排
+
+引起重排的改变元素大小，位置，添加删除元素等
+引起重绘的改变字体颜色、背景色等 -->
      <!-- 
          盒模型：
          ie盒模型：border-sizing: border-box; 盒子宽度：border+paddin+content
@@ -266,5 +273,47 @@
                flex: 0 1
            }
        </style>
+
+
+<style>
+    .container {
+  /* 压缩左右内边距，留出 .left 和 .right 的距离 */
+  padding: 0 200px;
+}
+.container > div {
+  height: 200px;
+  float: left;
+}
+.middle {
+  width: 100%;
+  background: blue;
+}
+.left {
+  margin-left: -100%; /* 用 -100% 吃掉 .middle 的宽度 */
+  position: relative; /* 相对 .container -200px */
+  left: -200px;
+  width: 200px;
+  background: red;
+}
+.right {
+  margin-left: -200px; /* 用 -200px 吃掉 .right 自己的宽度 */
+  position: relative; /* 相对 .container -200px */
+  right: -200px;
+  width: 200px;
+  background: green;
+}
+</style>
+<div class="container">
+    <div class="middle"></div>
+    <!-- 因为要先渲染 .middle，所以 .middle 一定要写在第一个 -->
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+
+
+<div style="display: inline-block;width: 100%">
+    <div>1</div>
+    <div>1</div><div>1</div>
+</div>
 </body>
 </html>

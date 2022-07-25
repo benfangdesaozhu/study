@@ -72,7 +72,7 @@
 
         // 路由变化时，根据路由渲染对应 UI
         function onPopState () {
-            console.log(location.pathname)
+            console.log(location.pathname, 111)
             switch (location.pathname) {
                 case '/home':
                     routerView.innerHTML = 'Home'
