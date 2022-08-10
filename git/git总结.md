@@ -76,7 +76,7 @@ git tag -a v1.5 3bd8a5f0ba（末尾指定提交的校验和（或部分校验和
 命令： **git push -d <branchname>**(删除本地)
 
 #### 建立当前分支与远程分支的映射关系:
-git branch --set-upstream-to=origin feature/1.8.1 feature/1.8.1
+git branch --set-upstream-to origin/远程分支名  本地分支名   // 本地分支关联到远程分支
 
 ### 分支管理
 
