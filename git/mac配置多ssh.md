@@ -88,3 +88,8 @@ ssh -T git@github.com
 ```
 ssh-add -D 也可以删除 添加的ssh的缓存
 ```
+
+如果是使用https下载的话。公司也要经常更换密码：就需要
+git remote remove origin // 移除关联
+git remote add origin xxx // 重新与远程的git仓库地址关联
+git branch --set-upstream-to= // 再重新与远程分支关联
